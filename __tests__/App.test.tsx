@@ -1,18 +1,21 @@
-/**
- * @format
- */
-
 import React from 'react';
 import App from '../App';
-import TabNavigator from '../src/app/tabs/tabNavigator';
+import TabNavigator from '../src/app/tabs/TabNavigator';
 import { render } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
-test('renders without crash', () => {
+test('renders App component without crash', () => {
   render(<App />);
-  render(
+});
+
+test('TabNavigator contains expected tabs', () => {
+  const { getByText } = render(
     <NavigationContainer>
-      <TabNavigator />;
+      <TabNavigator />
     </NavigationContainer>,
   );
+  expect(getByText('Rozkład zajęć')).toBeTruthy();
+  expect(getByText('Kalendarz')).toBeTruthy();
+  expect(getByText('Organizacja Roku')).toBeTruthy();
+  expect(getByText('Ustawienia')).toBeTruthy();
 });

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const Timetable = () => {
+const TimetableScreen = () => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Timetable</Text>
@@ -10,4 +10,4 @@ const Timetable = () => {
   );
 };
 
-export default Timetable;
+export default TimetableScreen;
