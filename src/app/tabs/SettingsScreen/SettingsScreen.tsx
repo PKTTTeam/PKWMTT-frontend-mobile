@@ -1,10 +1,11 @@
 import { View, Text } from 'react-native';
-const Timetable = () => {
+
+function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Timetable</Text>
+      <Text>Calendar Screen</Text>
     </View>
   );
-};
+}
 
-export default Timetable;
+export default SettingsScreen;
