@@ -17,6 +17,14 @@ const screenOptions = {
   tabBarInactiveBackgroundColor: '#161514',
   tabBarActiveBackgroundColor: '#161514',
 
+  headerStyle: {
+    backgroundColor: '#181818',
+  },
+
+  headerTitleStyle: {
+    color: '#FFFFFF',
+  },
+
   tabBarStyle: {
     height: 100,
   },
