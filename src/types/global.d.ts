@@ -3,6 +3,16 @@ export type TimeRangeProps = {
   timeEnd: string;
 };
 
-export type RoomInfoTypes = {
+export type RoomInfoProps = {
   room: string;
+};
+
+export type SubjectNameProps = {
+  subject: string;
+};
+
+export type LetterIconProps = {
+  bgColor: string;
+  letter: string;
+  letterColor: string;
 };
