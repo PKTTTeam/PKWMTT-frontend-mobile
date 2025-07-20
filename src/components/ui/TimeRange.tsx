@@ -4,7 +4,7 @@ import globalStyles from '../../styles/globalStyles';
 
 const TimeRange: React.FC<TimeRangeProps> = ({ timeStart, timeEnd }) => {
   return (
-    <Text style={globalStyles.text}>
+    <Text style={globalStyles.time}>
       {timeStart}-{timeEnd}
     </Text>
   );

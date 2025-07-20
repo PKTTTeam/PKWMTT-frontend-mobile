@@ -16,3 +16,13 @@ export type LetterIconProps = {
   letter: string;
   letterColor: string;
 };
+
+export interface ScheduleItemProps {
+  subject: string;
+  startTime: string;
+  endTime: string;
+  room: string;
+  type: string;
+  bgColor: string;
+  letterColor: string;
+}

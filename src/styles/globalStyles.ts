@@ -1,30 +1,52 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
-
-const iconSize = (width + height) * 0.018;
-const iconRadius = iconSize / 2;
+import { StyleSheet } from 'react-native';
+import { ICON_SIZE, ICON_RADIUS } from '../constants/constants';
 
 const globalStyles = StyleSheet.create({
   ScreenContainer: {
-    flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    backgroundColor: '#1e1f1f',
+    padding: 16,
+    borderRadius: 8,
     alignItems: 'center',
-    backgroundColor: '#181818',
+    justifyContent: 'flex-start',
+    marginBottom: 12,
+    marginLeft: 2,
+    marginRight: 2,
   },
   text: {
     color: '#FFFFFF',
   },
+  timeAndSubject: {
+    flex: 1,
+    flexDirection: 'column',
+    paddingLeft: 8,
+  },
+  subject: {
+    color: '#e5e5ff',
+    fontSize: 16,
+    fontWeight: '400',
+    marginTop: 10,
+  },
+  time: {
+    color: '#e5e5ff',
+    fontSize: 16,
+    marginBottom: 4,
+  },
   icon: {
-    width: iconSize,
-    height: iconSize,
-    borderRadius: iconRadius,
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+    borderRadius: ICON_RADIUS,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  rightInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   textIcon: {
     fontWeight: 'bold',
-    fontSize: iconSize * 0.5,
+    fontSize: ICON_SIZE * 0.5,
   },
 });
 
