@@ -10,11 +10,11 @@ const globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginBottom: 12,
-    marginLeft: 2,
-    marginRight: 2,
+    marginLeft: 4,
+    marginRight: 4,
   },
   text: {
-    color: '#FFFFFF',
+    color: '#e5e5ff',
   },
   timeAndSubject: {
     flex: 1,

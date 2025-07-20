@@ -26,3 +26,22 @@ export interface ScheduleItemProps {
   bgColor: string;
   letterColor: string;
 }
+
+//TODO: to be outsourced to another file
+export interface TimetableItem {
+  name: string;
+  classroom: string;
+  rowId: number;
+  type: string;
+}
+
+export interface DaySchedule {
+  name: string;
+  odd: TimetableItem[];
+  even: TimetableItem[];
+}
+
+export interface TimetableResponse {
+  name: string;
+  data: DaySchedule[];
+}
