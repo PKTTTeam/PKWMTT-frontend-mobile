@@ -26,7 +26,13 @@ export async function getTimetableByGroup(
   const query = buildQuery({ k, l, p });
   const response = await fetch(`${API_URL}/${generalGroupName}${query}`);
   if (!response.ok) {
-    throw new Error(`${API_URL}/${generalGroupName}${query}`);
+    throw new Error('error with fetching timetable');
   }
   return response.json();
+}
+
+export async function getAcademicHours(): Promise<string[]> {
+  const response = await fetch(`${API_URL}/hours`);
+  const data = await response.json();
+  return data;
 }

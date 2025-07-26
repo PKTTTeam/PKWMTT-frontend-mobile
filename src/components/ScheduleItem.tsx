@@ -26,8 +26,8 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
         <SubjectName subject={subject} />
       </View>
       <View style={globalStyles.rightInfo}>
-        <RoomInfo room={room} />
         <LetterIcon bgColor={bgColor} letter={type} letterColor={letterColor} />
+        <RoomInfo room={room} />
       </View>
     </View>
   );
