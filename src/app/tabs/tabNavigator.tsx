@@ -17,18 +17,61 @@ const screenOptions = {
   tabBarInactiveBackgroundColor: '#161514',
   tabBarActiveBackgroundColor: '#161514',
 
+  headerStyle: {
+    backgroundColor: '#181818',
+    height: 160,
+  },
+
+  headerTitleStyle: {
+    color: '#FFFFFF',
+  },
+
   tabBarStyle: {
     height: 100,
   },
+
   tabBarLabelStyle: {
     fontSize: 10,
     fontFamily: 'InterMedium',
     marginBottom: 4,
   },
+
   tabBarIconStyle: {
     marginTop: 10,
   },
 };
+
+const renderTimetableIcon = ({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) => <Icon name="view-list" color={color} size={size} />;
+
+const renderCalendarIcon = ({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) => <Icon name="calendar-month" color={color} size={size} />;
+
+const renderOrganisationIcon = ({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) => <Icon name="school" color={color} size={size} />;
+
+const renderSettingsIcon = ({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) => <Icon name="settings" color={color} size={size} />;
 
 const TabNavigator: React.FC = () => {
   return (
@@ -36,38 +79,22 @@ const TabNavigator: React.FC = () => {
       <Tab.Screen
         name="Rozkład zajęć"
         component={TimetableScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="view-list" color={color} size={size} />
-          ),
-        }}
+        options={{ tabBarIcon: renderTimetableIcon }}
       />
       <Tab.Screen
         name="Kalendarz"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="calendar-month" color={color} size={size} />
-          ),
-        }}
         component={CalendarScreen}
+        options={{ tabBarIcon: renderCalendarIcon }}
       />
       <Tab.Screen
         name="Organizacja Roku"
         component={OrganisationScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="school" color={color} size={size} />
-          ),
-        }}
+        options={{ tabBarIcon: renderOrganisationIcon }}
       />
       <Tab.Screen
         name="Ustawienia"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="settings" color={color} size={size} />
-          ),
-        }}
         component={SettingsScreen}
+        options={{ tabBarIcon: renderSettingsIcon }}
       />
     </Tab.Navigator>
   );
