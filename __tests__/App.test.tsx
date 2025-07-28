@@ -16,6 +16,8 @@ test('TabNavigator contains expected tabs', () => {
   );
   expect(getByText('Rozkład zajęć') || getByText('Timetable')).toBeTruthy();
   expect(getByText('Kalendarz') || getByText('Calendar')).toBeTruthy();
-  expect(getByText('Kalkulator') || getByText('Calculator')).toBeTruthy();
+  expect(
+    getByText('Kalkulator ETCS') || getByText('Calculator ETCS'),
+  ).toBeTruthy();
   expect(getByText('Ustawienia') || getByText('Settings')).toBeTruthy();
 });

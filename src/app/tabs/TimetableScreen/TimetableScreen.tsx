@@ -190,7 +190,6 @@ const styles = StyleSheet.create({
   },
   weekIndicator: {
     alignItems: 'center',
-    marginBottom: 16,
   },
   weekText: {
     color: 'white',
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#3A3A3A', // subtle dark gray line
     marginVertical: 0,
-    opacity: 0.6,
+    opacity: 0.8,
   },
 });
 
