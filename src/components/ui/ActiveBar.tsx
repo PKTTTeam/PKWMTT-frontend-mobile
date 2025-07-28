@@ -2,6 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { BAR_WIDTH, BAR_HEIGHT } from '../../constants/constants';
 
 const ActiveBar = () => {
+  // eslint-disable-next-line react/self-closing-comp
   return <View style={ActiveBarStyles.bar}></View>;
 };
 

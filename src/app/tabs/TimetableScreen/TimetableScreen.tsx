@@ -49,7 +49,7 @@ const TimetableScreen = () => {
     }
     fetchHours();
     fetchTimetable();
-  }, []);
+  }, [filters.k, filters.l, filters.p]);
 
   const navigateToNextDay = () => {
     if (currentDayIndex < timetable.length - 1) {
