@@ -54,7 +54,7 @@ const TimetableScreen = () => {
       }
     }
     initialiseData();
-  }, [filters.k, filters.l, filters.p]);
+  }, [filters.k, filters.l, filters.p, isOddWeek]);
 
   const navigateToNextDay = () => {
     if (currentDayIndex < timetable.length - 1) {
