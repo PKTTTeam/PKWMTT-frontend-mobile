@@ -1,55 +1,85 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Menu, Button, Text, Provider } from 'react-native-paper';
-
-import Styles from '../../styles/globalStyles.ts';
-
-const OPTIONS = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Other', value: 'other' },
-];
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+} from 'react-native';
 
 const DropdownMenu = () => {
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState<string | undefined>();
 
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
+  const DATA = [
+    { id: '1', title: 'Option 1' },
+    { id: '2', title: 'Option 2' },
+    { id: '3', title: 'Option 3' },
+  ];
 
-  const handleSelect = (value: string) => {
-    setSelected(value);
-    closeMenu();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const handlePress = (item: { id: string; title: string }) => {
+    setSelectedId(item.id);
+    console.log('Selected:', item.title);
   };
 
   return (
-    <>
-      <Provider>
-        <View>
-          <Text style={Styles.text}>Gender</Text>
-          <Menu
-            visible={visible}
-            onDismiss={closeMenu}
-            anchor={
-              <Button mode="outlined" onPress={openMenu}>
-                {selected
-                  ? OPTIONS.find(o => o.value === selected)?.label
-                  : 'Select Gender'}
-              </Button>
-            }
-          >
-            {OPTIONS.map(option => (
-              <Menu.Item
-                key={option.value}
-                onPress={() => handleSelect(option.value)}
-                title={option.label}
-              />
-            ))}
-          </Menu>
-        </View>
-      </Provider>
-    </>
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setVisible(!visible)}
+      >
+        <Text>{selectedId ? parseInt(selectedId.toString(), 10) : 'Select an option'}</Text>
+      </TouchableOpacity>
+      {visible && (
+        <FlatList
+          data={DATA}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => {handlePress(item); setVisible(!visible);}} style={styles.option}>
+              <Text style={styles.optionText}>{item.title}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+    </View>
   );
 };
 
 export default DropdownMenu;
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 32,
+    alignItems: 'center',
+  },
+  button: {
+    padding: 12,
+    backgroundColor: '#444',
+    borderRadius: 8,
+    width: 200,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    alignItems: 'center',
+  },
+  modal: {
+    backgroundColor: '#222',
+    borderRadius: 8,
+    paddingVertical: 8,
+    width: 200,
+  },
+  option: {
+    padding: 12,
+  },
+  optionText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+});
