@@ -4,7 +4,7 @@ import globalStyles from '../styles/globalStyles';
 import SubjectName from './ui/SubjectName';
 import RoomInfo from './ui/RoomInfo';
 import TimeRange from './ui/TimeRange';
-import LetterIcon from './ui/LetterIcon';
+import LetterIcon from './ui/letterIcon';
 import ActiveBar from './ui/ActiveBar';
 import type { ScheduleItemProps } from '../types/global';
 
