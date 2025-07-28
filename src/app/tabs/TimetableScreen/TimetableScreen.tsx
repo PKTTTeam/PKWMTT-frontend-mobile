@@ -13,6 +13,7 @@ import {
   getTimetableByGroup,
 } from '../../../services/TimetableService';
 import { getCorrectColor } from '../../../utils/getCorrectColor';
+import getCorrectLetter from '../../../utils/getCorrectLetter';
 
 const TimetableScreen = () => {
   const [timetable, setTimetable] = useState<DaySchedule[]>([]);
@@ -21,8 +22,8 @@ const TimetableScreen = () => {
   const [isOddWeek, setIsOddWeek] = useState(true);
 
   // Static for early dev
-  const groupName = '12K2';
-  const filters = { k: 'K04', l: 'L04', p: 'P04' };
+  const groupName = '12K1';
+  const filters = { k: 'K01', l: 'L01', p: 'P01' };
 
   useEffect(() => {
     async function fetchHours() {
@@ -100,7 +101,7 @@ const TimetableScreen = () => {
           room={item.classroom}
           bgColor={getCorrectColor(item.type.slice(0, 1))}
           type={item.type.slice(0, 1)}
-          letterColor="white"
+          letterColor={getCorrectLetter(item.type)}
         />
       </>
     );
@@ -119,11 +120,6 @@ const TimetableScreen = () => {
   return (
     <View style={styles.bgContainer}>
       <View style={styles.container}>
-        {/* Week indicator */}
-        <View style={styles.weekIndicator}>
-          <Text style={styles.weekText}>{getWeekTypeText()}</Text>
-        </View>
-
         {/* Navigation header */}
         <View style={styles.navigationHeader}>
           <TouchableOpacity
@@ -143,6 +139,11 @@ const TimetableScreen = () => {
           >
             <Text style={styles.navButtonText}>→</Text>
           </TouchableOpacity>
+        </View>
+
+        {/* Week indicator */}
+        <View style={styles.weekIndicator}>
+          <Text style={styles.weekText}>{getWeekTypeText()}</Text>
         </View>
 
         {/* Lessons list */}
