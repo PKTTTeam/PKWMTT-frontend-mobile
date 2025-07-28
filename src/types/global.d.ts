@@ -25,6 +25,7 @@ export interface ScheduleItemProps {
   type: string;
   bgColor: string;
   letterColor: string;
+  isActive: boolean;
 }
 
 //TODO: to be outsourced to another file

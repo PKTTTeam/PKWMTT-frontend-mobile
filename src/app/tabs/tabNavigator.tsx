@@ -83,7 +83,7 @@ const TabNavigator: React.FC = () => {
         options={{ tabBarIcon: renderCalendarIcon }}
       />
       <Tab.Screen
-        name="Kalkulator"
+        name="Kalkulator ETCS"
         component={CalculatorScreen}
         options={{ tabBarIcon: renderCalcIcon }}
       />

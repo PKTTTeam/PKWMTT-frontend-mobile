@@ -14,6 +14,12 @@ import {
 } from '../../../services/TimetableService';
 import { getCorrectColor } from '../../../utils/getCorrectColor';
 import getCorrectLetter from '../../../utils/getCorrectLetter';
+import checkActiveLesson from '../../../utils/checkActiveLesson';
+import getCurrentWeekType from '../../../utils/getCurrentWeekType';
+
+const LessonSeparator = () => {
+  return <View style={styles.separator} />;
+};
 
 const TimetableScreen = () => {
   const [timetable, setTimetable] = useState<DaySchedule[]>([]);
@@ -26,30 +32,29 @@ const TimetableScreen = () => {
   const filters = { k: 'K01', l: 'L01', p: 'P01' };
 
   useEffect(() => {
-    async function fetchHours() {
+    async function initialiseData() {
       try {
-        const response = await getAcademicHours();
-        setAHours(response);
+        const [hours, timetableResponse] = await Promise.all([
+          getAcademicHours(),
+          getTimetableByGroup(groupName, filters.k, filters.l, filters.p),
+        ]);
+
+        setAHours(hours);
+        setTimetable(timetableResponse.data);
+
+        setIsOddWeek(getCurrentWeekType());
+        console.log(isOddWeek);
+
+        const today = new Date();
+        const jsDay = today.getDay();
+        const index = jsDay === 0 || jsDay === 6 ? 0 : jsDay - 1;
+        setCurrentDayIndex(index);
       } catch (err) {
-        console.log(err);
+        console.error('Error loading timetable data:', err);
       }
     }
-    async function fetchTimetable() {
-      try {
-        const response = await getTimetableByGroup(
-          groupName,
-          filters.k,
-          filters.l,
-          filters.p,
-        );
-        setTimetable(response.data);
-      } catch (err) {
-        console.log(`${err}`);
-      }
-    }
-    fetchHours();
-    fetchTimetable();
-  }, [filters.k, filters.l, filters.p]);
+    initialiseData();
+  }, [filters.k, filters.l, filters.p, isOddWeek]);
 
   const navigateToNextDay = () => {
     if (currentDayIndex < timetable.length - 1) {
@@ -92,6 +97,12 @@ const TimetableScreen = () => {
     const [startTime = '??', endTime = '??'] =
       hourString?.split('-').map(s => s.trim()) ?? [];
 
+    const isActive = checkActiveLesson(
+      item,
+      aHours,
+      timetable[currentDayIndex]?.name,
+      isOddWeek,
+    );
     return (
       <>
         <ScheduleItem
@@ -102,6 +113,7 @@ const TimetableScreen = () => {
           bgColor={getCorrectColor(getCorrectLetter(item.type))}
           type={getCorrectLetter(item.type)}
           letterColor="white"
+          isActive={isActive}
         />
       </>
     );
@@ -156,6 +168,7 @@ const TimetableScreen = () => {
             }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
+            ItemSeparatorComponent={LessonSeparator}
           />
         )}
       </View>
@@ -178,7 +191,6 @@ const styles = StyleSheet.create({
   },
   weekIndicator: {
     alignItems: 'center',
-    marginBottom: 16,
   },
   weekText: {
     color: 'white',
@@ -213,6 +225,12 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: 20,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#3A3A3A', // subtle dark gray line
+    marginVertical: 0,
+    opacity: 0.8,
   },
 });
 

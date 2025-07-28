@@ -16,10 +16,11 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
   type,
   bgColor,
   letterColor,
+  isActive,
 }) => {
   return (
     <View style={globalStyles.ScreenContainer}>
-      <ActiveBar />
+      <ActiveBar isActive={isActive} />
 
       <View style={globalStyles.timeAndSubject}>
         <TimeRange timeStart={startTime} timeEnd={endTime} />
