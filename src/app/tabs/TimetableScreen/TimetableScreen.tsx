@@ -99,9 +99,9 @@ const TimetableScreen = () => {
           startTime={startTime}
           endTime={endTime}
           room={item.classroom}
-          bgColor={getCorrectColor(item.type.slice(0, 1))}
-          type={item.type.slice(0, 1)}
-          letterColor={getCorrectLetter(item.type)}
+          bgColor={getCorrectColor(getCorrectLetter(item.type))}
+          type={getCorrectLetter(item.type)}
+          letterColor="white"
         />
       </>
     );

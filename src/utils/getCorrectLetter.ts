@@ -5,7 +5,7 @@ export default function getCorrectLetter(lesson: string) {
     case 'COMPUTER_LABORATORY':
       return 'K';
     case 'LABORATORY':
-      return 'P';
+      return 'L';
     case 'LECTURE':
       return 'W';
     default:
