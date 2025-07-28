@@ -7,8 +7,11 @@ import {
   FlatList,
 } from 'react-native';
 
-
-const DropdownMenu = (Props : {width: number, height: number}) => {
+const DropdownMenu = (Props: {
+  width: number;
+  height: number;
+  listPosUp: boolean;
+}) => {
   const [visible, setVisible] = useState(false);
 
   const DATA = [
@@ -27,33 +30,45 @@ const DropdownMenu = (Props : {width: number, height: number}) => {
   return (
     <View style={[{ width: Props.width ?? 85, height: Props.height ?? 40 }]}>
       <TouchableOpacity
-      style={[styles.button, { width: '100%', height: '100%' }]}
-      onPress={() => setVisible(!visible)}
+        style={[styles.button, { width: '100%', height: '100%' }]}
+        onPress={() => setVisible(!visible)}
       >
-      <Text style={styles.groupSelectText}>
-        {selectedId
-        ? DATA.find(item => item.id === selectedId)?.title
-        : 'none'}
-      </Text>
+        <Text style={styles.groupSelectText}>
+          {selectedId
+            ? DATA.find(item => item.id === selectedId)?.title
+            : 'none'}
+        </Text>
       </TouchableOpacity>
       {visible && (
-      <View style={[styles.modal, { width: '100%', height: '400%', position: 'absolute', zIndex: 100 , top: '100%'}]}>
-        <FlatList
-        data={DATA}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-          onPress={() => {
-            handlePress(item);
-            setVisible(false);
-          }}
-          style={styles.option}
-          >
-          <Text style={[styles.groupSelectText]}>{item.title}</Text>
-          </TouchableOpacity>
-        )}
-        />
-      </View>
+        <View
+          style={[
+            styles.modal,
+            {
+              width: '100%',
+              height: '400%',
+              position: 'absolute',
+              zIndex: 100,
+
+              top: Props.listPosUp === true ? '-400%' : '100%',
+            },
+          ]}
+        >
+          <FlatList
+            data={DATA}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  handlePress(item);
+                  setVisible(false);
+                }}
+                style={styles.option}
+              >
+                <Text style={[styles.groupSelectText]}>{item.title}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
       )}
     </View>
   );
@@ -98,5 +113,5 @@ const styles = StyleSheet.create({
   groupSelectText: {
     color: 'white',
     fontSize: 12,
-  }
+  },
 });

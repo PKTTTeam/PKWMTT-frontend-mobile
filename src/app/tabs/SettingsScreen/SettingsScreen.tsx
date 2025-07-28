@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-// import styles from '../../../styles/globalStyles.ts';
+import GlobalStyles from '../../../styles/globalStyles.ts';
 // import DropdownMenu from '../../../components/ui/DropdownMenu.tsx';
 import GroupSelect from '../../../components/ui/GroupSelect.tsx';
 import Switch from '../../../components/ui/Switch.tsx';
@@ -42,10 +42,32 @@ function SettingsScreen() {
                 <Switch label="Zalcizenie" />
                 <Switch label="Projekt       " />
               </View>
-              <View style={[settingsStyles.notifications, { marginTop: 12 }]}>
+              <View
+                style={[settingsStyles.notificationsMid, { marginTop: 12 }]}
+              >
                 <Switch label="Aktualziacje rozkładu" />
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <Text style={GlobalStyles.text}>Przypomnij przed</Text>
+                  <GroupSelect groupName="" />
+                </View>
               </View>
             </View>
+            <Text style={[settingsStyles.labelText, { marginTop: 12 }]}>
+              Wygląd Aplikacji
+            </Text>
+            <Switch label="Tryb ciemny" />
+            <Switch label="Czcionka powiększona" />
+            <Text style={[settingsStyles.labelText, { marginTop: 12 }]}>
+              Język Aplikacji
+            </Text>
+            <GroupSelect groupName="" listPosUp={true} />
           </View>
         </View>
       </PaperProvider>
@@ -54,7 +76,6 @@ function SettingsScreen() {
 }
 
 const settingsStyles = StyleSheet.create({
-  
   labelText: {
     alignSelf: 'center',
     color: 'white',
@@ -72,6 +93,14 @@ const settingsStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 40, // horizontal spacing between columns
+    flexWrap: 'wrap',
+  },
+  notificationsMid: {
+    flexDirection: 'column',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12, // horizontal spacing between columns
     flexWrap: 'wrap',
   },
 });
