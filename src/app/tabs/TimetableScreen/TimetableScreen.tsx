@@ -14,6 +14,7 @@ import {
 } from '../../../services/TimetableService';
 import { getCorrectColor } from '../../../utils/getCorrectColor';
 import getCorrectLetter from '../../../utils/getCorrectLetter';
+import checkActiveLesson from '../../../utils/checkActiveLesson';
 
 const TimetableScreen = () => {
   const [timetable, setTimetable] = useState<DaySchedule[]>([]);
@@ -92,6 +93,8 @@ const TimetableScreen = () => {
     const [startTime = '??', endTime = '??'] =
       hourString?.split('-').map(s => s.trim()) ?? [];
 
+    const isActive = checkActiveLesson(item, aHours, isOddWeek);
+    console.log(isActive);
     return (
       <>
         <ScheduleItem
@@ -102,6 +105,7 @@ const TimetableScreen = () => {
           bgColor={getCorrectColor(getCorrectLetter(item.type))}
           type={getCorrectLetter(item.type)}
           letterColor="white"
+          isActive={isActive}
         />
       </>
     );

@@ -1,4 +1,4 @@
-export default function getCorrectLetter(lesson: string) {
+export default function getCorrectLetter(lesson: string): string {
   switch (lesson) {
     case 'PROJECT':
       return 'P';
