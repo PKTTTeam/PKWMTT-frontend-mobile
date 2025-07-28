@@ -16,6 +16,7 @@ import { getCorrectColor } from '../../../utils/getCorrectColor';
 import getCorrectLetter from '../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../utils/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const LessonSeparator = () => {
   return <View style={styles.separator} />;
@@ -129,6 +130,22 @@ const TimetableScreen = () => {
     return isOddWeek ? 'N' : 'P';
   };
 
+  const RenderLeftArrow = ({
+    color,
+    size,
+  }: {
+    color: string;
+    size: number;
+  }) => <Icon name="arrow-back-ios" color={color} size={size} />;
+
+  const RenderRightArrow = ({
+    color,
+    size,
+  }: {
+    color: string;
+    size: number;
+  }) => <Icon name="arrow-forward-ios" color={color} size={size} />;
+
   return (
     <View style={styles.bgContainer}>
       <View style={styles.container}>
@@ -138,7 +155,7 @@ const TimetableScreen = () => {
             style={styles.navButton}
             onPress={navigateToPrevDay}
           >
-            <Text style={styles.navButtonText}>←</Text>
+            <RenderLeftArrow color="#aeaeaf" size={18} />
           </TouchableOpacity>
 
           <Text style={styles.dayTitle}>
@@ -149,7 +166,7 @@ const TimetableScreen = () => {
             style={styles.navButton}
             onPress={navigateToNextDay}
           >
-            <Text style={styles.navButtonText}>→</Text>
+            <RenderRightArrow color="#aeaeaf" size={18} />
           </TouchableOpacity>
         </View>
 
