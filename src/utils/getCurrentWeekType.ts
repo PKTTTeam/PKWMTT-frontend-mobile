@@ -1,3 +1,5 @@
+import { ONE_WEEK_MS } from '../constants/constants';
+
 export default function getCurrentWeekType(): boolean {
   const now = new Date();
   const year = now.getFullYear();
@@ -16,8 +18,7 @@ export default function getCurrentWeekType(): boolean {
   const currentWeekStart = getWeekStart(now);
 
   const weeksDiff = Math.floor(
-    (currentWeekStart.getTime() - referenceWeekStart.getTime()) /
-      (7 * 24 * 60 * 60 * 1000),
+    (currentWeekStart.getTime() - referenceWeekStart.getTime()) / ONE_WEEK_MS,
   );
 
   // true = even, false = odd
