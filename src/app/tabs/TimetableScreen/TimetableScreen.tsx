@@ -15,6 +15,7 @@ import {
 import { getCorrectColor } from '../../../utils/getCorrectColor';
 import getCorrectLetter from '../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../utils/checkActiveLesson';
+import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 
 const TimetableScreen = () => {
   const [timetable, setTimetable] = useState<DaySchedule[]>([]);
@@ -27,29 +28,27 @@ const TimetableScreen = () => {
   const filters = { k: 'K01', l: 'L01', p: 'P01' };
 
   useEffect(() => {
-    async function fetchHours() {
+    async function initialiseData() {
       try {
-        const response = await getAcademicHours();
-        setAHours(response);
+        const [hours, timetableResponse] = await Promise.all([
+          getAcademicHours(),
+          getTimetableByGroup(groupName, filters.k, filters.l, filters.p),
+        ]);
+
+        setAHours(hours);
+        setTimetable(timetableResponse.data);
+
+        setIsOddWeek(getCurrentWeekType);
+
+        const today = new Date();
+        const jsDay = today.getDay();
+        const index = jsDay === 0 || jsDay === 6 ? 0 : jsDay - 1;
+        setCurrentDayIndex(index);
       } catch (err) {
-        console.log(err);
+        console.error('Error loading timetable data:', err);
       }
     }
-    async function fetchTimetable() {
-      try {
-        const response = await getTimetableByGroup(
-          groupName,
-          filters.k,
-          filters.l,
-          filters.p,
-        );
-        setTimetable(response.data);
-      } catch (err) {
-        console.log(`${err}`);
-      }
-    }
-    fetchHours();
-    fetchTimetable();
+    initialiseData();
   }, [filters.k, filters.l, filters.p]);
 
   const navigateToNextDay = () => {
@@ -93,8 +92,12 @@ const TimetableScreen = () => {
     const [startTime = '??', endTime = '??'] =
       hourString?.split('-').map(s => s.trim()) ?? [];
 
-    const isActive = checkActiveLesson(item, aHours, isOddWeek);
-    console.log(isActive);
+    const isActive = checkActiveLesson(
+      item,
+      aHours,
+      timetable[currentDayIndex]?.name,
+      isOddWeek,
+    );
     return (
       <>
         <ScheduleItem
