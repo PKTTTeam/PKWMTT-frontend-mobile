@@ -17,6 +17,10 @@ import getCorrectLetter from '../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../utils/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 
+const LessonSeparator = () => {
+  return <View style={styles.separator} />;
+};
+
 const TimetableScreen = () => {
   const [timetable, setTimetable] = useState<DaySchedule[]>([]);
   const [aHours, setAHours] = useState<string[]>([]);
@@ -163,6 +167,7 @@ const TimetableScreen = () => {
             }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
+            ItemSeparatorComponent={LessonSeparator}
           />
         )}
       </View>
@@ -220,6 +225,12 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: 20,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#3A3A3A', // subtle dark gray line
+    marginVertical: 0,
+    opacity: 0.6,
   },
 });
 
