@@ -15,7 +15,7 @@ export default function checkActiveLesson(
     return false;
   }
   const now = new Date();
-  now.setHours(11, 0, 0, 0); //for testing
+  // now.setHours(11, 0, 0, 0); //for testing
   //todo: change validation, will cause issues with translation
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
   const todayName = days[now.getDay() - 1]; // getDay: 1 = Monday

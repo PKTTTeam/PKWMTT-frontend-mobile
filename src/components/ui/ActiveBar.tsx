@@ -6,11 +6,12 @@ interface ActiveBarProps {
 }
 
 const ActiveBar: React.FC<ActiveBarProps> = ({ isActive }) => {
-  // eslint-disable-next-line react/self-closing-comp
   return (
+    // eslint-disable-next-line react/self-closing-comp
     <View
       style={[
         ActiveBarStyles.bar,
+        // eslint-disable-next-line react-native/no-inline-styles
         { backgroundColor: isActive ? '#8d95fe' : 'white' },
       ]}
     ></View>

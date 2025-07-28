@@ -42,7 +42,8 @@ const TimetableScreen = () => {
         setAHours(hours);
         setTimetable(timetableResponse.data);
 
-        setIsOddWeek(getCurrentWeekType);
+        setIsOddWeek(getCurrentWeekType());
+        console.log(isOddWeek);
 
         const today = new Date();
         const jsDay = today.getDay();
