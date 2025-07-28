@@ -21,6 +21,7 @@
     "react-native-reanimated": "^3.18.0",
     "react-native-safe-area-context": "^5.5.1",
     "react-native-screens": "^4.11.1",
+    "react-native-switch-toggle": "^2.2.1",
     "react-native-vector-icons": "^10.3.0"
   },
   "devDependencies": {

@@ -2,8 +2,10 @@ import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import styles from '../../../styles/globalStyles.ts';
-import DropdownMenu from '../../../components/ui/DropdownMenu.tsx';
+// import styles from '../../../styles/globalStyles.ts';
+// import DropdownMenu from '../../../components/ui/DropdownMenu.tsx';
+import GroupSelect from '../../../components/ui/GroupSelect.tsx';
+import Switch from '../../../components/ui/Switch.tsx';
 
 function SettingsScreen() {
   return (
@@ -13,14 +15,66 @@ function SettingsScreen() {
         <View style={stylesC.bgContainer}>
           <View style={stylesC.container}>
             {/* Main contents */}
-            <Text style={styles.text}>Settings</Text>
-            <DropdownMenu />
+            <Text style={settingsStyles.labelText}>Grupy Studenckie</Text>
+            <View style={[settingsStyles.studentGroups, { marginBottom: 16 }]}>
+              <GroupSelect groupName="Dziekańska" />
+              <GroupSelect groupName="Laboratoryjna" />
+              <GroupSelect groupName="Komputerowa" />
+            </View>
+            <View style={[settingsStyles.studentGroups]}>
+              <GroupSelect groupName="Projektowa" />
+              <GroupSelect groupName="Ćwiczeniowa" />
+            </View>
+            <Text
+              style={[
+                settingsStyles.labelText,
+                { marginBottom: 16, marginTop: 16 },
+              ]}
+            >
+              Powiadomienia
+            </Text>
+            <View>
+              <View style={settingsStyles.notifications}>
+                <Switch label="Egzamin" />
+                <Switch label="Kolokwium" />
+              </View>
+              <View style={[settingsStyles.notifications, { marginTop: 12 }]}>
+                <Switch label="Zalcizenie" />
+                <Switch label="Projekt       " />
+              </View>
+              <View style={[settingsStyles.notifications, { marginTop: 12 }]}>
+                <Switch label="Aktualziacje rozkładu" />
+              </View>
+            </View>
           </View>
         </View>
       </PaperProvider>
     </>
   );
 }
+
+const settingsStyles = StyleSheet.create({
+  
+  labelText: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  studentGroups: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+  },
+  notifications: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 40, // horizontal spacing between columns
+    flexWrap: 'wrap',
+  },
+});
 
 // Copy from TimetableScreen.tsx styles
 const stylesC = StyleSheet.create({
