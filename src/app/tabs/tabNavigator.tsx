@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import TimetableScreen from './TimetableScreen/TimetableScreen';
 import CalendarScreen from './CalendarScreen/CalendarScreen';
-import OrganisationScreen from './OrganisationScreen/OrganisationScreen';
+import CalculatorScreen from './CalculatorScreen/CalculatorScreen';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
@@ -57,13 +57,9 @@ const renderCalendarIcon = ({
   size: number;
 }) => <Icon name="calendar-month" color={color} size={size} />;
 
-const renderOrganisationIcon = ({
-  color,
-  size,
-}: {
-  color: string;
-  size: number;
-}) => <Icon name="school" color={color} size={size} />;
+const renderCalcIcon = ({ color, size }: { color: string; size: number }) => (
+  <Icon name="calculate" color={color} size={size} />
+);
 
 const renderSettingsIcon = ({
   color,
@@ -87,9 +83,9 @@ const TabNavigator: React.FC = () => {
         options={{ tabBarIcon: renderCalendarIcon }}
       />
       <Tab.Screen
-        name="Organizacja Roku"
-        component={OrganisationScreen}
-        options={{ tabBarIcon: renderOrganisationIcon }}
+        name="Kalkulator"
+        component={CalculatorScreen}
+        options={{ tabBarIcon: renderCalcIcon }}
       />
       <Tab.Screen
         name="Ustawienia"
