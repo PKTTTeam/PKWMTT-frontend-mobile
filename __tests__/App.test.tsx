@@ -3,7 +3,7 @@ import App from '../App';
 import TabNavigator from '../src/app/tabs/tabNavigator';
 import { render } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import checkActiveLesson from '../src/utils/checkActiveLesson';
+import checkActiveLesson from '../src/services/timetable/checkActiveLesson';
 
 describe('basic rendering', () => {
   test('renders App component without crash', () => {

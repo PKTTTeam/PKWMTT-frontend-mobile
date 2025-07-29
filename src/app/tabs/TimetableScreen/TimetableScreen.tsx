@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -11,10 +11,11 @@ import { DaySchedule, TimetableItem } from '../../../types/global';
 import {
   getAcademicHours,
   getTimetableByGroup,
-} from '../../../services/TimetableService';
+} from '../../../services/timetable/TimetableService';
+
 import { getCorrectColor } from '../../../utils/getCorrectColor';
 import getCorrectLetter from '../../../utils/getCorrectLetter';
-import checkActiveLesson from '../../../utils/checkActiveLesson';
+import checkActiveLesson from '../../../services/timetable/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -35,10 +36,25 @@ const TimetableScreen = () => {
   const [aHours, setAHours] = useState<string[]>([]);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const [isOddWeek, setIsOddWeek] = useState(true);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   // Static for early dev
-  const groupName = '12K1';
-  const filters = { k: 'K01', l: 'L01', p: 'P01' };
+  const groupName = '12K2';
+  const filters = { k: 'K04', l: 'L04', p: 'P04' };
+
+  const navigationRef = useRef({
+    currentDayIndex,
+    isOddWeek,
+    timetableLength: 0,
+  });
+
+  useEffect(() => {
+    navigationRef.current = {
+      currentDayIndex,
+      isOddWeek,
+      timetableLength: timetable.length,
+    };
+  }, [currentDayIndex, isOddWeek, timetable.length]);
 
   useEffect(() => {
     async function initialiseData() {
@@ -59,7 +75,7 @@ const TimetableScreen = () => {
       } catch (err: any) {
         if (err.response) {
           // Server responded with a status outside 2xx
-          console.error('📡 Server responded with error:', {
+          console.error('Server responded with error:', {
             status: err.response.status,
             data: err.response.data,
             headers: err.response.headers,
@@ -81,25 +97,45 @@ const TimetableScreen = () => {
   }, [filters.k, filters.l, filters.p]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigateToNextDay = () => {
-    if (currentDayIndex < timetable.length - 1) {
+    if (isNavigating) return; // Prevent rapid clicks
+
+    setIsNavigating(true);
+
+    const { currentDayIndex: currentIndex, timetableLength } =
+      navigationRef.current;
+
+    if (currentIndex < timetableLength - 1) {
       // Normal navigation within the week
-      setCurrentDayIndex(prev => prev + 1);
-    } else if (currentDayIndex === timetable.length - 1) {
+      setCurrentDayIndex(currentIndex + 1);
+    } else if (currentIndex === timetableLength - 1) {
       // At the last day (Friday), switch to next week and go to first day
       setIsOddWeek(prev => !prev);
       setCurrentDayIndex(0);
     }
+
+    // Re-enable navigation after a short delay
+    setTimeout(() => setIsNavigating(false), 200);
   };
 
   const navigateToPrevDay = () => {
-    if (currentDayIndex > 0) {
+    if (isNavigating) return; // Prevent rapid clicks
+
+    setIsNavigating(true);
+
+    const { currentDayIndex: currentIndex, timetableLength } =
+      navigationRef.current;
+
+    if (currentIndex > 0) {
       // Normal navigation within the week
-      setCurrentDayIndex(prev => prev - 1);
-    } else if (currentDayIndex === 0) {
+      setCurrentDayIndex(currentIndex - 1);
+    } else if (currentIndex === 0) {
       // At the first day (Monday), switch to previous week and go to last day
       setIsOddWeek(prev => !prev);
-      setCurrentDayIndex(timetable.length - 1);
+      setCurrentDayIndex(timetableLength - 1);
     }
+
+    // Re-enable navigation after a short delay
+    setTimeout(() => setIsNavigating(false), 200);
   };
 
   const renderLesson = ({ item }: { item: TimetableItem }) => {

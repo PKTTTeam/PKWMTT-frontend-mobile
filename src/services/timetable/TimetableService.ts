@@ -1,6 +1,6 @@
 import { BASE_URL, ANDROID_API_URL } from '@env';
 import { Platform } from 'react-native';
-import { TimetableResponse } from '../types/global';
+import { TimetableResponse } from '../../types/global';
 
 const API_URL = Platform.OS === 'android' ? ANDROID_API_URL : BASE_URL;
 
