@@ -45,13 +45,28 @@ const TimetableScreen = () => {
 
         setIsOddWeek(getCurrentWeekType());
         console.log(isOddWeek);
-
         const today = new Date();
         const jsDay = today.getDay();
         const index = jsDay === 0 || jsDay === 6 ? 0 : jsDay - 1;
         setCurrentDayIndex(index);
-      } catch (err) {
-        console.error('Error loading timetable data:', err);
+      } catch (err: any) {
+        if (err.response) {
+          // Server responded with a status outside 2xx
+          console.error('📡 Server responded with error:', {
+            status: err.response.status,
+            data: err.response.data,
+            headers: err.response.headers,
+          });
+        } else if (err.request) {
+          // Request was made but no response received
+          console.error('No response received from server:', err.request);
+        } else {
+          // Something else went wrong
+          console.error('Error setting up request:', err.message);
+        }
+
+        // Log full error for debugging
+        console.error('Full error object:', err);
       }
     }
     initialiseData();
