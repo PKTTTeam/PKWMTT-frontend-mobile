@@ -9,7 +9,7 @@ const globalStyles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    marginBottom: 12,
+    marginBottom: 0,
     marginLeft: 4,
     marginRight: 4,
   },
