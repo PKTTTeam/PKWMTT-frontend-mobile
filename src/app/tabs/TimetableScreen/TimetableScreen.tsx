@@ -22,6 +22,14 @@ const LessonSeparator = () => {
   return <View style={styles.separator} />;
 };
 
+const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
+  <Icon name="arrow-back-ios" color={color} size={size} />
+);
+
+const RenderRightArrow = ({ color, size }: { color: string; size: number }) => (
+  <Icon name="arrow-forward-ios" color={color} size={size} />
+);
+
 const TimetableScreen = () => {
   const [timetable, setTimetable] = useState<DaySchedule[]>([]);
   const [aHours, setAHours] = useState<string[]>([]);
@@ -145,22 +153,6 @@ const TimetableScreen = () => {
   const getWeekTypeText = () => {
     return isOddWeek ? 'N' : 'P';
   };
-
-  const RenderLeftArrow = ({
-    color,
-    size,
-  }: {
-    color: string;
-    size: number;
-  }) => <Icon name="arrow-back-ios" color={color} size={size} />;
-
-  const RenderRightArrow = ({
-    color,
-    size,
-  }: {
-    color: string;
-    size: number;
-  }) => <Icon name="arrow-forward-ios" color={color} size={size} />;
 
   return (
     <View style={styles.bgContainer}>

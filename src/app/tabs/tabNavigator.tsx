@@ -6,6 +6,7 @@ import TimetableScreen from './TimetableScreen/TimetableScreen';
 import CalendarScreen from './CalendarScreen/CalendarScreen';
 import CalculatorScreen from './CalculatorScreen/CalculatorScreen';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
+import { TAB_BAR_HEIGHT } from '../../constants/constants';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const screenOptions = {
   },
 
   tabBarStyle: {
-    height: 100,
+    height: TAB_BAR_HEIGHT,
   },
 
   tabBarLabelStyle: {
