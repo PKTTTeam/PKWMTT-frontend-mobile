@@ -52,7 +52,6 @@ const TimetableScreen = () => {
         setTimetable(timetableResponse.data);
 
         setIsOddWeek(getCurrentWeekType());
-        console.log(isOddWeek);
         const today = new Date();
         const jsDay = today.getDay();
         const index = jsDay === 0 || jsDay === 6 ? 0 : jsDay - 1;
