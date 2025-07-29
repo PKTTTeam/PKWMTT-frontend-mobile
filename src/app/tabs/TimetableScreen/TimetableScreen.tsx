@@ -70,7 +70,8 @@ const TimetableScreen = () => {
       }
     }
     initialiseData();
-  }, [filters.k, filters.l, filters.p, isOddWeek]);
+    //we do not want to rerender when isOddWeek changed
+  }, [filters.k, filters.l, filters.p]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const navigateToNextDay = () => {
     if (currentDayIndex < timetable.length - 1) {
