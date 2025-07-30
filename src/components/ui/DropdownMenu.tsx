@@ -43,6 +43,7 @@ const DropdownMenu = (Props: {
         <View
           style={[
             styles.modal,
+            styles.list,
             // Ternary operator have to be used here to position the dropdown menu according to the Props.listPosUp value
             // eslint-disable-next-line react-native/no-inline-styles
             {
@@ -76,10 +77,10 @@ export default DropdownMenu;
 const styles = StyleSheet.create({
   buttonSizes: { width: '100%', height: '100%' },
   list: {
+    zIndex: 100,
     width: '100%',
     height: '400%',
     position: 'absolute',
-    zIndex: 100,
   },
   container: {
     margin: 32,

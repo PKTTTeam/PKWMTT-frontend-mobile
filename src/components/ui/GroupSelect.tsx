@@ -14,7 +14,6 @@ const GroupSelect = (Props: { groupName: string; listPosUp?: boolean }) => {
           <DropdownMenu listPosUp={Props.listPosUp} />
         </>
       )}
-      ;
     </View>
   );
 };
