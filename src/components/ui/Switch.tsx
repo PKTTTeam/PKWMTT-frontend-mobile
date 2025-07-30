@@ -1,32 +1,36 @@
 import React, { useState } from 'react';
 import SwitchToggle from 'react-native-switch-toggle';
-import {  StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Styles from '../../styles/globalStyles.ts';
 
-const Switch = (Props : {label: string}) => {
-
-    const [isOn, off] = useState(false);
+const Switch = (Props: { label: string }) => {
+  const [isOn, off] = useState(false);
 
   return (
-
-    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center',gap: 8 }}>
+    <View style={styles.contentConainer}>
       <SwitchToggle
-      switchOn={isOn}
-      onPress={() => off(!isOn)}
-      containerStyle={styles.switchContainer}
-      circleStyle={styles.switchCircle}
-      circleColorOff="#b5b6c9"
-      circleColorOn="#8c95ff"
-      backgroundColorOn="#303247"
-      backgroundColorOff="#3c3c3c"
+        switchOn={isOn}
+        onPress={() => off(!isOn)}
+        containerStyle={styles.switchContainer}
+        circleStyle={styles.switchCircle}
+        circleColorOff="#b5b6c9"
+        circleColorOn="#8c95ff"
+        backgroundColorOn="#303247"
+        backgroundColorOff="#3c3c3c"
       />
-      <Text style={Styles.text}>{Props.label ?? "name"}</Text>
+      <Text style={Styles.text}>{Props.label ?? 'name'}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  switchContainer: {    
+  contentConainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  switchContainer: {
     width: 70,
     height: 30,
     borderRadius: 25,

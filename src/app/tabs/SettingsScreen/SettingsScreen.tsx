@@ -16,20 +16,27 @@ function SettingsScreen() {
           <View style={stylesC.container}>
             {/* Main contents */}
             <Text style={settingsStyles.labelText}>Grupy Studenckie</Text>
-            <View style={[settingsStyles.studentGroups, { marginBottom: 16 }]}>
+            <View
+              style={[
+                settingsStyles.studentGroups,
+                settingsStyles.elementsSpacing,
+              ]}
+            >
               <GroupSelect groupName="Dziekańska" />
               <GroupSelect groupName="Laboratoryjna" />
               <GroupSelect groupName="Komputerowa" />
             </View>
-            <View style={[settingsStyles.studentGroups]}>
+            <View
+              style={[
+                settingsStyles.studentGroups,
+                settingsStyles.elementsSpacing,
+              ]}
+            >
               <GroupSelect groupName="Projektowa" />
               <GroupSelect groupName="Ćwiczeniowa" />
             </View>
             <Text
-              style={[
-                settingsStyles.labelText,
-                { marginBottom: 16, marginTop: 16 },
-              ]}
+              style={[settingsStyles.labelText, settingsStyles.elementsSpacing]}
             >
               Powiadomienia
             </Text>
@@ -38,33 +45,44 @@ function SettingsScreen() {
                 <Switch label="Egzamin" />
                 <Switch label="Kolokwium" />
               </View>
-              <View style={[settingsStyles.notifications, { marginTop: 12 }]}>
+              <View
+                style={[
+                  settingsStyles.notifications,
+                  settingsStyles.elementsSpacing,
+                ]}
+              >
                 <Switch label="Zalcizenie" />
-                <Switch label="Projekt       " />
+                <View style={settingsStyles.elementsSpacing}>
+                  <Switch label="Projekt       " />
+                </View>
               </View>
               <View
-                style={[settingsStyles.notificationsMid, { marginTop: 12 }]}
+                style={[
+                  settingsStyles.notificationsMid,
+                  settingsStyles.elementsSpacing,
+                ]}
               >
                 <Switch label="Aktualziacje rozkładu" />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: 8,
-                  }}
-                >
+                <View style={settingsStyles.groupsContainer}>
                   <Text style={GlobalStyles.text}>Przypomnij przed</Text>
                   <GroupSelect groupName="" />
                 </View>
               </View>
             </View>
-            <Text style={[settingsStyles.labelText, { marginTop: 12 }]}>
+            <Text
+              style={[settingsStyles.labelText, settingsStyles.elementsSpacing]}
+            >
               Wygląd Aplikacji
             </Text>
-            <Switch label="Tryb ciemny" />
-            <Switch label="Czcionka powiększona" />
-            <Text style={[settingsStyles.labelText, { marginTop: 12 }]}>
+            <View style={settingsStyles.elementsSpacing}>
+              <Switch label="Tryb ciemny" />
+            </View>
+            <View style={settingsStyles.elementsSpacing}>
+              <Switch label="Czcionka powiększona" />
+            </View>
+            <Text
+              style={[settingsStyles.labelText, settingsStyles.elementsSpacing]}
+            >
               Język Aplikacji
             </Text>
             <GroupSelect groupName="" listPosUp={true} />
@@ -76,6 +94,15 @@ function SettingsScreen() {
 }
 
 const settingsStyles = StyleSheet.create({
+  groupsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+  },
+  elementsSpacing: {
+    marginTop: 10,
+  },
   labelText: {
     alignSelf: 'center',
     color: 'white',
@@ -92,7 +119,7 @@ const settingsStyles = StyleSheet.create({
   notifications: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 40, // horizontal spacing between columns
+    gap: 40,
     flexWrap: 'wrap',
   },
   notificationsMid: {
@@ -100,7 +127,7 @@ const settingsStyles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12, // horizontal spacing between columns
+    gap: 12,
     flexWrap: 'wrap',
   },
 });

@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 
 const DropdownMenu = (Props: {
-  width: number;
-  height: number;
-  listPosUp: boolean;
+  width?: number;
+  height?: number;
+  listPosUp?: boolean;
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -30,7 +30,7 @@ const DropdownMenu = (Props: {
   return (
     <View style={[{ width: Props.width ?? 85, height: Props.height ?? 40 }]}>
       <TouchableOpacity
-        style={[styles.button, { width: '100%', height: '100%' }]}
+        style={[styles.button, styles.buttonSizes]}
         onPress={() => setVisible(!visible)}
       >
         <Text style={styles.groupSelectText}>
@@ -43,12 +43,9 @@ const DropdownMenu = (Props: {
         <View
           style={[
             styles.modal,
+            // Ternary operator have to be used here to position the dropdown menu according to the Props.listPosUp value
+            // eslint-disable-next-line react-native/no-inline-styles
             {
-              width: '100%',
-              height: '400%',
-              position: 'absolute',
-              zIndex: 100,
-
               top: Props.listPosUp === true ? '-400%' : '100%',
             },
           ]}
@@ -77,6 +74,13 @@ const DropdownMenu = (Props: {
 export default DropdownMenu;
 
 const styles = StyleSheet.create({
+  buttonSizes: { width: '100%', height: '100%' },
+  list: {
+    width: '100%',
+    height: '400%',
+    position: 'absolute',
+    zIndex: 100,
+  },
   container: {
     margin: 32,
     alignItems: 'center',
