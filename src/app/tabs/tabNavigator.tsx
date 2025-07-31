@@ -6,12 +6,25 @@ import TimetableScreen from './TimetableScreen/TimetableScreen';
 import CalendarScreen from './CalendarScreen/CalendarScreen';
 import CalculatorScreen from './CalculatorScreen/CalculatorScreen';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
+import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
+
+import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
+import { StyleSheet } from 'react-native';
+import { ActivityLegend } from '../../components/ActivityLegend';
 
 const Tab = createBottomTabNavigator();
 
+const NavigationStyles = StyleSheet.create({
+  HeaderLogo: {
+    marginLeft: 15,
+  },
+});
+
 const screenOptions = {
   headerShown: true,
-  headerTitle: 'PKWMTT',
+  headerTitle: () => (
+    <HeaderLogo width={200} height={150} style={NavigationStyles.HeaderLogo} />
+  ),
   tabBarActiveTintColor: '#8d95fe',
   tabBarInactiveTintColor: 'white',
   tabBarInactiveBackgroundColor: '#161514',
@@ -19,7 +32,7 @@ const screenOptions = {
 
   headerStyle: {
     backgroundColor: '#181818',
-    height: 160,
+    height: HEADER_HEIGHT,
   },
 
   headerTitleStyle: {
@@ -27,7 +40,7 @@ const screenOptions = {
   },
 
   tabBarStyle: {
-    height: 100,
+    height: TAB_BAR_HEIGHT,
   },
 
   tabBarLabelStyle: {
@@ -39,6 +52,7 @@ const screenOptions = {
   tabBarIconStyle: {
     marginTop: 10,
   },
+  headerRight: () => <ActivityLegend />,
 };
 
 const renderTimetableIcon = ({
@@ -71,7 +85,7 @@ const renderSettingsIcon = ({
 
 const TabNavigator: React.FC = () => {
   return (
-    <Tab.Navigator screenOptions={screenOptions}>
+    <Tab.Navigator screenOptions={{ ...screenOptions }}>
       <Tab.Screen
         name="Rozkład zajęć"
         component={TimetableScreen}

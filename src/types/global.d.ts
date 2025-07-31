@@ -46,3 +46,12 @@ export interface TimetableResponse {
   name: string;
   data: DaySchedule[];
 }
+
+export interface TabNavigatorProps {
+  showActivityModal: () => void;
+}
+
+export interface ActivityLegendModalProps {
+  visible: boolean;
+  onClose: () => void;
+}

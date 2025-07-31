@@ -1,5 +1,5 @@
-import { TimetableItem } from '../types/global';
-import getCurrentWeekType from './getCurrentWeekType';
+import { TimetableItem } from '../../types/global';
+import getCurrentWeekType from '../../utils/getCurrentWeekType';
 export default function checkActiveLesson(
   lesson: TimetableItem,
   aHours: string[],
