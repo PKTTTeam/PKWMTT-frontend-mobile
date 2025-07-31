@@ -112,6 +112,15 @@ For questions, suggestions, or collaboration:
 
 ## 📸 Screenshots (Optional)
 
-_Add screenshots of your app here_
+- Timetable Screen
+
+<img width="232" height="485" alt="image" src="https://github.com/user-attachments/assets/607b0039-4ea2-4df6-b9d6-3d2b2a758e99" />
+
+- Activity Legend Modal
+
+<img width="236" height="481" alt="image" src="https://github.com/user-attachments/assets/2d115dcd-7368-494b-b17e-ad3d8a2e36c3" />
+
+
+
 
 ---
