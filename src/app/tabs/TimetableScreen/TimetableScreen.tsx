@@ -182,7 +182,7 @@ const TimetableScreen = () => {
   };
 
   const getWeekTypeText = () => {
-    return isOddWeek ? 'N' : 'P';
+    return isOddWeek ? 'Nieparzysty' : 'Parzysty';
   };
 
   return (
