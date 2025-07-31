@@ -50,3 +50,8 @@ export interface TimetableResponse {
 export interface TabNavigatorProps {
   showActivityModal: () => void;
 }
+
+export interface ActivityLegendModalProps {
+  visible: boolean;
+  onClose: () => void;
+}

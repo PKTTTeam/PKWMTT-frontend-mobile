@@ -3,11 +3,7 @@ import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import LetterIcon from '../ui/letterIcon';
 import { getCorrectColor } from '../../utils/getCorrectColor';
-
-interface ActivityLegendModalProps {
-  visible: boolean;
-  onClose: () => void;
-}
+import { ActivityLegendModalProps } from '../../types/global';
 
 const activityTypes = [
   { letter: 'W', label: 'Wykład' },
