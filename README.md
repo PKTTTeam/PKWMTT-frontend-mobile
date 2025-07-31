@@ -105,21 +105,28 @@ For questions, suggestions, or collaboration:
 
 ## 🌐 Related Projects
 
+- [PKWM Timetable Backend](https://github.com/PKTTTeam/PKWMTT-backend)
+- [PKWM Timetable Frontend Web](https://github.com/PKTTTeam/PKWMTT-frontend-web)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [React Navigation](https://reactnavigation.org/)
 
+
 ---
 
-## 📸 Screenshots (Optional)
+## 📸 Screenshots
 
-- Timetable Screen
-
-<img width="232" height="485" alt="image" src="https://github.com/user-attachments/assets/607b0039-4ea2-4df6-b9d6-3d2b2a758e99" />
-
-- Activity Legend Modal
-
-<img width="236" height="481" alt="image" src="https://github.com/user-attachments/assets/2d115dcd-7368-494b-b17e-ad3d8a2e36c3" />
-
+<table>
+<tr>
+<td align="center">
+  <strong>Timetable Screen</strong><br>
+  <img width="232" height="485" alt="Timetable Screen" src="https://github.com/user-attachments/assets/607b0039-4ea2-4df6-b9d6-3d2b2a758e99" />
+</td>
+<td align="center">
+  <strong>Activity Legend Modal</strong><br>
+  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/2d115dcd-7368-494b-b17e-ad3d8a2e36c3" />
+</td>
+</tr>
+</table>
 
 
 
