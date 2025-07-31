@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import GlobalStyles from '../../../styles/globalStyles.ts';
