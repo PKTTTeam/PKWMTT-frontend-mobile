@@ -4,7 +4,7 @@ import globalStyles from '../styles/globalStyles';
 import SubjectName from './ui/SubjectName';
 import RoomInfo from './ui/RoomInfo';
 import TimeRange from './ui/TimeRange';
-import LetterIcon from './ui/LetterIcon';
+import LetterIcon from './ui/letterIcon';
 import ActiveBar from './ui/ActiveBar';
 import type { ScheduleItemProps } from '../types/global';
 
@@ -16,10 +16,11 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
   type,
   bgColor,
   letterColor,
+  isActive,
 }) => {
   return (
     <View style={globalStyles.ScreenContainer}>
-      <ActiveBar />
+      <ActiveBar isActive={isActive} />
 
       <View style={globalStyles.timeAndSubject}>
         <TimeRange timeStart={startTime} timeEnd={endTime} />

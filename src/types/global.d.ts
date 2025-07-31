@@ -25,6 +25,7 @@ export interface ScheduleItemProps {
   type: string;
   bgColor: string;
   letterColor: string;
+  isActive: boolean;
 }
 
 //TODO: to be outsourced to another file
@@ -44,4 +45,13 @@ export interface DaySchedule {
 export interface TimetableResponse {
   name: string;
   data: DaySchedule[];
+}
+
+export interface TabNavigatorProps {
+  showActivityModal: () => void;
+}
+
+export interface ActivityLegendModalProps {
+  visible: boolean;
+  onClose: () => void;
 }

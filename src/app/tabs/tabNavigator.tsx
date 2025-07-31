@@ -4,14 +4,27 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import TimetableScreen from './TimetableScreen/TimetableScreen';
 import CalendarScreen from './CalendarScreen/CalendarScreen';
-import OrganisationScreen from './OrganisationScreen/OrganisationScreen';
+import CalculatorScreen from './CalculatorScreen/CalculatorScreen';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
+import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
+
+import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
+import { StyleSheet } from 'react-native';
+import { ActivityLegend } from '../../components/ActivityLegend';
 
 const Tab = createBottomTabNavigator();
 
+const NavigationStyles = StyleSheet.create({
+  HeaderLogo: {
+    marginLeft: 15,
+  },
+});
+
 const screenOptions = {
   headerShown: true,
-  headerTitle: 'PKWMTT',
+  headerTitle: () => (
+    <HeaderLogo width={200} height={150} style={NavigationStyles.HeaderLogo} />
+  ),
   tabBarActiveTintColor: '#8d95fe',
   tabBarInactiveTintColor: 'white',
   tabBarInactiveBackgroundColor: '#161514',
@@ -19,7 +32,7 @@ const screenOptions = {
 
   headerStyle: {
     backgroundColor: '#181818',
-    height: 160,
+    height: HEADER_HEIGHT,
   },
 
   headerTitleStyle: {
@@ -27,56 +40,71 @@ const screenOptions = {
   },
 
   tabBarStyle: {
-    height: 100,
+    height: TAB_BAR_HEIGHT,
   },
+
   tabBarLabelStyle: {
     fontSize: 10,
     fontFamily: 'InterMedium',
     marginBottom: 4,
   },
+
   tabBarIconStyle: {
     marginTop: 10,
   },
+  headerRight: () => <ActivityLegend />,
 };
+
+const renderTimetableIcon = ({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) => <Icon name="view-list" color={color} size={size} />;
+
+const renderCalendarIcon = ({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) => <Icon name="calendar-month" color={color} size={size} />;
+
+const renderCalcIcon = ({ color, size }: { color: string; size: number }) => (
+  <Icon name="calculate" color={color} size={size} />
+);
+
+const renderSettingsIcon = ({
+  color,
+  size,
+}: {
+  color: string;
+  size: number;
+}) => <Icon name="settings" color={color} size={size} />;
 
 const TabNavigator: React.FC = () => {
   return (
-    <Tab.Navigator screenOptions={screenOptions}>
+    <Tab.Navigator screenOptions={{ ...screenOptions }}>
       <Tab.Screen
         name="Rozkład zajęć"
         component={TimetableScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="view-list" color={color} size={size} />
-          ),
-        }}
+        options={{ tabBarIcon: renderTimetableIcon }}
       />
       <Tab.Screen
         name="Kalendarz"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="calendar-month" color={color} size={size} />
-          ),
-        }}
         component={CalendarScreen}
+        options={{ tabBarIcon: renderCalendarIcon }}
       />
       <Tab.Screen
-        name="Organizacja Roku"
-        component={OrganisationScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="school" color={color} size={size} />
-          ),
-        }}
+        name="Kalkulator ETCS"
+        component={CalculatorScreen}
+        options={{ tabBarIcon: renderCalcIcon }}
       />
       <Tab.Screen
         name="Ustawienia"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon name="settings" color={color} size={size} />
-          ),
-        }}
         component={SettingsScreen}
+        options={{ tabBarIcon: renderSettingsIcon }}
       />
     </Tab.Navigator>
   );
