@@ -6,13 +6,18 @@ import TimetableScreen from './TimetableScreen/TimetableScreen';
 import CalendarScreen from './CalendarScreen/CalendarScreen';
 import CalculatorScreen from './CalculatorScreen/CalculatorScreen';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
-import { TAB_BAR_HEIGHT } from '../../constants/constants';
+import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
+
+import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
+import { Text, TouchableOpacity } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 const screenOptions = {
   headerShown: true,
-  headerTitle: 'PKWMTT',
+  headerTitle: () => (
+    <HeaderLogo width={200} height={150} style={{ marginLeft: 15 }} />
+  ),
   tabBarActiveTintColor: '#8d95fe',
   tabBarInactiveTintColor: 'white',
   tabBarInactiveBackgroundColor: '#161514',
@@ -20,7 +25,7 @@ const screenOptions = {
 
   headerStyle: {
     backgroundColor: '#181818',
-    height: 160,
+    height: HEADER_HEIGHT,
   },
 
   headerTitleStyle: {
@@ -40,6 +45,20 @@ const screenOptions = {
   tabBarIconStyle: {
     marginTop: 10,
   },
+
+  headerRight: () => (
+    <TouchableOpacity style={{ marginRight: 20, alignItems: 'center' }}>
+      <Icon
+        name="info-outline"
+        color={'white'}
+        size={30}
+        style={{ alignSelf: 'flex-end' }}
+      />
+      <Text style={{ color: 'white', textAlign: 'right' }}>
+        Legenda{'\n'}Aktywności
+      </Text>
+    </TouchableOpacity>
+  ),
 };
 
 const renderTimetableIcon = ({
