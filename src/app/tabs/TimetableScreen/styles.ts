@@ -1,0 +1,58 @@
+import { StyleSheet } from 'react-native';
+export const styles = StyleSheet.create({
+  bgContainer: {
+    flex: 1,
+    backgroundColor: '#181818',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#1e1f1f',
+    padding: 16,
+    marginLeft: 6,
+    marginRight: 6,
+    borderRadius: 8,
+  },
+  weekIndicator: {
+    alignItems: 'center',
+  },
+  weekText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '200',
+  },
+  navigationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  navButton: {
+    backgroundColor: '#2A2A2A',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    minWidth: 44,
+    alignItems: 'center',
+  },
+  navButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  dayTitle: {
+    color: '#e5e5ff',
+    fontSize: 30,
+    fontFamily: 'InterSemiBold',
+    textAlign: 'center',
+    flex: 1,
+  },
+  listContainer: {
+    paddingBottom: 20,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#3A3A3A', // subtle dark gray line
+    marginVertical: 0,
+    opacity: 0.8,
+  },
+});

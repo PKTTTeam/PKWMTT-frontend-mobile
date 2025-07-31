@@ -9,14 +9,32 @@ import SettingsScreen from './SettingsScreen/SettingsScreen';
 import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
 
 import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
-import { Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const Tab = createBottomTabNavigator();
+
+const NavigationStyles = StyleSheet.create({
+  HeaderLogo: {
+    marginLeft: 15,
+  },
+  ActivityTouchable: {
+    marginRight: 20,
+    alignItems: 'center',
+  },
+  ActivityIcon: {
+    alignSelf: 'flex-end',
+  },
+  ActivityText: {
+    fontSize: 12,
+    color: 'white',
+    textAlign: 'right',
+  },
+});
 
 const screenOptions = {
   headerShown: true,
   headerTitle: () => (
-    <HeaderLogo width={200} height={150} style={{ marginLeft: 15 }} />
+    <HeaderLogo width={200} height={150} style={NavigationStyles.HeaderLogo} />
   ),
   tabBarActiveTintColor: '#8d95fe',
   tabBarInactiveTintColor: 'white',
@@ -47,16 +65,14 @@ const screenOptions = {
   },
 
   headerRight: () => (
-    <TouchableOpacity style={{ marginRight: 20, alignItems: 'center' }}>
+    <TouchableOpacity style={NavigationStyles.ActivityTouchable}>
       <Icon
         name="info-outline"
         color={'white'}
-        size={30}
-        style={{ alignSelf: 'flex-end' }}
+        size={25}
+        style={NavigationStyles.ActivityIcon}
       />
-      <Text style={{ color: 'white', textAlign: 'right' }}>
-        Legenda{'\n'}Aktywności
-      </Text>
+      <Text style={NavigationStyles.ActivityText}>Legenda{'\n'}Aktywności</Text>
     </TouchableOpacity>
   ),
 };
