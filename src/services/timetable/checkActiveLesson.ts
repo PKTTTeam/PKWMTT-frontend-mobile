@@ -19,7 +19,6 @@ export default function checkActiveLesson(
   //todo: change validation, will cause issues with translation
   const days = ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek'];
   const todayName = days[now.getDay() - 1]; // getDay: 1 = Monday
-  console.log(now.toString());
 
   if (todayName !== currentDayName) return false;
   const [startTime, endTime] = aHours[lesson.rowId]

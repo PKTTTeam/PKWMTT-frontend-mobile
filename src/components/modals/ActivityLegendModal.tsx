@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   items: {
     width: '100%',
     marginTop: 10,
-    marginLeft: 130,
+    marginLeft: '50%',
   },
 
   itemRow: {
