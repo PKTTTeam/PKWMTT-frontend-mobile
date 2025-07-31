@@ -9,25 +9,14 @@ import SettingsScreen from './SettingsScreen/SettingsScreen';
 import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
 
 import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { ActivityLegend } from '../../components/ActivityLegend';
 
 const Tab = createBottomTabNavigator();
 
 const NavigationStyles = StyleSheet.create({
   HeaderLogo: {
     marginLeft: 15,
-  },
-  ActivityTouchable: {
-    marginRight: 20,
-    alignItems: 'center',
-  },
-  ActivityIcon: {
-    alignSelf: 'flex-end',
-  },
-  ActivityText: {
-    fontSize: 12,
-    color: 'white',
-    textAlign: 'right',
   },
 });
 
@@ -63,18 +52,7 @@ const screenOptions = {
   tabBarIconStyle: {
     marginTop: 10,
   },
-
-  headerRight: () => (
-    <TouchableOpacity style={NavigationStyles.ActivityTouchable}>
-      <Icon
-        name="info-outline"
-        color={'white'}
-        size={25}
-        style={NavigationStyles.ActivityIcon}
-      />
-      <Text style={NavigationStyles.ActivityText}>Legenda{'\n'}Aktywności</Text>
-    </TouchableOpacity>
-  ),
+  headerRight: () => <ActivityLegend />,
 };
 
 const renderTimetableIcon = ({
@@ -107,7 +85,7 @@ const renderSettingsIcon = ({
 
 const TabNavigator: React.FC = () => {
   return (
-    <Tab.Navigator screenOptions={screenOptions}>
+    <Tab.Navigator screenOptions={{ ...screenOptions }}>
       <Tab.Screen
         name="Rozkład zajęć"
         component={TimetableScreen}
