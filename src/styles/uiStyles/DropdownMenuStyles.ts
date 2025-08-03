@@ -1,0 +1,50 @@
+import { StyleSheet } from 'react-native';
+
+const DropdownMenuStyles = StyleSheet.create({
+      buttonSizes: { width: '100%', height: '100%' },
+  list: {
+    zIndex: 100,
+    width: '100%',
+    height: '400%',
+    position: 'absolute',
+  },
+  container: {
+    margin: 32,
+    alignItems: 'center',
+  },
+  button: {
+    padding: 12,
+    backgroundColor: '#444',
+    borderRadius: 8,
+    width: 200,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    alignItems: 'center',
+  },
+  modal: {
+    backgroundColor: '#222',
+    borderRadius: 8,
+    paddingVertical: 8,
+    width: 200,
+  },
+  option: {
+    padding: 12,
+  },
+  optionText: {
+    color: '#fff',
+    textAlign: 'center',
+  },
+  groupSelectText: {
+    color: 'white',
+    fontSize: 12,
+  },
+});
+  
+export default DropdownMenuStyles;
