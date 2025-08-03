@@ -5,7 +5,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import GlobalStyles from '../../../styles/globalStyles.ts';
 import SettingsStyles from './SettingsStyles.ts';
 
-import GroupSelect from '../../../components/ui/GroupSelect.tsx';
+import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
 import Switch from '../../../components/ui/Switch.tsx';
 
 function SettingsScreen() {
@@ -50,7 +50,7 @@ function SettingsScreen() {
                   SettingsStyles.elementsSpacing,
                 ]}
               >
-                <Switch label="Zalcizenie" />
+                <Switch label="Zaliczenie" />
                 <View style={SettingsStyles.elementsSpacing}>
                   <Switch label="Projekt       " />
                 </View>
@@ -61,7 +61,7 @@ function SettingsScreen() {
                   SettingsStyles.elementsSpacing,
                 ]}
               >
-                <Switch label="Aktualziacje rozkładu" />
+                <Switch label="Aktualizacje rozkładu" />
                 <View style={SettingsStyles.groupsContainer}>
                   <Text style={GlobalStyles.text}>Przypomnij przed</Text>
                   <GroupSelect groupName="" />
