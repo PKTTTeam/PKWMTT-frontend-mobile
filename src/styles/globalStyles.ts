@@ -16,6 +16,9 @@ const globalStyles = StyleSheet.create({
   text: {
     color: '#e5e5ff',
   },
+  whiteText: {
+    color: '#ffffff',
+  },
   timeAndSubject: {
     flex: 1,
     flexDirection: 'column',

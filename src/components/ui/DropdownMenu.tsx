@@ -9,7 +9,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   height,
   listPosUp,
 }) => {
-  const [visible, setVisible] = useState(false);
+  const [listVisible, setListVisibleVisible] = useState(false);
 
   const DATA = [
     { id: '1', title: 'Option 1' },
@@ -28,7 +28,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
     <View style={[{ width: width ?? 85, height: height ?? 40 }]}>
       <TouchableOpacity
         style={[MenuStyles.button, MenuStyles.buttonSizes]}
-        onPress={() => setVisible(!visible)}
+        onPress={() => setListVisibleVisible(!listVisible)}
       >
         <Text style={MenuStyles.groupSelectText}>
           {selectedId
@@ -36,7 +36,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
             : 'none'}
         </Text>
       </TouchableOpacity>
-      {visible && (
+      {listVisible && (
         <View
           style={[
             MenuStyles.modal,
@@ -55,7 +55,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
               <TouchableOpacity
                 onPress={() => {
                   handlePress(item);
-                  setVisible(false);
+                  setListVisibleVisible(false);
                 }}
                 style={MenuStyles.option}
               >

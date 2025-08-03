@@ -8,6 +8,9 @@ const SwitchStyles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
+  text: {
+    color: '#ffffffff',
+  },
   switchContainer: {
     width: 70,
     height: 30,

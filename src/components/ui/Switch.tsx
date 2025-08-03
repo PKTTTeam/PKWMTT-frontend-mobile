@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import SwitchToggle from 'react-native-switch-toggle';
 import { Text, View } from 'react-native';
 
-import GlobalStyles from '../../styles/globalStyles.ts';
 import SwitchStyles from '../../styles/uiStyles/SwitchStyles.ts';
 import { SwitchTypes } from '../../types/uiTypes/SwitchTypes.ts';
 
@@ -21,7 +20,7 @@ const Switch: React.FC<SwitchTypes> = ({ label }) => {
         backgroundColorOn="#303247"
         backgroundColorOff="#3c3c3c"
       />
-      <Text style={GlobalStyles.text}>{label ?? 'name'}</Text>
+      <Text style={SwitchStyles.text}>{label ?? 'name'}</Text>
     </View>
   );
 };

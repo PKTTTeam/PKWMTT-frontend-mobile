@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView  } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import GlobalStyles from '../../../styles/globalStyles.ts';
@@ -12,7 +12,7 @@ function SettingsScreen() {
   return (
     <>
       <PaperProvider>
-        <View style={SettingsStyles.bgContainer}>
+        <ScrollView style={[SettingsStyles.bgContainer, SettingsStyles.elementsSpacing]}>
           <View style={SettingsStyles.container}>
             <Text style={SettingsStyles.labelText}>Grupy Studenckie</Text>
             <View
@@ -63,7 +63,7 @@ function SettingsScreen() {
               >
                 <Switch label="Aktualizacje rozkładu" />
                 <View style={SettingsStyles.groupsContainer}>
-                  <Text style={GlobalStyles.text}>Przypomnij przed</Text>
+                  <Text style={GlobalStyles.whiteText}>Przypomnij przed</Text>
                   <GroupSelect groupName="" />
                 </View>
               </View>
@@ -86,7 +86,7 @@ function SettingsScreen() {
             </Text>
             <GroupSelect groupName="" listPosUp={true} />
           </View>
-        </View>
+        </ScrollView>
       </PaperProvider>
     </>
   );
