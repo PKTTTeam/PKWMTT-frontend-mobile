@@ -26,7 +26,7 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
         <TimeRange timeStart={startTime} timeEnd={endTime} />
         <SubjectName subject={subject} />
       </View>
-      {room ? (
+      {room && (
         <View style={globalStyles.rightInfo}>
           <LetterIcon
             bgColor={bgColor}
@@ -35,8 +35,6 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
           />
           <RoomInfo room={room} />
         </View>
-      ) : (
-        ''
       )}
     </View>
   );
