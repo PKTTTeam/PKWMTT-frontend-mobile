@@ -20,5 +20,6 @@ export interface SettingsState {
     fetchDependentGroups: (deanGroup: string) => Promise<void>;
     setActiveDropdown: (key: GroupKey | null) => void;
     setShowEmptySlots: (value: boolean) => void;
+    toggleShowEmptySlots: () => void;
   };
 }

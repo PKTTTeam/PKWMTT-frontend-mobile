@@ -17,6 +17,7 @@ import {
   useSettingsStore,
   useSettingsActions,
 } from '../../../store/settingsStore';
+import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 const LessonSeparator = () => {
   return <View style={styles.separator} />;
@@ -40,6 +41,8 @@ const TimetableScreen = () => {
   // Get settings from store
   const groups = useSettingsStore(state => state.groups);
   const loading = useSettingsStore(state => state.loading);
+  const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
+
   const { fetchInitialDeanGroups } = useSettingsActions();
 
   const navigationRef = useRef({
@@ -187,6 +190,25 @@ const TimetableScreen = () => {
       isOddWeek,
     );
 
+    const isEmptySlot = !item.name;
+
+    if (isEmptySlot) {
+      return (
+        <>
+          <ScheduleItem
+            subject={'Wolna godzina'}
+            startTime={startTime}
+            endTime={endTime}
+            room={'brak'}
+            bgColor={''}
+            type={''}
+            letterColor="white"
+            isActive={isActive}
+          />
+        </>
+      );
+    }
+
     return (
       <>
         <ScheduleItem
@@ -206,7 +228,10 @@ const TimetableScreen = () => {
   const getCurrentDayData = () => {
     const currentDay = timetable[currentDayIndex];
     if (!currentDay) return [];
-    return isOddWeek ? currentDay.odd : currentDay.even;
+    const lessons = isOddWeek ? currentDay.odd : currentDay.even;
+    if (!showEmptySlots) return lessons;
+
+    return getFullSchedule(aHours, lessons);
   };
 
   const getWeekTypeText = () => {
@@ -258,6 +283,7 @@ const TimetableScreen = () => {
         {/* Lessons list */}
         {timetable[currentDayIndex] && (
           <FlatList
+            key={showEmptySlots ? 'with-empty' : 'without-empty'}
             data={getCurrentDayData()}
             renderItem={renderLesson}
             keyExtractor={item =>

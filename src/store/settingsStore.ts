@@ -124,6 +124,9 @@ export const useSettingsStore = create<SettingsState>()(
         setActiveDropdown(key) {
           set({ activeDropdown: key });
         },
+        toggleShowEmptySlots() {
+          set(state => ({ showEmptySlots: !state.showEmptySlots }));
+        },
         setShowEmptySlots(value) {
           set({ showEmptySlots: value });
         },
