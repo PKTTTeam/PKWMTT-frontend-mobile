@@ -53,7 +53,7 @@ export const useSettingsStore = create<SettingsState>()(
           set({ loading: true });
           try {
             const res = await fetch(`${API_URL}/groups/general`);
-            console.log(`fetch from store -> ${API_URL}/groups/general}`);
+            //  console.log(`fetch from store -> ${API_URL}/groups/general}`);
             const data: string[] = await res.json();
 
             if (data.length > 0) {
@@ -78,11 +78,11 @@ export const useSettingsStore = create<SettingsState>()(
             const res = await fetch(
               `${API_URL}/groups/${encodeURIComponent(deanGroup)}`,
             );
-            console.log(
-              `fetch from store -> ${API_URL}/groups/${encodeURIComponent(
-                deanGroup,
-              )}`,
-            );
+            // console.log(
+            //   `fetch from store -> ${API_URL}/groups/${encodeURIComponent(
+            //     deanGroup,
+            //   )}`,
+            //  );
             const data: string[] = await res.json();
 
             const newOptions = {

@@ -29,6 +29,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
           style={[
             MenuStyles.modal,
             MenuStyles.list,
+            /* eslint-disable-next-line react-native/no-inline-styles */
             {
               top: listPosUp ? '-400%' : '100%',
             },

@@ -27,7 +27,7 @@ export async function getTimetableByGroup(
 ): Promise<TimetableResponse> {
   const query = buildQuery([k, l, p]);
   const response = await fetch(`${API_URL}/${generalGroupName}${query}`);
-  console.log(`fetch from service -> ${API_URL}/${generalGroupName}${query}`);
+  // console.log(`fetch from service -> ${API_URL}/${generalGroupName}${query}`);
   if (!response.ok) {
     throw new Error('Error with fetching timetable');
   }
