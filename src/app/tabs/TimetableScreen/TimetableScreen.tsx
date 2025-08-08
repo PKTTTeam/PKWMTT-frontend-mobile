@@ -196,10 +196,10 @@ const TimetableScreen = () => {
       return (
         <>
           <ScheduleItem
-            subject={'Wolna godzina'}
+            subject={''}
             startTime={startTime}
             endTime={endTime}
-            room={'brak'}
+            room={undefined}
             bgColor={''}
             type={''}
             letterColor="white"

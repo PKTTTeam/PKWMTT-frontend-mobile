@@ -26,10 +26,18 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
         <TimeRange timeStart={startTime} timeEnd={endTime} />
         <SubjectName subject={subject} />
       </View>
-      <View style={globalStyles.rightInfo}>
-        <LetterIcon bgColor={bgColor} letter={type} letterColor={letterColor} />
-        <RoomInfo room={room} />
-      </View>
+      {room ? (
+        <View style={globalStyles.rightInfo}>
+          <LetterIcon
+            bgColor={bgColor}
+            letter={type}
+            letterColor={letterColor}
+          />
+          <RoomInfo room={room} />
+        </View>
+      ) : (
+        ''
+      )}
     </View>
   );
 };
