@@ -7,9 +7,9 @@ import { GroupSelectTypes } from '../../types/uiTypes/GroupSelectTypes';
 import {
   useSettingsStore,
   useSettingsActions,
-  GroupName,
-  GroupKey,
 } from '../../store/settingsStore';
+
+import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
   Dziekańska: 'dean',
@@ -22,7 +22,7 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
   groupName,
   listPosUp,
 }) => {
-  const key = groupKeyMap[groupName]
+  const key = groupKeyMap[groupName as GroupName];
   const { fetchInitialDeanGroups, setActiveDropdown } = useSettingsActions();
   const groups = useSettingsStore(state => state.groups);
   const options = useSettingsStore(state => state.options[key]);

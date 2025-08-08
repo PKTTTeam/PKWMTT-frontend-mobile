@@ -3,33 +3,11 @@ import { Platform } from 'react-native';
 
 const API_URL = Platform.OS === 'android' ? ANDROID_API_URL : BASE_URL;
 
-// store/settingsStore.ts
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type GroupKey = 'dean' | 'lab' | 'proj' | 'comp';
-
-export type GroupName =
-  | 'Dziekańska'
-  | 'Komputerowa'
-  | 'Laboratoryjna'
-  | 'Projektowa';
-
-interface SettingsState {
-  groups: Record<GroupKey, string | undefined>;
-  options: Record<GroupKey, string[]>;
-  loading: boolean;
-  lastFetchedDean: string | null;
-  activeDropdown: GroupKey | null;
-
-  actions: {
-    setGroup: (key: GroupKey, value: string) => void;
-    fetchInitialDeanGroups: () => Promise<void>;
-    fetchDependentGroups: (deanGroup: string) => Promise<void>;
-    setActiveDropdown: (key: GroupKey | null) => void;
-  };
-}
+import type { SettingsState } from './settingsStoreTypes';
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
