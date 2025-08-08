@@ -7,23 +7,21 @@ import SettingsStyles from './SettingsStyles.ts';
 import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
 import Switch from '../../../components/ui/Switch.tsx';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
+const ShowEmptySlotsToggle = () => {
+  const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
+  const setShowEmptySlots = useSettingsStore(
+    state => state.actions.setShowEmptySlots,
+  );
 
+  return (
+    <Switch
+      label="Pokaz pelen plan"
+      value={showEmptySlots}
+      onChange={setShowEmptySlots}
+    />
+  );
+};
 function SettingsScreen() {
-  const ShowEmptySlotsToggle = () => {
-    const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
-    const setShowEmptySlots = useSettingsStore(
-      state => state.actions.setShowEmptySlots,
-    );
-
-    return (
-      <Switch
-        label="Pokaz pelen plan"
-        value={showEmptySlots}
-        onChange={setShowEmptySlots}
-      />
-    );
-  };
-
   return (
     <>
       <PaperProvider>
