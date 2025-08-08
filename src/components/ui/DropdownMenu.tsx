@@ -1,65 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-
-import { DropdownMenuProps } from '../../types/uiTypes/DropdownMenuTypes.ts';
-import MenuStyles from '../../styles/uiStyles/DropdownMenuStyles.ts';
+import { DropdownMenuProps } from '../../types/uiTypes/DropdownMenuTypes';
+import MenuStyles from '../../styles/uiStyles/DropdownMenuStyles';
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({
   width,
   height,
   listPosUp,
+  items,
+  selectedValue,
+  onSelect,
+  isOpen,
+  onOpen,
+  onClose,
 }) => {
-  const [visible, setVisible] = useState(false);
-
-  const DATA = [
-    { id: '1', title: 'Option 1' },
-    { id: '2', title: 'Option 2' },
-    { id: '3', title: 'Option 3' },
-  ];
-
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-
-  const handlePress = (item: { id: string; title: string }) => {
-    setSelectedId(item.id);
-    console.log('Selected:', item.title);
-  };
-
   return (
     <View style={[{ width: width ?? 85, height: height ?? 40 }]}>
       <TouchableOpacity
         style={[MenuStyles.button, MenuStyles.buttonSizes]}
-        onPress={() => setVisible(!visible)}
+        onPress={() => (isOpen ? onClose() : onOpen())}
       >
         <Text style={MenuStyles.groupSelectText}>
-          {selectedId
-            ? DATA.find(item => item.id === selectedId)?.title
-            : 'none'}
+          {selectedValue || 'none'}
         </Text>
       </TouchableOpacity>
-      {visible && (
+      {isOpen && (
         <View
           style={[
             MenuStyles.modal,
             MenuStyles.list,
-            // Ternary operator have to be used here to position the dropdown menu according to the  listPosUp value
-            // eslint-disable-next-line react-native/no-inline-styles
+            /* eslint-disable-next-line react-native/no-inline-styles */
             {
-              top: listPosUp === true ? '-400%' : '100%',
+              top: listPosUp ? '-400%' : '100%',
             },
           ]}
         >
           <FlatList
-            data={DATA}
-            keyExtractor={item => item.id}
+            data={items}
+            keyExtractor={item => item}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
-                  handlePress(item);
-                  setVisible(false);
+                  onSelect(item);
+                  onClose();
                 }}
                 style={MenuStyles.option}
               >
-                <Text style={[MenuStyles.groupSelectText]}>{item.title}</Text>
+                <Text style={MenuStyles.groupSelectText}>{item}</Text>
               </TouchableOpacity>
             )}
           />

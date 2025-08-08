@@ -2,12 +2,25 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import GlobalStyles from '../../../styles/globalStyles.ts';
 import SettingsStyles from './SettingsStyles.ts';
 
 import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
 import Switch from '../../../components/ui/Switch.tsx';
+import { useSettingsStore } from '../../../store/settingsStore.ts';
+const ShowEmptySlotsToggle = () => {
+  const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
+  const setShowEmptySlots = useSettingsStore(
+    state => state.actions.setShowEmptySlots,
+  );
 
+  return (
+    <Switch
+      label="Pokaz pelen plan"
+      value={showEmptySlots}
+      onChange={setShowEmptySlots}
+    />
+  );
+};
 function SettingsScreen() {
   return (
     <>
@@ -32,7 +45,6 @@ function SettingsScreen() {
               ]}
             >
               <GroupSelect groupName="Projektowa" />
-              <GroupSelect groupName="Ćwiczeniowa" />
             </View>
             <Text
               style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
@@ -41,8 +53,8 @@ function SettingsScreen() {
             </Text>
             <View>
               <View style={SettingsStyles.notifications}>
-                <Switch label="Egzamin" />
-                <Switch label="Kolokwium" />
+                <Switch label="Egzamin" value={false} onChange={() => null} />
+                <Switch label="Kolokwium" value={false} onChange={() => null} />
               </View>
               <View
                 style={[
@@ -50,9 +62,17 @@ function SettingsScreen() {
                   SettingsStyles.elementsSpacing,
                 ]}
               >
-                <Switch label="Zaliczenie" />
+                <Switch
+                  label="Zaliczenie"
+                  value={false}
+                  onChange={() => null}
+                />
                 <View style={SettingsStyles.elementsSpacing}>
-                  <Switch label="Projekt       " />
+                  <Switch
+                    label="Projekt       "
+                    value={false}
+                    onChange={() => null}
+                  />
                 </View>
               </View>
               <View
@@ -61,11 +81,12 @@ function SettingsScreen() {
                   SettingsStyles.elementsSpacing,
                 ]}
               >
-                <Switch label="Aktualizacje rozkładu" />
-                <View style={SettingsStyles.groupsContainer}>
-                  <Text style={GlobalStyles.text}>Przypomnij przed</Text>
-                  <GroupSelect groupName="" />
-                </View>
+                <Switch
+                  label="Aktualizacje rozkładu"
+                  value={false}
+                  onChange={() => null}
+                />
+                {ShowEmptySlotsToggle()}
               </View>
             </View>
             <Text
@@ -74,17 +95,20 @@ function SettingsScreen() {
               Wygląd Aplikacji
             </Text>
             <View style={SettingsStyles.elementsSpacing}>
-              <Switch label="Tryb ciemny" />
+              <Switch label="Tryb ciemny" value={false} onChange={() => null} />
             </View>
             <View style={SettingsStyles.elementsSpacing}>
-              <Switch label="Czcionka powiększona" />
+              <Switch
+                label="Czcionka powiększona"
+                value={false}
+                onChange={() => null}
+              />
             </View>
             <Text
               style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
             >
               Język Aplikacji
             </Text>
-            <GroupSelect groupName="" listPosUp={true} />
           </View>
         </View>
       </PaperProvider>
