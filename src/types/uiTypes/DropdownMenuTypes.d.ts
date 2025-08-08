@@ -3,7 +3,7 @@ export interface DropdownMenuProps {
   height?: number;
   listPosUp?: boolean;
   items: string[];
-  selectedValue: string;
+  selectedValue?: string;
   onSelect: (value: string) => void;
   isOpen: boolean;
   onOpen: () => void;

@@ -22,7 +22,7 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
   groupName,
   listPosUp,
 }) => {
-  const key = groupKeyMap[groupName];
+  const key = groupKeyMap[groupName]
   const { fetchInitialDeanGroups, setActiveDropdown } = useSettingsActions();
   const groups = useSettingsStore(state => state.groups);
   const options = useSettingsStore(state => state.options[key]);

@@ -20,7 +20,7 @@ function buildQuery(params?: (string | undefined)[]): string {
 }
 
 export async function getTimetableByGroup(
-  generalGroupName: string,
+  generalGroupName?: string,
   k?: string,
   l?: string,
   p?: string,

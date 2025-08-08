@@ -17,7 +17,7 @@ export type GroupName =
   | 'Projektowa';
 
 interface SettingsState {
-  groups: Record<GroupKey, string>;
+  groups: Record<GroupKey, string | undefined>;
   options: Record<GroupKey, string[]>;
   loading: boolean;
   lastFetchedDean: string | null;
@@ -36,9 +36,9 @@ export const useSettingsStore = create<SettingsState>()(
     (set, get) => ({
       groups: {
         dean: '',
-        lab: '',
-        proj: '',
-        comp: '',
+        lab: undefined,
+        proj: undefined,
+        comp: undefined,
       },
       options: {
         dean: [],
@@ -113,21 +113,28 @@ export const useSettingsStore = create<SettingsState>()(
               dean: get().options.dean, // Preserve dean options
             };
 
+            const currentComp = get().groups.comp;
+            const currentLab = get().groups.lab;
+            const currentProj = get().groups.proj;
+
             set({
               options: newOptions,
               lastFetchedDean: deanGroup,
               loading: false,
               groups: {
                 ...get().groups,
-                comp: newOptions.comp.includes(get().groups.comp)
-                  ? get().groups.comp
-                  : '',
-                lab: newOptions.lab.includes(get().groups.lab)
-                  ? get().groups.lab
-                  : '',
-                proj: newOptions.proj.includes(get().groups.proj)
-                  ? get().groups.proj
-                  : '',
+                comp:
+                  currentComp && newOptions.comp.includes(currentComp)
+                    ? currentComp
+                    : undefined,
+                lab:
+                  currentLab && newOptions.lab.includes(currentLab)
+                    ? currentLab
+                    : undefined,
+                proj:
+                  currentProj && newOptions.proj.includes(currentProj)
+                    ? currentProj
+                    : undefined,
               },
             });
           } catch (e) {

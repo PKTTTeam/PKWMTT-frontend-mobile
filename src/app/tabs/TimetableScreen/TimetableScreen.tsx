@@ -65,7 +65,7 @@ const TimetableScreen = () => {
 
   // Check if all required groups are selected
   const areAllGroupsSelected = () => {
-    return groups.dean && groups.comp && groups.lab && groups.proj;
+    return !!groups.dean;
   };
 
   useEffect(() => {
@@ -81,9 +81,9 @@ const TimetableScreen = () => {
           getAcademicHours(),
           getTimetableByGroup(
             groups.dean,
-            groups.comp,
-            groups.lab,
-            groups.proj,
+            groups.comp || undefined,
+            groups.lab || undefined,
+            groups.proj || undefined,
           ),
         ]);
 
