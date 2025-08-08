@@ -12,11 +12,13 @@ export interface SettingsState {
   loading: boolean;
   lastFetchedDean: string | null;
   activeDropdown: GroupKey | null;
+  showEmptySlots: boolean;
 
   actions: {
     setGroup: (key: GroupKey, value: string) => void;
     fetchInitialDeanGroups: () => Promise<void>;
     fetchDependentGroups: (deanGroup: string) => Promise<void>;
     setActiveDropdown: (key: GroupKey | null) => void;
+    setShowEmptySlots: (value: boolean) => void;
   };
 }

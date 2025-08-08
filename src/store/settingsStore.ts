@@ -27,6 +27,7 @@ export const useSettingsStore = create<SettingsState>()(
       loading: false,
       lastFetchedDean: null,
       activeDropdown: null,
+      showEmptySlots: false,
 
       actions: {
         setGroup: (key, value) => {
@@ -122,6 +123,9 @@ export const useSettingsStore = create<SettingsState>()(
         },
         setActiveDropdown(key) {
           set({ activeDropdown: key });
+        },
+        setShowEmptySlots(value) {
+          set({ showEmptySlots: value });
         },
       },
     }),
