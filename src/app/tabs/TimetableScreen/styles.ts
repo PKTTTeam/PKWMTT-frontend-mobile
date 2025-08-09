@@ -55,4 +55,56 @@ export const styles = StyleSheet.create({
     marginVertical: 0,
     opacity: 0.8,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+  },
+
+  // Required filters block
+  requiredFiltersContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+  },
+  warningIcon: {
+    marginBottom: 20,
+  },
+  requiredFiltersTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  requiredFiltersText: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
+    lineHeight: 22,
+  },
+  missingFiltersList: {
+    alignItems: 'flex-start',
+    marginBottom: 20,
+  },
+  missingFilterItem: {
+    fontSize: 16,
+    color: '#ff9500',
+    fontWeight: '500',
+    marginBottom: 5,
+  },
+  requiredFiltersSubtext: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+    fontStyle: 'italic',
+  },
 });

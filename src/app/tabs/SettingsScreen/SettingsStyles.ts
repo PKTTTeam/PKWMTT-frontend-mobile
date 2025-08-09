@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 const settingsStyles = StyleSheet.create({
-    bgContainer: {
+  bgContainer: {
     flex: 1,
     backgroundColor: '#181818',
   },
@@ -50,7 +50,12 @@ const settingsStyles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     gap: 12,
-    flexWrap: 'wrap',}
+    flexWrap: 'wrap',
+  },
+  scrollContent: {
+    paddingBottom: 20,
+    flexGrow: 1,
+  },
 });
 
 export default settingsStyles;

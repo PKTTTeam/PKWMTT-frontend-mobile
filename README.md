@@ -119,12 +119,11 @@ For questions, suggestions, or collaboration:
 <tr>
 <td align="center">
   <strong>Timetable Screen</strong><br>
-  <img width="232" height="485" alt="Timetable Screen" src="https://github.com/user-attachments/assets/607b0039-4ea2-4df6-b9d6-3d2b2a758e99" />
+  <img width="232" height="485" alt="Timetable Screen" src="https://github.com/user-attachments/assets/06ca269c-d267-4e51-9e16-c1819dc8b3c3" />
 </td>
 <td align="center">
   <strong>Activity Legend Modal</strong><br>
-  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/2d115dcd-7368-494b-b17e-ad3d8a2e36c3" />
-</td>
+  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/45b1a65e-b1ff-4684-aea5-33ed8b20e308" />\
 </tr>
 </table>
 

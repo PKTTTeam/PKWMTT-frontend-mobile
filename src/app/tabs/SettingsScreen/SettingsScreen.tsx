@@ -1,11 +1,17 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 
-import GlobalStyles from '../../../styles/globalStyles.ts';
 import SettingsStyles from './SettingsStyles.ts';
 
 import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
 import Switch from '../../../components/ui/Switch.tsx';
+import { useSettingsStore } from '../../../store/settingsStore.ts';
+const ShowEmptySlotsToggle = () => {
+  const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
+  const setShowEmptySlots = useSettingsStore(
+    state => state.actions.setShowEmptySlots,
+  );
+
 
 const settingsData = [
   {
@@ -63,6 +69,7 @@ const settingsData = [
           <View style={SettingsStyles.groupsContainer}>
             <Text style={GlobalStyles.whiteText}>Przypomnij przed</Text>
             <GroupSelect groupName="" />
+
           </View>
         </View>
       </>
