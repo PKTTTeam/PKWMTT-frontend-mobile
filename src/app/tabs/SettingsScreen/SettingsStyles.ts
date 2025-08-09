@@ -6,7 +6,6 @@ const settingsStyles = StyleSheet.create({
     backgroundColor: '#181818',
   },
   container: {
-    flex: 1,
     backgroundColor: '#1e1f1f',
     padding: 16,
     marginLeft: 6,
