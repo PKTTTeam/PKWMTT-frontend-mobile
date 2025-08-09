@@ -38,8 +38,8 @@ const settingsData = [
         >
           Powiadomienia
         </Text>
-        <View>
-          <View style={SettingsStyles.notifications}>
+        <View style={SettingsStyles.notificationsContainer}>
+          <View style={[SettingsStyles.notifications]}>
             <Switch label="Egzamin" />
             <Switch label="Kolokwium" />
           </View>
@@ -50,21 +50,19 @@ const settingsData = [
             ]}
           >
             <Switch label="Zaliczenie" />
-            <View style={SettingsStyles.elementsSpacing}>
-              <Switch label="Projekt       " />
-            </View>
+            <Switch label="Projekt" />
           </View>
-          <View
-            style={[
-              SettingsStyles.notificationsMid,
-              SettingsStyles.elementsSpacing,
-            ]}
-          >
-            <Switch label="Aktualizacje rozkładu" />
-            <View style={SettingsStyles.groupsContainer}>
-              <Text style={GlobalStyles.whiteText}>Przypomnij przed</Text>
-              <GroupSelect groupName="" />
-            </View>
+        </View>
+        <View
+          style={[
+            SettingsStyles.notificationsMid,
+            SettingsStyles.elementsSpacing,
+          ]}
+        >
+          <Switch label="Aktualizacje rozkładu" />
+          <View style={SettingsStyles.groupsContainer}>
+            <Text style={GlobalStyles.whiteText}>Przypomnij przed</Text>
+            <GroupSelect groupName="" />
           </View>
         </View>
       </>
@@ -79,11 +77,13 @@ const settingsData = [
         >
           Wygląd Aplikacji
         </Text>
-        <View style={SettingsStyles.elementsSpacing}>
-          <Switch label="Tryb ciemny" />
-        </View>
-        <View style={SettingsStyles.elementsSpacing}>
-          <Switch label="Czcionka powiększona" />
+        <View style={SettingsStyles.notificationsMid}>
+          <View style={SettingsStyles.elementsSpacing}>
+            <Switch label="Tryb ciemny" />
+          </View>
+          <View style={SettingsStyles.elementsSpacing}>
+            <Switch label="Czcionka powiększona" />
+          </View>
         </View>
       </>
     ),

@@ -35,15 +35,19 @@ const settingsStyles = StyleSheet.create({
     gap: 16,
   },
   notifications: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 40,
+    flexDirection: 'column',
+    gap: 10,
+    flexWrap: 'wrap',
+  },
+  notificationsContainer: {
+   flexDirection: 'row',
+   justifyContent: 'space-between',
+    alignItems: 'center',
     flexWrap: 'wrap',
   },
   notificationsMid: {
     flexDirection: 'column',
     alignSelf: 'center',
-    alignItems: 'center',
     justifyContent: 'center',
     gap: 12,
     flexWrap: 'wrap',}
