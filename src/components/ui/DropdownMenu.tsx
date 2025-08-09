@@ -14,17 +14,22 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   onOpen,
   onClose,
 }) => {
+
   return (
     <View style={[{ width: width ?? 85, height: height ?? 40 }]}>
       <TouchableOpacity
         style={[MenuStyles.button, MenuStyles.buttonSizes]}
+
         onPress={() => (isOpen ? onClose() : onOpen())}
+
       >
         <Text style={MenuStyles.groupSelectText}>
           {selectedValue || 'none'}
         </Text>
       </TouchableOpacity>
+
       {isOpen && (
+
         <View
           style={[
             MenuStyles.modal,
@@ -41,8 +46,10 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
+
                   onSelect(item);
                   onClose();
+
                 }}
                 style={MenuStyles.option}
               >

@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { View, Text, FlatList } from 'react-native';
 
 import SettingsStyles from './SettingsStyles.ts';
 
@@ -13,106 +12,114 @@ const ShowEmptySlotsToggle = () => {
     state => state.actions.setShowEmptySlots,
   );
 
-  return (
-    <Switch
-      label="Pokaz pelen plan"
-      value={showEmptySlots}
-      onChange={setShowEmptySlots}
-    />
-  );
-};
-function SettingsScreen() {
-  return (
-    <>
-      <PaperProvider>
-        <View style={SettingsStyles.bgContainer}>
-          <View style={SettingsStyles.container}>
-            <Text style={SettingsStyles.labelText}>Grupy Studenckie</Text>
-            <View
-              style={[
-                SettingsStyles.studentGroups,
-                SettingsStyles.elementsSpacing,
-              ]}
-            >
-              <GroupSelect groupName="Dziekańska" />
-              <GroupSelect groupName="Laboratoryjna" />
-              <GroupSelect groupName="Komputerowa" />
-            </View>
-            <View
-              style={[
-                SettingsStyles.studentGroups,
-                SettingsStyles.elementsSpacing,
-              ]}
-            >
-              <GroupSelect groupName="Projektowa" />
-            </View>
-            <Text
-              style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
-            >
-              Powiadomienia
-            </Text>
-            <View>
-              <View style={SettingsStyles.notifications}>
-                <Switch label="Egzamin" value={false} onChange={() => null} />
-                <Switch label="Kolokwium" value={false} onChange={() => null} />
-              </View>
-              <View
-                style={[
-                  SettingsStyles.notifications,
-                  SettingsStyles.elementsSpacing,
-                ]}
-              >
-                <Switch
-                  label="Zaliczenie"
-                  value={false}
-                  onChange={() => null}
-                />
-                <View style={SettingsStyles.elementsSpacing}>
-                  <Switch
-                    label="Projekt       "
-                    value={false}
-                    onChange={() => null}
-                  />
-                </View>
-              </View>
-              <View
-                style={[
-                  SettingsStyles.notificationsMid,
-                  SettingsStyles.elementsSpacing,
-                ]}
-              >
-                <Switch
-                  label="Aktualizacje rozkładu"
-                  value={false}
-                  onChange={() => null}
-                />
-                {ShowEmptySlotsToggle()}
-              </View>
-            </View>
-            <Text
-              style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
-            >
-              Wygląd Aplikacji
-            </Text>
-            <View style={SettingsStyles.elementsSpacing}>
-              <Switch label="Tryb ciemny" value={false} onChange={() => null} />
-            </View>
-            <View style={SettingsStyles.elementsSpacing}>
-              <Switch
-                label="Czcionka powiększona"
-                value={false}
-                onChange={() => null}
-              />
-            </View>
-            <Text
-              style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
-            >
-              Język Aplikacji
-            </Text>
+
+const settingsData = [
+  {
+    key: 'groups',
+    render: () => (
+      <>
+        <Text style={SettingsStyles.labelText}>Grupy Studenckie</Text>
+        <View
+          style={[SettingsStyles.studentGroups, SettingsStyles.elementsSpacing]}
+        >
+          <GroupSelect groupName="Dziekańska" />
+          <GroupSelect groupName="Laboratoryjna" />
+          <GroupSelect groupName="Komputerowa" />
+        </View>
+        <View
+          style={[SettingsStyles.studentGroups, SettingsStyles.elementsSpacing]}
+        >
+          <GroupSelect groupName="Projektowa" />
+          <GroupSelect groupName="Ćwiczeniowa" />
+        </View>
+      </>
+    ),
+  },
+  {
+    key: 'notifications',
+    render: () => (
+      <>
+        <Text
+          style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
+        >
+          Powiadomienia
+        </Text>
+        <View style={SettingsStyles.notificationsContainer}>
+          <View style={[SettingsStyles.notifications]}>
+            <Switch label="Egzamin" />
+            <Switch label="Kolokwium" />
+          </View>
+          <View
+            style={[
+              SettingsStyles.notifications,
+              SettingsStyles.elementsSpacing,
+            ]}
+          >
+            <Switch label="Zaliczenie" />
+            <Switch label="Projekt" />
           </View>
         </View>
-      </PaperProvider>
-    </>
+        <View
+          style={[
+            SettingsStyles.notificationsMid,
+            SettingsStyles.elementsSpacing,
+          ]}
+        >
+          <Switch label="Aktualizacje rozkładu" />
+          <View style={SettingsStyles.groupsContainer}>
+            <Text style={GlobalStyles.whiteText}>Przypomnij przed</Text>
+            <GroupSelect groupName="" />
+
+          </View>
+        </View>
+      </>
+    ),
+  },
+  {
+    key: 'appearance',
+    render: () => (
+      <>
+        <Text
+          style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
+        >
+          Wygląd Aplikacji
+        </Text>
+        <View style={SettingsStyles.notificationsMid}>
+          <View style={SettingsStyles.elementsSpacing}>
+            <Switch label="Tryb ciemny" />
+          </View>
+          <View style={SettingsStyles.elementsSpacing}>
+            <Switch label="Czcionka powiększona" />
+          </View>
+        </View>
+      </>
+    ),
+  },
+  {
+    key: 'language',
+    render: () => (
+      <>
+        <Text
+          style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
+        >
+          Język Aplikacji
+        </Text>
+        <GroupSelect groupName="" listPosUp={true} />
+      </>
+    ),
+  },
+];
+
+function SettingsScreen() {
+  return (
+    <View style={SettingsStyles.bgContainer}>
+      <FlatList
+        contentContainerStyle={SettingsStyles.container}
+        data={settingsData}
+        renderItem={({ item }) => <View>{item.render()}</View>}
+        keyExtractor={item => item.key}
+      />
+    </View>
   );
 }
 
