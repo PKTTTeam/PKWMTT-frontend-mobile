@@ -73,10 +73,10 @@ const settingsData = [
             SettingsStyles.elementsSpacing,
           ]}
         >
-          {ShowEmptySlotsToggle()}
+          <ShowEmptySlotsToggle />
           <Switch label="Aktualizacje rozkładu" />
           <View style={SettingsStyles.groupsContainer}>
-            <Text style={GlobalStyles.whiteText}>Przypomnij przed</Text>
+            <Text style={SettingsStyles.smallLabel}>Przypomnij przed</Text>
             <GroupSelect groupName="" />
           </View>
         </View>

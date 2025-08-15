@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 const settingsStyles = StyleSheet.create({
+  smallLabel: {
+    color: '#ffffffff',
+  },
   bgContainer: {
     flex: 1,
     backgroundColor: '#181818',
