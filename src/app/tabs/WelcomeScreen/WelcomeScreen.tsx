@@ -1,5 +1,9 @@
-import { View, Text, Button } from 'react-native';
+import React from 'react';
+import { View, Text, Button, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import WelcomeStyles from './WelcomeStyles.ts';
+import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
 
 import type { StackNavigationProp } from '@react-navigation/stack';
 
@@ -10,13 +14,48 @@ type WelcomeScreenProps = {
 const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
   const handleContinue = async () => {
     await AsyncStorage.setItem('hasSeenWelcome', 'true');
-    navigation.replace('Tabs'); // Replace the welcome screen with the tab navigator
+    navigation.replace('Tabs');
   };
 
+  // Move welcomeData inside the component to access handleContinue
+  const welcomeData = [
+    {
+      key: 'groups',
+      render: () => (
+        <>
+          <Text style={WelcomeStyles.welcomeText}>Witaj w aplikacji PKWMTT!</Text>
+          <Text style={WelcomeStyles.welcomeText}>Wybierz swoje grupy studenckie:</Text>
+          <View
+            style={[WelcomeStyles.studentGroups, WelcomeStyles.elementsSpacing]}
+          >
+            <GroupSelect groupName="Dziekańska" />
+            <GroupSelect groupName="Laboratoryjna" />
+            <GroupSelect groupName="Komputerowa" />
+          </View>
+          <View
+            style={[WelcomeStyles.studentGroups, WelcomeStyles.elementsSpacing]}
+          >
+            <GroupSelect groupName="Projektowa" />
+            <GroupSelect groupName="Ćwiczeniowa" />
+          </View>
+          <View
+            style={[WelcomeStyles.buttonContainer]}
+          >
+            <Button title="Przejdź dalej" onPress={handleContinue} />
+          </View>
+        </>
+      ),
+    },
+  ];
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 24, marginBottom: 20 }}>Welcome to PKWMTT!</Text>
-      <Button title="Continue" onPress={handleContinue} />
+    <View style={WelcomeStyles.bgContainer}>
+      <FlatList
+        contentContainerStyle={WelcomeStyles.container}
+        data={welcomeData}
+        renderItem={({ item }) => <View>{item.render()}</View>}
+        keyExtractor={item => item.key}
+      />
     </View>
   );
 };
