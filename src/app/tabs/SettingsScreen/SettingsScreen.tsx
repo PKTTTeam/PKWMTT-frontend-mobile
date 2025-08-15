@@ -78,6 +78,7 @@ const settingsData = [
           <View style={SettingsStyles.groupsContainer}>
             <Text style={SettingsStyles.smallLabel}>Przypomnij przed</Text>
             <GroupSelect groupName="" />
+
           </View>
         </View>
       </>
