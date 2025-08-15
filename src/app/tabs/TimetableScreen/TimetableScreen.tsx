@@ -13,6 +13,11 @@ import checkActiveLesson from '../../../services/timetable/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './styles.ts';
+import {
+  useSettingsStore,
+  useSettingsActions,
+} from '../../../store/settingsStore';
+import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 const LessonSeparator = () => {
   return <View style={styles.separator} />;
@@ -33,9 +38,12 @@ const TimetableScreen = () => {
   const [isOddWeek, setIsOddWeek] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
 
-  // Static for early dev
-  const groupName = '12K2';
-  const filters = { k: 'K04', l: 'L04', p: 'P04' };
+  // Get settings from store
+  const groups = useSettingsStore(state => state.groups);
+  const loading = useSettingsStore(state => state.loading);
+  const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
+
+  const { fetchInitialDeanGroups } = useSettingsActions();
 
   const navigationRef = useRef({
     currentDayIndex,
@@ -51,12 +59,35 @@ const TimetableScreen = () => {
     };
   }, [currentDayIndex, isOddWeek, timetable.length]);
 
+  // Initialize dean groups on mount if not loaded
   useEffect(() => {
+    if (!groups.dean) {
+      fetchInitialDeanGroups();
+    }
+  }, [groups.dean, fetchInitialDeanGroups]);
+
+  // Check if all required groups are selected
+  const areAllGroupsSelected = () => {
+    return !!groups.dean;
+  };
+
+  useEffect(() => {
+    // Only fetch timetable if all groups are selected
+    if (!areAllGroupsSelected()) {
+      setTimetable([]);
+      return;
+    }
+
     async function initialiseData() {
       try {
         const [hours, timetableResponse] = await Promise.all([
           getAcademicHours(),
-          getTimetableByGroup(groupName, filters.k, filters.l, filters.p),
+          getTimetableByGroup(
+            groups.dean,
+            groups.comp || undefined,
+            groups.lab || undefined,
+            groups.proj || undefined,
+          ),
         ]);
 
         setAHours(hours);
@@ -88,8 +119,8 @@ const TimetableScreen = () => {
       }
     }
     initialiseData();
-    //we do not want to rerender when isOddWeek changed
-  }, [filters.k, filters.l, filters.p]);   // eslint-disable-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groups.dean, groups.comp, groups.lab, groups.proj]);
 
   const navigateToNextDay = () => {
     if (isNavigating) return; // Prevent rapid clicks
@@ -159,6 +190,25 @@ const TimetableScreen = () => {
       isOddWeek,
     );
 
+    const isEmptySlot = !item.name;
+
+    if (isEmptySlot) {
+      return (
+        <>
+          <ScheduleItem
+            subject={''}
+            startTime={startTime}
+            endTime={endTime}
+            room={undefined}
+            bgColor={''}
+            type={''}
+            letterColor="white"
+            isActive={isActive}
+          />
+        </>
+      );
+    }
+
     return (
       <>
         <ScheduleItem
@@ -178,12 +228,28 @@ const TimetableScreen = () => {
   const getCurrentDayData = () => {
     const currentDay = timetable[currentDayIndex];
     if (!currentDay) return [];
-    return isOddWeek ? currentDay.odd : currentDay.even;
+    const lessons = isOddWeek ? currentDay.odd : currentDay.even;
+    if (!showEmptySlots) return lessons;
+
+    return getFullSchedule(aHours, lessons);
   };
 
   const getWeekTypeText = () => {
-    return isOddWeek ? 'N' : 'P';
+    return isOddWeek ? 'Nieparzysty' : 'Parzysty';
   };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <View style={styles.bgContainer}>
+        <View style={styles.container}>
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>Ładowanie grup...</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.bgContainer}>
@@ -217,6 +283,7 @@ const TimetableScreen = () => {
         {/* Lessons list */}
         {timetable[currentDayIndex] && (
           <FlatList
+            key={showEmptySlots ? 'with-empty' : 'without-empty'}
             data={getCurrentDayData()}
             renderItem={renderLesson}
             keyExtractor={item =>

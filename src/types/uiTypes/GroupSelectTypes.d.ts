@@ -1,4 +1,6 @@
+import type { GroupName } from '../../store/settingsStore';
+
 export type GroupSelectTypes = {
-   groupName: string, 
-   listPosUp?: boolean 
+  groupName: GroupName;
+  listPosUp?: boolean;
 };

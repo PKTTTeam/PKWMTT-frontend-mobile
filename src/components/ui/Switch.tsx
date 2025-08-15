@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SwitchToggle from 'react-native-switch-toggle';
 import { Text, View } from 'react-native';
 
 import SwitchStyles from '../../styles/uiStyles/SwitchStyles.ts';
 import { SwitchTypes } from '../../types/uiTypes/SwitchTypes.ts';
 
-const Switch: React.FC<SwitchTypes> = ({ label }) => {
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
+interface Props extends SwitchTypes {
+  value: boolean;
+  onChange: (newVal: boolean) => void;
+}
 
+const Switch: React.FC<Props> = ({ label, value, onChange }) => {
   return (
     <View style={SwitchStyles.contentConainer}>
       <SwitchToggle
-        switchOn={isSwitchOn}
-        onPress={() => setIsSwitchOn(!isSwitchOn)}
+        switchOn={value}
+        onPress={() => onChange(!value)}
         containerStyle={SwitchStyles.switchContainer}
         circleStyle={SwitchStyles.switchCircle}
         circleColorOff="#b5b6c9"
