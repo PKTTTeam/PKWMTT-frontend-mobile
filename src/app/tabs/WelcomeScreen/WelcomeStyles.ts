@@ -7,11 +7,13 @@ const welcomeStyles = StyleSheet.create({
   bgContainer: {
     flex: 1,
     backgroundColor: '#181818',
-
   },
+  welceomeContainer: {},
   container: {
+    justifyContent: 'center',
     backgroundColor: '#1e1f1f',
-    padding: 16,
+    height: '80%',
+    marginTop: '10%',
     marginLeft: 6,
     marginRight: 6,
     borderRadius: 8,
@@ -23,14 +25,7 @@ const welcomeStyles = StyleSheet.create({
     gap: 8,
   },
   elementsSpacing: {
-    marginTop: 10,
-  },
-  labelText: {
-    alignSelf: 'center',
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    marginTop: 23,
   },
   welcomeText: {
     alignSelf: 'center',
@@ -48,7 +43,7 @@ const welcomeStyles = StyleSheet.create({
   buttonContainer: {
     marginTop: '10%',
     alignItems: 'center',
-  }
+  },
 });
 
 export default welcomeStyles;

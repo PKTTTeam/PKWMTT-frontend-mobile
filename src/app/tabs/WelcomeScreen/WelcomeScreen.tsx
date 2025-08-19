@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -20,38 +20,48 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
 
   const [deanGroup, setDeanGroup] = useState<string | undefined>(undefined);
 
-  // Move welcomeData inside the component to access handleContinue
   const welcomeData = [
     {
       key: 'groups',
       render: () => (
         <>
-          <Text style={WelcomeStyles.welcomeText}>
-            Witaj w aplikacji PKWMTT!
-          </Text>
-          <Text style={WelcomeStyles.welcomeText}>
-            Wybierz swoje grupy studenckie:
-          </Text>
-          <View
-            style={[WelcomeStyles.studentGroups, WelcomeStyles.elementsSpacing]}
-          >
-            <GroupSelect groupName="Dziekańska" onValueChange={setDeanGroup}/>
-            <GroupSelect groupName="Laboratoryjna" />
-            <GroupSelect groupName="Komputerowa" />
-          </View>
-          <View
-            style={[WelcomeStyles.studentGroups, WelcomeStyles.elementsSpacing]}
-          >
-            <GroupSelect groupName="Projektowa" />
-            <GroupSelect groupName="Ćwiczeniowa" />
-          </View>
-          <View style={[WelcomeStyles.buttonContainer]}>
-            <Button
-              title="Przejdź dalej"
-              onPress={handleContinue}
-              color={WelcomeButtonStyles.buttonON.color}
-              disabled={deanGroup === undefined}
-            />
+          <View style={WelcomeStyles.welceomeContainer}>
+            <Text style={WelcomeStyles.welcomeText}>
+              Witaj w aplikacji PKWMTT!
+            </Text>
+            <Text style={WelcomeStyles.welcomeText}>
+              Wybierz swoje grupy studenckie:
+            </Text>
+            <View
+              style={[
+                WelcomeStyles.studentGroups,
+                WelcomeStyles.elementsSpacing,
+              ]}
+            >
+              <GroupSelect
+                groupName="Dziekańska"
+                onValueChange={setDeanGroup}
+              />
+              <GroupSelect groupName="Laboratoryjna" />
+              <GroupSelect groupName="Komputerowa" />
+            </View>
+            <View
+              style={[
+                WelcomeStyles.studentGroups,
+                WelcomeStyles.elementsSpacing,
+              ]}
+            >
+              <GroupSelect groupName="Projektowa" />
+              <GroupSelect groupName="Ćwiczeniowa" />
+            </View>
+            <View style={[WelcomeStyles.buttonContainer]}>
+              <Button
+                title="Przejdź dalej"
+                onPress={handleContinue}
+                color={WelcomeButtonStyles.buttonON.color}
+                disabled={deanGroup === undefined}
+              />
+            </View>
           </View>
         </>
       ),
