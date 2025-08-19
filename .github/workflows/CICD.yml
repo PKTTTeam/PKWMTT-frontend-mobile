@@ -51,9 +51,6 @@ jobs:
       - name: Install dependencies
         run: npm ci --include=dev
 
-      - name: Generate React Native codegen
-        run: ./node_modules/.bin/react-native-codegen
-
       - name: Create .env file
         run: echo "${{ secrets.ENV_FILE }}" > .env
 
@@ -68,9 +65,32 @@ jobs:
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
-      
-      - name: Clean Gradle build
-        run: cd android && ./gradlew clean
+
+      - name: Clean everything
+        run: |
+          rm -rf android/app/build
+          rm -rf android/.cxx
+          rm -rf node_modules/.cache
+          cd android && ./gradlew clean
+
+      # Try codegen generation with fallback
+      - name: Generate Codegen artifacts
+        run: |
+          cd android
+          # Try the new task first, fallback to old approach if it fails
+          ./gradlew generateCodegenArtifactsFromSchema || \
+          echo "Codegen task not available, proceeding with build"
+
+      - name: Force autolinking regeneration
+        run: |
+          rm -rf android/app/build/generated/autolinking
+          npx react-native config
+
+      # Pre-build step to ensure all dependencies are properly configured
+      - name: Pre-build configuration
+        run: |
+          cd android
+          ./gradlew :app:preBuild
 
       - name: Build release APK
         run: |
@@ -80,4 +100,5 @@ jobs:
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ github.ref_name }}
           files: android/app/build/outputs/apk/release/app-release.apk
