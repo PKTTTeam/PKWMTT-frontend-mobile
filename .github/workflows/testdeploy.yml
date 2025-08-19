@@ -5,7 +5,7 @@ on:
     branches:
       - ci/test
 
-jobs:  
+jobs:
   release-apk:
     runs-on: ubuntu-latest
     steps:
@@ -35,14 +35,32 @@ jobs:
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
-      
-      - name: Clean Gradle build
-        run: cd android && ./gradlew clean
+
+      - name: Clean everything
+        run: |
+          rm -rf android/app/build
+          rm -rf android/.cxx
+          rm -rf node_modules/.cache
+          cd android && ./gradlew clean
 
       - name: Force autolinking regeneration
         run: |
           rm -rf android/app/build/generated/autolinking
           npx react-native config
+
+      # Try codegen generation with fallback
+      - name: Generate Codegen artifacts
+        run: |
+          cd android
+          # Try the new task first, fallback to old approach if it fails
+          ./gradlew generateCodegenArtifactsFromSchema || \
+          echo "Codegen task not available, proceeding with build"
+
+      # Pre-build step to ensure all dependencies are properly configured
+      - name: Pre-build configuration
+        run: |
+          cd android
+          ./gradlew :app:preBuild
 
       - name: Build release APK
         run: |
