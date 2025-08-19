@@ -30,12 +30,12 @@ const RootNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         ...screenOptions, 
-        headerShown: !hasSeenWelcome, // Show header only if hasSeenWelcome is true
+        // headerShown: !hasSeenWelcome
       }}
       initialRouteName={hasSeenWelcome ? 'Tabs' : 'Welcome'}
     >
-      <Stack.Screen name="Welcome" component={WelcomeScreen} />
-      <Stack.Screen name="Tabs" component={TabNavigator} />
+      <Stack.Screen name="Welcome" options={{ headerShown: true }} component={WelcomeScreen} />
+      <Stack.Screen name="Tabs" options={{ headerShown: false }} component={TabNavigator} />
     </Stack.Navigator>
   );
 };

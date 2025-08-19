@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,6 +19,10 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
   };
 
   const [deanGroup, setDeanGroup] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+
+  },[deanGroup]);
 
   const welcomeData = [
     {
