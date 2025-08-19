@@ -2,11 +2,13 @@ name: CICD
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     tags:
-      - "v*.*.*"   # trigger release job on version tags
+      - "v*.*.*"
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
