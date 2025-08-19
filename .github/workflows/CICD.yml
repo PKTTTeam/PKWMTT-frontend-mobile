@@ -51,6 +51,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate React Native codegen
+        run: npx react-native-codegen
+
       - name: Create .env file
         run: echo "${{ secrets.ENV_FILE }}" > .env
 
@@ -65,6 +68,9 @@ jobs:
 
       - name: Make gradlew executable
         run: chmod +x android/gradlew
+      
+      - name: Clean Gradle build
+        run: cd android && ./gradlew clean
 
       - name: Build release APK
         run: |
