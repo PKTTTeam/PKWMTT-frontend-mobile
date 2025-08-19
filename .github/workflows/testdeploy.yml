@@ -43,11 +43,6 @@ jobs:
           rm -rf node_modules/.cache
           cd android && ./gradlew clean
 
-      - name: Force autolinking regeneration
-        run: |
-          rm -rf android/app/build/generated/autolinking
-          npx react-native config
-
       # Try codegen generation with fallback
       - name: Generate Codegen artifacts
         run: |
@@ -55,6 +50,11 @@ jobs:
           # Try the new task first, fallback to old approach if it fails
           ./gradlew generateCodegenArtifactsFromSchema || \
           echo "Codegen task not available, proceeding with build"
+
+      - name: Force autolinking regeneration
+        run: |
+          rm -rf android/app/build/generated/autolinking
+          npx react-native config
 
       # Pre-build step to ensure all dependencies are properly configured
       - name: Pre-build configuration
