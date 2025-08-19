@@ -1,5 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import ScheduleItem from '../../../components/ScheduleItem';
 import { DaySchedule, TimetableItem } from '../../../types/global';
 import {
@@ -37,6 +43,7 @@ const TimetableScreen = () => {
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const [isOddWeek, setIsOddWeek] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Get settings from store
   const groups = useSettingsStore(state => state.groups);
@@ -120,6 +127,28 @@ const TimetableScreen = () => {
     }
     initialiseData();
     //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groups.dean, groups.comp, groups.lab, groups.proj]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    try {
+      const [hours, timetableResponse] = await Promise.all([
+        getAcademicHours(),
+        getTimetableByGroup(
+          groups.dean,
+          groups.comp || undefined,
+          groups.lab || undefined,
+          groups.proj || undefined,
+        ),
+      ]);
+      setAHours(hours);
+      setTimetable(timetableResponse.data);
+    } catch (err) {
+      console.error('Refresh failed', err);
+    } finally {
+      setRefreshing(false);
+    }
   }, [groups.dean, groups.comp, groups.lab, groups.proj]);
 
   const navigateToNextDay = () => {
@@ -292,6 +321,9 @@ const TimetableScreen = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
             ItemSeparatorComponent={LessonSeparator}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           />
         )}
       </View>
