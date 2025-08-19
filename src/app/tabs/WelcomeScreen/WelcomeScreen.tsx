@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -18,6 +18,8 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
     navigation.replace('Tabs');
   };
 
+  const [deanGroup, setDeanGroup] = useState<string | undefined>(undefined);
+
   // Move welcomeData inside the component to access handleContinue
   const welcomeData = [
     {
@@ -33,7 +35,7 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
           <View
             style={[WelcomeStyles.studentGroups, WelcomeStyles.elementsSpacing]}
           >
-            <GroupSelect groupName="Dziekańska" />
+            <GroupSelect groupName="Dziekańska" onValueChange={setDeanGroup}/>
             <GroupSelect groupName="Laboratoryjna" />
             <GroupSelect groupName="Komputerowa" />
           </View>
@@ -48,7 +50,7 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
               title="Przejdź dalej"
               onPress={handleContinue}
               color={WelcomeButtonStyles.buttonON.color}
-              disabled={true}
+              disabled={deanGroup === undefined}
             />
           </View>
         </>

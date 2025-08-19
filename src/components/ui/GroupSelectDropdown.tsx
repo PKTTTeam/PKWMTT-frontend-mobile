@@ -21,6 +21,7 @@ const groupKeyMap: Record<GroupName, GroupKey> = {
 const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
   groupName,
   listPosUp,
+  onValueChange,
 }) => {
   const key = groupKeyMap[groupName as GroupName];
   const { fetchInitialDeanGroups, setActiveDropdown } = useSettingsActions();
@@ -40,6 +41,13 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
 
   const handleClose = () => setActiveDropdown(null);
 
+  const handleSelect = (value: string) => {
+    setGroup(key, value);
+    if (onValueChange) {
+      onValueChange(value);
+    }
+  };
+
   return (
     <View style={GroupSelectStyles.menuContainer}>
       <Text style={GroupSelectStyles.text}>{groupName}</Text>
@@ -47,7 +55,9 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
         listPosUp={listPosUp}
         items={options || []}
         selectedValue={groups[key]}
-        onSelect={value => setGroup(key, value)}
+        onSelect={value => {
+          handleSelect(value);
+        }}
         isOpen={activeDropdown === key}
         onOpen={handleOpen}
         onClose={handleClose}
