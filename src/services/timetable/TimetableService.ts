@@ -1,8 +1,7 @@
-import { BASE_URL, ANDROID_API_URL } from '@env';
-import { Platform } from 'react-native';
+import { ANDROID_API_URL } from '@env';
 import { TimetableResponse } from '../../types/global';
 
-const API_URL = Platform.OS === 'android' ? ANDROID_API_URL : BASE_URL;
+const API_URL = ANDROID_API_URL;
 
 function buildQuery(params?: (string | undefined)[]): string {
   if (!params || params.length === 0) return '';
@@ -27,7 +26,7 @@ export async function getTimetableByGroup(
 ): Promise<TimetableResponse> {
   const query = buildQuery([k, l, p]);
   const response = await fetch(`${API_URL}/${generalGroupName}${query}`);
-  // console.log(`fetch from service -> ${API_URL}/${generalGroupName}${query}`);
+  console.log(`fetch from service -> ${API_URL}/${generalGroupName}${query}`);
   if (!response.ok) {
     throw new Error('Error with fetching timetable');
   }
