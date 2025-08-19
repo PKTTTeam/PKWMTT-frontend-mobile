@@ -4,8 +4,7 @@ on:
   push:
     branches:
       - main
-    tags:
-      - "v*.*.*"
+      - ci/test
   pull_request:
     branches:
       - main
@@ -52,7 +51,7 @@ jobs:
         run: npm ci --include=dev
 
       - name: Generate React Native codegen
-        run: npx react-native-codegen
+        run: ./node_modules/.bin/react-native-codegen
 
       - name: Create .env file
         run: echo "${{ secrets.ENV_FILE }}" > .env
