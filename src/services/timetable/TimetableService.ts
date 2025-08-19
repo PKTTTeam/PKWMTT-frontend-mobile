@@ -24,6 +24,9 @@ export async function getTimetableByGroup(
   l?: string,
   p?: string,
 ): Promise<TimetableResponse> {
+  if (!generalGroupName) {
+    throw new Error('General group name is required to fetch timetable');
+  }
   const query = buildQuery([k, l, p]);
   const response = await fetch(`${API_URL}/${generalGroupName}${query}`);
   console.log(`fetch from service -> ${API_URL}/${generalGroupName}${query}`);
