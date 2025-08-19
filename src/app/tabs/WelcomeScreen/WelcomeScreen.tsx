@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import WelcomeStyles from './WelcomeStyles.ts';
 import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
+import WelcomeButtonStyles from './WelcomeButtonStyles.ts';
 
 import type { StackNavigationProp } from '@react-navigation/stack';
 
@@ -23,8 +24,12 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
       key: 'groups',
       render: () => (
         <>
-          <Text style={WelcomeStyles.welcomeText}>Witaj w aplikacji PKWMTT!</Text>
-          <Text style={WelcomeStyles.welcomeText}>Wybierz swoje grupy studenckie:</Text>
+          <Text style={WelcomeStyles.welcomeText}>
+            Witaj w aplikacji PKWMTT!
+          </Text>
+          <Text style={WelcomeStyles.welcomeText}>
+            Wybierz swoje grupy studenckie:
+          </Text>
           <View
             style={[WelcomeStyles.studentGroups, WelcomeStyles.elementsSpacing]}
           >
@@ -38,10 +43,13 @@ const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
             <GroupSelect groupName="Projektowa" />
             <GroupSelect groupName="Ćwiczeniowa" />
           </View>
-          <View
-            style={[WelcomeStyles.buttonContainer]}
-          >
-            <Button title="Przejdź dalej" onPress={handleContinue} />
+          <View style={[WelcomeStyles.buttonContainer]}>
+            <Button
+              title="Przejdź dalej"
+              onPress={handleContinue}
+              color={WelcomeButtonStyles.buttonON.color}
+              disabled={true}
+            />
           </View>
         </>
       ),
