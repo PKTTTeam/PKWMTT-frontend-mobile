@@ -13,6 +13,7 @@ export interface SettingsState {
   lastFetchedDean: string | null;
   activeDropdown: GroupKey | null;
   showEmptySlots: boolean;
+  error: string | null;
 
   actions: {
     setGroup: (key: GroupKey, value: string) => void;
@@ -21,5 +22,7 @@ export interface SettingsState {
     setActiveDropdown: (key: GroupKey | null) => void;
     setShowEmptySlots: (value: boolean) => void;
     toggleShowEmptySlots: () => void;
+    setError: (value: string) => void;
+    clearError: () => void;
   };
 }
