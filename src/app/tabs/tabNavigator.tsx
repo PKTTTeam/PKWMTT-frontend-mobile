@@ -97,22 +97,30 @@ const TabNavigator: React.FC = () => {
       <Tab.Screen
         name="Rozkład zajęć"
         component={TimetableScreen}
-        options={{ tabBarIcon: renderTimetableIcon }}
+        options={{
+          tabBarIcon: renderTimetableIcon,
+        }}
       />
       <Tab.Screen
         name="Kalendarz"
         component={CalendarScreen}
-        options={{ tabBarIcon: renderCalendarIcon }}
+        options={{
+          tabBarIcon: renderCalendarIcon,
+        }}
       />
       <Tab.Screen
         name="Kalkulator ETCS"
         component={CalculatorScreen}
-        options={{ tabBarIcon: renderCalcIcon }}
+        options={{
+          tabBarIcon: renderCalcIcon,
+        }}
       />
       <Tab.Screen
         name="Ustawienia"
         component={SettingsScreen}
-        options={{ tabBarIcon: renderSettingsIcon }}
+        options={{
+          tabBarIcon: renderSettingsIcon,
+        }}
       />
     </Tab.Navigator>
   );
