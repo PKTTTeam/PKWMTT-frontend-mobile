@@ -1,8 +1,4 @@
-import { BASE_URL, ANDROID_API_URL } from '@env';
-import { Platform } from 'react-native';
-
-const API_URL = Platform.OS === 'android' ? ANDROID_API_URL : BASE_URL;
-
+import { API_URL } from '@env';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
