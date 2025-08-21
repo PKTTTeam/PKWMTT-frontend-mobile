@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import TimetableScreen from './TimetableScreen/TimetableScreen';
@@ -20,7 +21,7 @@ const NavigationStyles = StyleSheet.create({
   },
 });
 
-const screenOptions = {
+const getScreenOptions = (insets: any) => ({
   headerShown: true,
   headerTitle: () => (
     <HeaderLogo width={200} height={150} style={NavigationStyles.HeaderLogo} />
@@ -33,6 +34,7 @@ const screenOptions = {
   headerStyle: {
     backgroundColor: '#181818',
     height: HEADER_HEIGHT,
+    paddingTop: insets.top,
   },
 
   headerTitleStyle: {
@@ -40,7 +42,11 @@ const screenOptions = {
   },
 
   tabBarStyle: {
-    height: TAB_BAR_HEIGHT,
+    height: TAB_BAR_HEIGHT + insets.bottom,
+    paddingBottom: insets.bottom > 0 ? 10 : 15,
+    paddingTop: 10,
+    backgroundColor: '#161514',
+    borderTopWidth: 0,
   },
 
   tabBarLabelStyle: {
@@ -53,7 +59,7 @@ const screenOptions = {
     marginTop: 10,
   },
   headerRight: () => <ActivityLegend />,
-};
+});
 
 const renderTimetableIcon = ({
   color,
@@ -84,8 +90,10 @@ const renderSettingsIcon = ({
 }) => <Icon name="settings" color={color} size={size} />;
 
 const TabNavigator: React.FC = () => {
+  const insets = useSafeAreaInsets();
+
   return (
-    <Tab.Navigator screenOptions={{ ...screenOptions }}>
+    <Tab.Navigator screenOptions={getScreenOptions(insets)}>
       <Tab.Screen
         name="Rozkład zajęć"
         component={TimetableScreen}
