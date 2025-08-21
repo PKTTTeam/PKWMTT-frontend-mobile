@@ -4,6 +4,7 @@ import TabNavigator from '../src/app/tabs/tabNavigator';
 import { render } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import checkActiveLesson from '../src/services/timetable/checkActiveLesson';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 describe('basic rendering', () => {
   test('renders App component without crash', () => {
@@ -11,10 +12,17 @@ describe('basic rendering', () => {
   });
 
   test('TabNavigator contains expected tabs', () => {
+    const initialMetrics = {
+      frame: { x: 0, y: 0, width: 320, height: 640 },
+      insets: { top: 1, left: 0, right: 0, bottom: 0 },
+    };
+
     const { getByText } = render(
-      <NavigationContainer>
-        <TabNavigator />
-      </NavigationContainer>,
+      <SafeAreaProvider initialMetrics={initialMetrics}>
+        <NavigationContainer>
+          <TabNavigator />
+        </NavigationContainer>
+      </SafeAreaProvider>,
     );
     expect(getByText('Rozkład zajęć') || getByText('Timetable')).toBeTruthy();
     expect(getByText('Kalendarz') || getByText('Calendar')).toBeTruthy();
