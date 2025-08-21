@@ -24,8 +24,16 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
       visible={visible}
       onRequestClose={onClose}
     >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
+      <TouchableOpacity
+        style={styles.modalOverlay}
+        onPress={onClose}
+        activeOpacity={1}
+      >
+        <TouchableOpacity
+          style={styles.modalContent}
+          activeOpacity={1}
+          onPress={e => e.stopPropagation()}
+        >
           <TouchableOpacity
             style={styles.closeBtn}
             onPress={onClose}
@@ -46,8 +54,8 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
               </View>
             ))}
           </View>
-        </View>
-      </View>
+        </TouchableOpacity>
+      </TouchableOpacity>
     </Modal>
   );
 };
