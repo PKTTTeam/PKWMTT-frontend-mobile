@@ -1,8 +1,4 @@
-import { BASE_URL, ANDROID_API_URL } from '@env';
-import { Platform } from 'react-native';
-
-const API_URL = Platform.OS === 'android' ? ANDROID_API_URL : BASE_URL;
-
+import { API_URL } from '@env';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,6 +24,7 @@ export const useSettingsStore = create<SettingsState>()(
       lastFetchedDean: null,
       activeDropdown: null,
       showEmptySlots: false,
+      error: null,
 
       actions: {
         setGroup: (key, value) => {
@@ -61,12 +58,16 @@ export const useSettingsStore = create<SettingsState>()(
                 groups: { ...get().groups, dean: data[0] },
                 options: { ...get().options, dean: data }, // Store all dean options
                 loading: false,
+                error: null,
               });
               await get().actions.fetchDependentGroups(data[0]);
             }
-          } catch (e) {
+          } catch (e: any) {
             console.error('Failed to fetch dean groups:', e);
-            set({ loading: false });
+            set({
+              loading: false,
+              error: e.message || 'Blad pobierania grupy dziekanskiej',
+            });
           }
         },
 
@@ -100,6 +101,7 @@ export const useSettingsStore = create<SettingsState>()(
               options: newOptions,
               lastFetchedDean: deanGroup,
               loading: false,
+              error: null,
               groups: {
                 ...get().groups,
                 comp:
@@ -116,9 +118,12 @@ export const useSettingsStore = create<SettingsState>()(
                     : undefined,
               },
             });
-          } catch (e) {
+          } catch (e: any) {
             console.error('Failed to fetch dependent groups:', e);
-            set({ loading: false });
+            set({
+              loading: false,
+              error: e.message || 'Blad pobierania grup zaleznych',
+            });
           }
         },
         setActiveDropdown(key) {
@@ -129,6 +134,12 @@ export const useSettingsStore = create<SettingsState>()(
         },
         setShowEmptySlots(value) {
           set({ showEmptySlots: value });
+        },
+        clearError() {
+          set({ error: null });
+        },
+        setError(value: string) {
+          set({ error: value });
         },
       },
     }),

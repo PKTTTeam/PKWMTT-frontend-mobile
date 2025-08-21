@@ -25,6 +25,8 @@ import {
 } from '../../../store/settingsStore';
 import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
+import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
+
 const LessonSeparator = () => {
   return <View style={styles.separator} />;
 };
@@ -44,6 +46,10 @@ const TimetableScreen = () => {
   const [isOddWeek, setIsOddWeek] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  //state for error modal
+  const error = useSettingsStore(state => state.error);
+  const { clearError, setError } = useSettingsActions();
 
   // Get settings from store
   const groups = useSettingsStore(state => state.groups);
@@ -107,6 +113,7 @@ const TimetableScreen = () => {
         setCurrentDayIndex(index);
       } catch (err: any) {
         if (err.response) {
+          setError(err.message || 'Server error');
           // Server responded with a status outside 2xx
           console.error('Server responded with error:', {
             status: err.response.status,
@@ -115,12 +122,14 @@ const TimetableScreen = () => {
           });
         } else if (err.request) {
           // Request was made but no response received
+          setError(err.message || 'No response from server');
           console.error('No response received from server:', err.request);
         } else {
           // Something else went wrong
+          setError(err.message || 'Request error');
           console.error('Error setting up request:', err.message);
         }
-
+        setError(err.message || 'Network error');
         // Log full error for debugging
         console.error('Full error object:', err);
       }
@@ -143,12 +152,14 @@ const TimetableScreen = () => {
         ),
       ]);
       setAHours(hours);
-      setTimetable(timetableResponse.data);
-    } catch (err) {
+      setTimetable([...timetableResponse.data]);
+    } catch (err: any) {
       console.error('Refresh failed', err);
+      setError(err.message || 'Refresh error');
     } finally {
       setRefreshing(false);
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups.dean, groups.comp, groups.lab, groups.proj]);
 
   const navigateToNextDay = () => {
@@ -327,6 +338,15 @@ const TimetableScreen = () => {
           />
         )}
       </View>
+
+      <ConnectionAlertModal
+        visible={!!error}
+        onRetry={() => {
+          clearError();
+          onRefresh();
+        }}
+        onClose={clearError}
+      />
     </View>
   );
 };

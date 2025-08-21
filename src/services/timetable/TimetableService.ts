@@ -1,7 +1,5 @@
-import { ANDROID_API_URL } from '@env';
+import { API_URL } from '@env';
 import { TimetableResponse } from '../../types/global';
-
-const API_URL = ANDROID_API_URL;
 
 function buildQuery(params?: (string | undefined)[]): string {
   if (!params || params.length === 0) return '';
