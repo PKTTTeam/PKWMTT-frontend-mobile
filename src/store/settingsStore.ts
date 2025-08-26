@@ -9,13 +9,13 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set, get) => ({
       groups: {
-        dean: '',
+        dean: '11A1',
         lab: undefined,
         proj: undefined,
         comp: undefined,
       },
       options: {
-        dean: [],
+        dean: ['11A1'],
         lab: [],
         proj: [],
         comp: [],
