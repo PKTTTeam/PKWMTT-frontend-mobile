@@ -32,9 +32,7 @@ export default function CalendarEvents({ selectedDate, events }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.dateHeader}>
-        <Text
-          style={[styles.dateText, !selectedDate && styles.placeholderDateText]}
-        >
+        <Text style={[styles.dateText, !selectedDate && styles.selectDateText]}>
           {parseDate(selectedDate) || 'Wybierz datę'}
         </Text>
         <TouchableOpacity style={styles.addButton}>
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
     right: 0,
     transform: [{ translateY: 10 }],
   },
-  placeholderDateText: {
+  selectDateText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#7B79FF',
