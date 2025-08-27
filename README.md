@@ -15,7 +15,17 @@
 
 ---
 
-## 📋 Prerequisites
+---
+
+### ⚙️ Setup for normal use case
+
+- For testing or side-loading on your Android device, go to the [Releases](https://github.com/PKTTTeam/PKWMTT-frontend-mobile/releases) section, download the newest ```.apk```, and install it manually.
+
+- For **Google Play distribution**, the app is built as an ```.aab``` (Android App Bundle) and uploaded directly to the Play Store. End-users should normally download it from Google Play.
+
+---
+
+## 📋 Prerequisites for Development
 Before setting up the project, ensure you have the following installed:
 
 - **OpenJDK 20** - Required for Android development
@@ -24,7 +34,7 @@ Before setting up the project, ensure you have the following installed:
 - **Node.js** (version 18 or higher recommended)
 - **npm**
 
-## ⚙️ Setup & Installation
+## ⚙️ Setup & Installation for Development
 
 ### 1. Clone the repository
 
@@ -122,8 +132,17 @@ For questions, suggestions, or collaboration:
   <img width="232" height="485" alt="Timetable Screen" src="https://github.com/user-attachments/assets/06ca269c-d267-4e51-9e16-c1819dc8b3c3" />
 </td>
 <td align="center">
+  <strong>Calendar Screen</strong><br>
+  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/0ceacf1d-9734-466f-8ff9-28da2fc220da" />
+</td>
+<td align="center">
   <strong>Activity Legend Modal</strong><br>
-  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/45b1a65e-b1ff-4684-aea5-33ed8b20e308" />\
+  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/45b1a65e-b1ff-4684-aea5-33ed8b20e308" />
+</td>
+<td align="center">
+  <strong>Connection Alert Modal</strong><br>
+  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/441f77fb-576a-493b-aed4-02a0393377a7" />
+</td>
 </tr>
 </table>
 
