@@ -56,7 +56,7 @@ const TimetableScreen = () => {
   const loading = useSettingsStore(state => state.loading);
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
 
-  const { fetchInitialDeanGroups } = useSettingsActions();
+  const { fetchInitialDeanGroups, fetchDependentGroups } = useSettingsActions();
 
   const navigationRef = useRef({
     currentDayIndex,
@@ -142,6 +142,13 @@ const TimetableScreen = () => {
     setRefreshing(true);
 
     try {
+      //refresh dean,dep grps
+
+      await fetchInitialDeanGroups();
+      if (groups.dean) {
+        await fetchDependentGroups(groups.dean);
+      }
+
       const [hours, timetableResponse] = await Promise.all([
         getAcademicHours(),
         getTimetableByGroup(

@@ -102,3 +102,4 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           files: android/app/build/outputs/apk/release/app-release.apk
+          name: PKWMTT-${{ github.ref_name }}.apk

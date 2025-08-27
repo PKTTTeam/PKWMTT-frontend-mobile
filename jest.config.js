@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'react-native',
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-reanimated|react-native-vector-icons|react-native-switch-toggle)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-reanimated|react-native-vector-icons|react-native-switch-toggle|react-native-calendars|react-native-swipe-gestures)/)',
   ],
   moduleNameMapper: {
     '\\.svg$': '<rootDir>/__mocks__/svgMock.js',
