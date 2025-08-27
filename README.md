@@ -133,15 +133,15 @@ For questions, suggestions, or collaboration:
 </td>
 <td align="center">
   <strong>Calendar Screen</strong><br>
-  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/0ceacf1d-9734-466f-8ff9-28da2fc220da" />
+  <img width="232" height="485" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/0ceacf1d-9734-466f-8ff9-28da2fc220da" />
 </td>
 <td align="center">
   <strong>Activity Legend Modal</strong><br>
-  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/45b1a65e-b1ff-4684-aea5-33ed8b20e308" />
+  <img width="232" height="485" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/45b1a65e-b1ff-4684-aea5-33ed8b20e308" />
 </td>
 <td align="center">
   <strong>Connection Alert Modal</strong><br>
-  <img width="236" height="481" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/441f77fb-576a-493b-aed4-02a0393377a7" />
+  <img width="232" height="485" alt="Activity Legend Modal" src="https://github.com/user-attachments/assets/441f77fb-576a-493b-aed4-02a0393377a7" />
 </td>
 </tr>
 </table>
