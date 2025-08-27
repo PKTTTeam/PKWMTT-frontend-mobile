@@ -28,8 +28,8 @@ const getScreenOptions = (insets: any) => ({
   ),
   tabBarActiveTintColor: '#8d95fe',
   tabBarInactiveTintColor: 'white',
-  tabBarInactiveBackgroundColor: '#161514',
-  tabBarActiveBackgroundColor: '#161514',
+  tabBarInactiveBackgroundColor: '#181818',
+  tabBarActiveBackgroundColor: '#181818',
 
   headerStyle: {
     backgroundColor: '#181818',
@@ -45,7 +45,7 @@ const getScreenOptions = (insets: any) => ({
     height: TAB_BAR_HEIGHT + insets.bottom,
     paddingBottom: insets.bottom > 0 ? 10 : 15,
     paddingTop: 10,
-    backgroundColor: '#161514',
+    backgroundColor: '#181818',
     borderTopWidth: 0,
   },
 

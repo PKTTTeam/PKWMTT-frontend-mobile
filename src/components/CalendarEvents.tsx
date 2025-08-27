@@ -1,0 +1,118 @@
+import React from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+
+type Event = {
+  id: string;
+  title: string;
+  time: string;
+  color: string;
+};
+
+type Props = {
+  selectedDate: string;
+  events: Event[];
+};
+
+export default function CalendarEvents({ selectedDate, events }: Props) {
+  let parseDate = (dateString: string): string => {
+    if (!dateString) return '';
+    //eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [year, month, day] = dateString.split('-');
+    return `${day}.${month}`;
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.dateHeader}>
+        <Text style={styles.dateText}>
+          {parseDate(selectedDate) || 'Wybierz datę'}
+        </Text>
+        <TouchableOpacity style={styles.addButton}>
+          <MaterialIcon name="add-circle-outline" color={'white'} size={30} />
+        </TouchableOpacity>
+      </View>
+
+      <FlatList
+        data={events}
+        keyExtractor={item => item.id}
+        ListEmptyComponent={<Text style={styles.emptyText}>Brak wydarzeń</Text>}
+        renderItem={({ item }) => (
+          <View style={[styles.eventCard, { backgroundColor: item.color }]}>
+            <Text style={styles.eventText}>
+              {item.time} {item.title}
+            </Text>
+            <View style={styles.actions}>
+              <TouchableOpacity>
+                <MaterialIcon name="mode" size={20} />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <MaterialIcon name="restore-from-trash" size={20} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 20,
+    backgroundColor: '#1e1f1f',
+  },
+  dateHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 15,
+    position: 'relative',
+  },
+  dateText: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: '#7B79FF',
+    textAlign: 'center',
+  },
+  addButton: {
+    position: 'absolute',
+    right: 0,
+    transform: [{ translateY: 10 }],
+  },
+  emptyText: {
+    marginTop: 16,
+    textAlign: 'center',
+    color: '#999',
+  },
+  eventCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 12,
+    padding: 12,
+    borderRadius: 12,
+  },
+  eventText: {
+    color: '#000',
+    fontWeight: '600',
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  actionIcon: {
+    color: '#fff',
+    fontSize: 16,
+    marginLeft: 8,
+  },
+});
