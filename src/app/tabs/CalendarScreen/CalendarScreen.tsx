@@ -48,15 +48,22 @@ export default function CalendarScreen() {
             textMonthFontWeight: '600',
             textDayHeaderFontWeight: '600',
             textDayFontSize: 14,
-            textMonthFontSize: 16,
-            textDayHeaderFontSize: 14,
+            textMonthFontSize: 14,
+            textDayHeaderFontSize: 12,
           }}
           markingType={'multi-dot'}
           onDayPress={day => setSelectedDate(day.dateString)}
           markedDates={{
-            ...(selectedDate
-              ? { [selectedDate]: { selected: true, selectedColor: '#4F46E5' } }
-              : {}),
+            ...Object.fromEntries(
+              Object.entries(events).map(([date, eventList]) => [
+                date,
+                {
+                  dots: eventList.map(e => ({ key: e.id, color: e.color })),
+                  selected: date === selectedDate,
+                  selectedColor: date === selectedDate ? '#4F46E5' : undefined,
+                },
+              ]),
+            ),
           }}
         />
 
