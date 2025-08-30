@@ -18,8 +18,7 @@ type CalcItem = {
 };
 
 function CalculatorScreen() {
-  const [subjectList, setSubjectList] = useState<CalcItem[]>([
-  ]);
+  const [subjectList, setSubjectList] = useState<CalcItem[]>([]);
 
   const [subjectName, setSubjectName] = useState('');
   const [ectsPoints, setEctsPoints] = useState('');
@@ -27,29 +26,40 @@ function CalculatorScreen() {
 
   const sbujectInput = useRef<TextInput>(null);
   const ectsInput = useRef<TextInput>(null);
-  const gradeInput= useRef<TextInput>(null);
+  const gradeInput = useRef<TextInput>(null);
 
   const averageGrade = () => {
     if (subjectList.length === 0) return 0;
-    const total = subjectList.reduce((sum, item) => sum + parseFloat(item.grade), 0);
+    const total = subjectList.reduce(
+      (sum, item) => sum + parseFloat(item.grade),
+      0,
+    );
     return (total / subjectList.length).toFixed(2);
-  }
+  };
 
   const totalEcts = () => {
     if (subjectList.length === 0) return 0;
-    const total = subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
+    const total = subjectList.reduce(
+      (sum, item) => sum + parseInt(item.ects, 10),
+      0,
+    );
     return total;
-  }
+  };
 
   const weightedAverage = () => {
     if (subjectList.length === 0) return 0;
-    const totalWeightedGrades = subjectList.reduce((sum, item) => sum + (parseFloat(item.grade) * parseInt(item.ects, 10)), 0);
-    const totalEctsPoints = subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
+    const totalWeightedGrades = subjectList.reduce(
+      (sum, item) => sum + parseFloat(item.grade) * parseInt(item.ects, 10),
+      0,
+    );
+    const totalEctsPoints = subjectList.reduce(
+      (sum, item) => sum + parseInt(item.ects, 10),
+      0,
+    );
     return (totalWeightedGrades / totalEctsPoints).toFixed(2);
-  }
+  };
 
   const addSubject = () => {
-
     if (!subjectName.trim()) {
       // subjectName validation
       sbujectInput.current?.focus();
@@ -80,7 +90,6 @@ function CalculatorScreen() {
 
     // if (!subjectName || !ectsPoints || !grade) return;
 
-
     const newItem: CalcItem = {
       key: uuid.v4().toString(),
       subjectName,
@@ -107,9 +116,15 @@ function CalculatorScreen() {
         <Text style={styles.buttonText}>X</Text>
       </TouchableOpacity>
       <View style={styles.itemContainer}>
-        <Text style={[styles.text, styles.singleItem]}>{item.subjectName}</Text>
-        <Text style={[styles.text, styles.singleItem]}>{item.ects}</Text>
-        <Text style={[styles.text, styles.singleItem]}>{item.grade}</Text>
+        <Text style={[styles.text, styles.singleItem, styles.leftText]}>
+          {item.subjectName}
+        </Text>
+        <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+          {item.ects}
+        </Text>
+        <Text style={[styles.text, styles.singleItem, styles.rightText]}>
+          {item.grade}
+        </Text>
       </View>
     </View>
   );
@@ -122,18 +137,33 @@ function CalculatorScreen() {
         <Text style={styles.text}>Ocena</Text>
       </View>
 
+      {subjectList.length === 0 && (
+        <View style={styles.noItemsInfo}>
+          <Text style={styles.noItemsInfoText}>
+            Brak przedmiotów do wyświetlenia
+          </Text>
+        </View>
+      )}
+
       <FlatList
         data={subjectList}
         renderItem={renderItem}
         keyExtractor={item => item.key}
       />
-      
+
       <View>
         <View style={styles.summaryContainer}>
-          <Text style={styles.text}>Średnia ocen {averageGrade()}</Text>
-          <Text style={styles.text}>Suma ECTS {totalEcts()}</Text>
-          <Text style={styles.text}>Średnia ważona  {weightedAverage()}</Text>
-        </View>
+          <View style={styles.summarySpacer}>
+            <Text style={[styles.text,styles.singleItem,styles.centerText]}>Średnia ocen</Text>
+            <Text style={[styles.text,styles.singleItem,styles.centerText]}>Suma ECTS</Text>
+            <Text style={[styles.text,styles.singleItem,styles.centerText]}>Średnia ważona</Text>
+          </View>
+          <View style={styles.summarySpacer}>
+            <Text style={[styles.text, styles.singleItem,styles.centerText]}>{averageGrade()}</Text>
+            <Text style={[styles.text, styles.singleItem,styles.centerText]}>{totalEcts()}</Text>
+            <Text style={[styles.text, styles.singleItem,styles.centerText]}>{weightedAverage()}</Text>
+          </View>
+        </View>       
       </View>
 
       <View style={styles.bottomMenu}>
@@ -153,7 +183,6 @@ function CalculatorScreen() {
         />
         <TextInput
           ref={gradeInput}
-
           style={styles.userInput}
           placeholder="ocena..."
           value={grade}

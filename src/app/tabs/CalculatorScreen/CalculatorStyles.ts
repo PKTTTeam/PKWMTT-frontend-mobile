@@ -5,31 +5,40 @@ const calculatorStyles = StyleSheet.create({
     display: 'flex',
     height: '100%',
     // height: '80%', // j
-    backgroundColor: 'rgba(61, 12, 12, 1)ff',
+    backgroundColor: '#1c1c1c',
   },
   text: {
     fontSize: 16,
     color: 'white',
   },
   itemContainer: {
-    display: 'flex',
-    alignSelf: 'center',
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 10,
-    width: '90%',
-    backgroundColor: '#505050ff',
-
     flexDirection: 'row',
+    width: '90%',
+    height: '100%',
+    backgroundColor: '#313131',
+    // borderRadius: 50,
+    paddingHorizontal: 15,
   },
+
   singleItem: {
-    display: 'flex',
-    width: '45%',
-    borderColor: 'black',
-    borderWidth: 1,
+    width: '33.33%',
+    // borderColor: 'black',
+    // borderWidth: 1,
+  },
+  leftText: {
+    textAlign: 'left',
+  },
+  centerText: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  rightText: {
+    textAlign: 'right',
+    textAlignVertical: 'center',
   },
   rootItemContainer: {
-    backgroundColor: '#fbff00ff',
+    // backgroundColor: '#b43838ff',
+
     display: 'flex',
     flexDirection: 'row',
     gap: 5,
@@ -39,10 +48,10 @@ const calculatorStyles = StyleSheet.create({
     alignItems: 'center',
   },
   headerContainer: {
+    // backgroundColor: '#181414',
     alignSelf: 'center',
     marginTop: 5,
-    marginLeft: 10,
-    // backgroundColor: '#ff0000ff',
+    marginLeft: 15,
 
     display: 'flex',
     flexDirection: 'row',
@@ -55,17 +64,19 @@ const calculatorStyles = StyleSheet.create({
     backgroundColor: '#2e3e57ff',
   },
   summaryContainer: {
-    backgroundColor: '#208135ff',
-    marginTop: 10,
+    // backgroundColor: '#208135ff',
+    paddingLeft: 15,
+    paddingRight: 15,
+
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  summarySpacer: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 10,
-    justifyContent: 'space-between',
-    paddingLeft: 5,
-    paddingRight: 5,
   },
   button: {
-    backgroundColor: '#000000ff',
+    backgroundColor: '#e9e3e3ff',
     borderRadius: 50,
     width: 25,
     height: 25,
@@ -73,11 +84,21 @@ const calculatorStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontWeight: 'bold',
   },
   userInput: {
     backgroundColor: '#494749ff',
+  },
+  noItemsInfo: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noItemsInfoText: {
+    fontSize: 18,
+    fontStyle: 'italic',
+    color: '#a0a0a0ff',
   },
 });
 
