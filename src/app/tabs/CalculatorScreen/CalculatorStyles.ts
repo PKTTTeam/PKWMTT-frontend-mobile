@@ -12,17 +12,21 @@ const calculatorStyles = StyleSheet.create({
     color: 'white',
   },
   itemContainer: {
+    display: 'flex',
     alignSelf: 'center',
     paddingLeft: 15,
     paddingRight: 15,
     borderRadius: 10,
-
     width: '90%',
-
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     backgroundColor: '#505050ff',
+
+    flexDirection: 'row',
+  },
+  singleItem: {
+    display: 'flex',
+    width: '45%',
+    borderColor: 'black',
+    borderWidth: 1,
   },
   rootItemContainer: {
     backgroundColor: '#fbff00ff',
@@ -31,6 +35,8 @@ const calculatorStyles = StyleSheet.create({
     gap: 5,
     marginTop: 5,
     alignSelf: 'center',
+
+    alignItems: 'center',
   },
   headerContainer: {
     alignSelf: 'center',
@@ -55,7 +61,7 @@ const calculatorStyles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     justifyContent: 'space-between',
-        paddingLeft: 5,
+    paddingLeft: 5,
     paddingRight: 5,
   },
   button: {
@@ -72,8 +78,7 @@ const calculatorStyles = StyleSheet.create({
   },
   userInput: {
     backgroundColor: '#494749ff',
-    
-  }
+  },
 });
 
 export default calculatorStyles;

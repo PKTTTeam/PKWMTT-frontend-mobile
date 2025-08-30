@@ -35,6 +35,19 @@ function CalculatorScreen() {
     return (total / subjectList.length).toFixed(2);
   }
 
+  const totalEcts = () => {
+    if (subjectList.length === 0) return 0;
+    const total = subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
+    return total;
+  }
+
+  const weightedAverage = () => {
+    if (subjectList.length === 0) return 0;
+    const totalWeightedGrades = subjectList.reduce((sum, item) => sum + (parseFloat(item.grade) * parseInt(item.ects, 10)), 0);
+    const totalEctsPoints = subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
+    return (totalWeightedGrades / totalEctsPoints).toFixed(2);
+  }
+
   const addSubject = () => {
 
     if (!subjectName.trim()) {
@@ -94,9 +107,9 @@ function CalculatorScreen() {
         <Text style={styles.buttonText}>X</Text>
       </TouchableOpacity>
       <View style={styles.itemContainer}>
-        <Text style={styles.text}>{item.subjectName}</Text>
-        <Text style={styles.text}>{item.ects}</Text>
-        <Text style={styles.text}>{item.grade}</Text>
+        <Text style={[styles.text, styles.singleItem]}>{item.subjectName}</Text>
+        <Text style={[styles.text, styles.singleItem]}>{item.ects}</Text>
+        <Text style={[styles.text, styles.singleItem]}>{item.grade}</Text>
       </View>
     </View>
   );
@@ -118,8 +131,8 @@ function CalculatorScreen() {
       <View>
         <View style={styles.summaryContainer}>
           <Text style={styles.text}>Średnia ocen {averageGrade()}</Text>
-          <Text style={styles.text}>Suma ECTS</Text>
-          <Text style={styles.text}>Średnia ważona ECTS</Text>
+          <Text style={styles.text}>Suma ECTS {totalEcts()}</Text>
+          <Text style={styles.text}>Średnia ważona  {weightedAverage()}</Text>
         </View>
       </View>
 
