@@ -1,4 +1,4 @@
-import { API_URL } from '@env';
+import { API_URL, API_KEY } from '@env';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -49,7 +49,12 @@ export const useSettingsStore = create<SettingsState>()(
         fetchInitialDeanGroups: async () => {
           set({ loading: true });
           try {
-            const res = await fetch(`${API_URL}/groups/general`);
+            const res = await fetch(`${API_URL}/groups/general`, {
+              headers: {
+                'Content-Type': 'application/json',
+                'X-API-KEY': API_KEY,
+              },
+            });
             console.log(`fetch from store -> ${API_URL}/groups/general}`);
             const data: string[] = await res.json();
 
@@ -78,6 +83,12 @@ export const useSettingsStore = create<SettingsState>()(
           try {
             const res = await fetch(
               `${API_URL}/groups/${encodeURIComponent(deanGroup)}`,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-API-KEY': API_KEY,
+                },
+              },
             );
             console.log(
               `fetch from store -> ${API_URL}/groups/${encodeURIComponent(
