@@ -52,7 +52,9 @@ jobs:
         run: npm ci --include=dev
 
       - name: Create .env file
-        run: echo "API_URL=${{ secrets.API_URL }}" > .env
+        run: |
+         echo "API_URL=${{ secrets.API_URL }}" > .env
+         echo "API_KEY=${{ secrets.API_KEY }}" >> .env
 
       - name: Set up JDK
         uses: actions/setup-java@v4
