@@ -33,6 +33,7 @@ export default function CalendarScreen() {
     <View style={styles.container}>
       <View style={styles.calendarContainer}>
         <Calendar
+          firstDay={1}
           theme={{
             backgroundColor: '#181818',
             calendarBackground: '#181818',

@@ -16,6 +16,9 @@ export function getCorrectColor(color: string): string {
     case 'K':
       newColor = '#cf2fee';
       break;
+    case 'S':
+      newColor = '#aaaa15';
+      break;
     default:
       newColor = 'white';
   }

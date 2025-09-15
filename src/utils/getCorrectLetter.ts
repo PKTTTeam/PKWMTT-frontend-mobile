@@ -10,6 +10,8 @@ export default function getCorrectLetter(lesson: string): string {
       return 'W';
     case 'EXERCISES':
       return 'Ć';
+    case 'SEMINAR':
+      return 'S';
     default:
       return '';
   }

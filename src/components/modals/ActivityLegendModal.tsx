@@ -11,6 +11,7 @@ const activityTypes = [
   { letter: 'L', label: 'Laboratorium' },
   { letter: 'K', label: 'Laboratorium Komputerowe' },
   { letter: 'P', label: 'Projekt' },
+  { letter: 'S', label: 'Seminarium' },
 ];
 
 const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
