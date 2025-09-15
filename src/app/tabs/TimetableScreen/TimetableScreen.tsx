@@ -323,9 +323,13 @@ const TimetableScreen = () => {
         </View>
 
         {/* Week indicator */}
-        <View style={styles.weekIndicator}>
+        <TouchableOpacity
+          style={styles.weekIndicator}
+          onPress={() => setIsOddWeek(prev => !prev)}
+        >
+          <Icon name={'sync-alt'} size={15} color={'white'} />
           <Text style={styles.weekText}>{getWeekTypeText()}</Text>
-        </View>
+        </TouchableOpacity>
 
         {/* Lessons list */}
         {timetable[currentDayIndex] && (

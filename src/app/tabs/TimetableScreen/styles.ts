@@ -13,7 +13,9 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   weekIndicator: {
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    columnGap: 5,
   },
   weekText: {
     color: 'white',
