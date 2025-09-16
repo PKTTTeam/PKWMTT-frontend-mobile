@@ -42,8 +42,9 @@ async function apiFetch<T = unknown>(
     }
     throw new Error(errorMessage);
   }
-
-  return response.json() as Promise<T>;
+  const responseData = await response.json();
+  console.log(responseData);
+  return responseData as Promise<T>;
 }
 
 export default apiFetch;

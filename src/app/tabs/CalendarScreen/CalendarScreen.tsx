@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import CalendarEvents from '../../../components/CalendarEvents';
+import { getExamsByGroup } from '../../../services/calendar/CalendarService';
 
 type Event = {
   id: string;
@@ -11,6 +12,9 @@ type Event = {
 };
 
 export default function CalendarScreen() {
+  useEffect(() => {
+    getExamsByGroup();
+  }, []);
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [events] = useState<Record<string, Event[]>>({
     '2025-08-27': [
@@ -65,6 +69,15 @@ export default function CalendarScreen() {
                 },
               ]),
             ),
+            ...(selectedDate && !events[selectedDate]
+              ? {
+                  [selectedDate]: {
+                    selected: true,
+                    selectedColor: '#4F46E5',
+                    selectedTextColor: '#ffffff',
+                  },
+                }
+              : {}),
           }}
         />
 
