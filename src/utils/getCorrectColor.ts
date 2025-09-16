@@ -20,7 +20,7 @@ export function getCorrectColor(color: string): string {
       newColor = '#aaaa15';
       break;
     default:
-      newColor = 'white';
+      newColor = '';
   }
   return newColor;
 }

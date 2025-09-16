@@ -59,8 +59,13 @@ export const useSettingsStore = create<SettingsState>()(
             const data: string[] = await res.json();
 
             if (data.length > 0) {
+              const currentDean = get().groups.dean;
+              const usableDean =
+                currentDean && data.includes(currentDean)
+                  ? currentDean
+                  : data[0];
               set({
-                groups: { ...get().groups, dean: data[0] },
+                groups: { ...get().groups, dean: usableDean },
                 options: { ...get().options, dean: data }, // Store all dean options
                 loading: false,
                 error: null,
