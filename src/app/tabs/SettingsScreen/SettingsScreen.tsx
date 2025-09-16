@@ -23,7 +23,6 @@ const ShowEmptySlotsToggle = () => {
   );
 };
 function SettingsScreen() {
-  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>

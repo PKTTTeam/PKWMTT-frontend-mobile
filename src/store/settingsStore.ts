@@ -38,8 +38,11 @@ export const useSettingsStore = create<SettingsState>()(
               groups: { ...state.groups, [key]: value },
             };
 
-            // Automatically fetch dependents when dean changes
-            if (key === 'dean' && value !== state.lastFetchedDean) {
+            if (key === 'dean') {
+              newState.groups.comp = undefined;
+              newState.groups.lab = undefined;
+              newState.groups.proj = undefined;
+
               get().actions.fetchDependentGroups(value);
             }
 
