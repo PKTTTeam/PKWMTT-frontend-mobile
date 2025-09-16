@@ -49,7 +49,7 @@ function SettingsScreen() {
             <Text
               style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
             >
-              Autentykacja
+              Autoryzacja
             </Text>
             <View>
               <View style={[SettingsStyles.elementsSpacing]}>
