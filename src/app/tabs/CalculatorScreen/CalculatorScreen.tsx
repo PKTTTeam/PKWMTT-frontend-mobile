@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import styles from './CalculatorStyles';
 import uuid from 'react-native-uuid';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type CalcItem = {
   key: string;
@@ -27,23 +28,23 @@ function CalculatorScreen() {
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
-  const averageGrade = () => {
-    if (subjectList.length === 0) return 0;
-    const total = subjectList.reduce(
-      (sum, item) => sum + parseFloat(item.grade),
-      0,
-    );
-    return (total / subjectList.length).toFixed(2);
-  };
+  // const averageGrade = () => {
+  //   if (subjectList.length === 0) return 0;
+  //   const total = subjectList.reduce(
+  //     (sum, item) => sum + parseFloat(item.grade),
+  //     0,
+  //   );
+  //   return (total / subjectList.length).toFixed(2);
+  // };
 
-  const totalEcts = () => {
-    if (subjectList.length === 0) return 0;
-    const total = subjectList.reduce(
-      (sum, item) => sum + parseInt(item.ects, 10),
-      0,
-    );
-    return total;
-  };
+  // const totalEcts = () => {
+  //   if (subjectList.length === 0) return 0;
+  //   const total = subjectList.reduce(
+  //     (sum, item) => sum + parseInt(item.ects, 10),
+  //     0,
+  //   );
+  //   return total;
+  // };
 
   const weightedAverage = () => {
     if (subjectList.length === 0) return 0;
@@ -73,10 +74,9 @@ function CalculatorScreen() {
       return;
     }
 
-    const gradeFloat = parseFloat(grade);
-    if (isNaN(gradeFloat) || gradeFloat < 0) {
+    const gradePattern = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
+    if (!gradePattern.test(grade)) {
       gradeInput.current?.focus();
-      // alert('Ocena musi być liczbą większą lub równą 0');
       return;
     }
 
@@ -87,7 +87,6 @@ function CalculatorScreen() {
       return;
     }
 
-    // if (!subjectName || !ectsPoints || !grade) return;
 
     const newItem: CalcItem = {
       key: uuid.v4().toString(),
@@ -130,83 +129,74 @@ function CalculatorScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.text}>Nazwa</Text>
-        <Text style={styles.text}>Wartość ECTS</Text>
-        <Text style={styles.text}>Ocena</Text>
-      </View>
-
-      {subjectList.length === 0 && (
-        <View style={styles.noItemsInfo}>
-          <Text style={styles.noItemsInfoText}>
-            Brak przedmiotów do wyświetlenia
-          </Text>
+      <View style={styles.tile}>
+        <View style={styles.tileHeader}>
+          <MaterialIcons name="add" size={25} color="white" />
+          <Text style={styles.tileTitle}>Dodaj Przedmiot</Text>
         </View>
-      )}
 
-      <FlatList
-        data={subjectList}
-        renderItem={renderItem}
-        keyExtractor={item => item.key}
-      />
-
-      <View>
-        <View style={styles.summaryContainer}>
-          <View style={styles.summarySpacer}>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              Średnia ocen
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              Suma ECTS
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              Średnia ważona
-            </Text>
-          </View>
-          <View style={styles.summarySpacer}>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              {averageGrade()}
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              {totalEcts()}
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              {weightedAverage()}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.bottomMenu}>
+        <Text style={styles.tileInputName}>Nazwa Kursu</Text>
         <TextInput
           ref={sbujectInput}
-          style={styles.userInput}
-          placeholder="nazwa..."
-          placeholderTextColor={styles.userInput.color}
+          style={styles.userInputField}
+          placeholder="e.g Mathematics..."
+          placeholderTextColor={styles.userInputField.color}
           value={subjectName}
           onChangeText={setSubjectName}
         />
+
+        <Text style={styles.tileInputName}>Ilość ECTS</Text>
         <TextInput
           ref={ectsInput}
-          style={styles.userInput}
-          placeholder="ilość ECTS..."
-          placeholderTextColor={styles.userInput.color}
+          style={styles.userInputField}
+          placeholder="6"
+          placeholderTextColor={styles.userInputField.color}
           value={ectsPoints}
           onChangeText={setEctsPoints}
         />
+
+        <Text style={styles.tileInputName}>Ocena</Text>
         <TextInput
           ref={gradeInput}
-          style={styles.userInput}
+          style={styles.userInputField}
           placeholder="ocena..."
-          placeholderTextColor={styles.userInput.color}
+          placeholderTextColor={styles.userInputField.color}
           value={grade}
           onChangeText={setGrade}
         />
         <TouchableOpacity style={styles.button} onPress={addSubject}>
           <Text style={styles.buttonText}>Dodaj przedmiot</Text>
         </TouchableOpacity>
-        {/* <Button title="Usuń" onPress={} /> */}
       </View>
+
+      <View style={styles.tile}>
+        <View style={styles.tileHeader}>
+          <MaterialIcons name="school" size={25} color="white" />
+          <Text style={styles.tileTitle}>Twoje kursy</Text>
+        </View>
+
+        {subjectList.length === 0 && (
+          <Text style={styles.noItemsInfoText}>
+            Brak przedmiotów do wyświetlenia
+          </Text>
+        )}
+        <FlatList
+          data={subjectList}
+          renderItem={renderItem}
+          keyExtractor={item => item.key}
+        />
+      </View>
+
+      <View style={styles.tile}>
+        <View style={styles.summaryRow}>
+          <MaterialIcons name="calculate" size={30} color="white" />
+          <View style={styles.summaryCol}>
+            <Text style={styles.tileTitle}>{weightedAverage()}</Text>
+            <Text style={styles.tileTitle}>Średnia Ważona</Text>
+          </View>
+        </View>
+      </View>
+
     </View>
   );
 }

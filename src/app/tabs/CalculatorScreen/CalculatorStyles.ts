@@ -3,10 +3,92 @@ import { StyleSheet } from 'react-native';
 const calculatorStyles = StyleSheet.create({
   container: {
     display: 'flex',
+    flexDirection: 'column',
     height: '100%',
-    // height: '80%', // j
     backgroundColor: '#1c1c1c',
+
+    gap: 10,
   },
+  tile: {
+    backgroundColor: '#1c1c1c',
+    display: 'flex',
+    flexDirection: 'column',
+    borderWidth: 1.5,
+    borderColor: '#c2c2c2ff',
+
+    gap: 3,
+
+    height: 'auto',
+    paddingVertical: 5,
+    width: '95%',
+    alignSelf: 'center',
+    borderRadius: 8,
+  },
+  summaryRow: {
+    marginLeft: 15,
+    gap: 15,
+    display: 'flex',
+    // backgroundColor: '#6df300ff',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  summaryCol: {
+    display: 'flex',
+    // backgroundColor: '#f3cf00ff',
+    flexDirection: 'column',
+  },
+  tileTitle: {
+    color: 'white',
+    fontSize: 20,
+  },
+  tileHeader: {
+    paddingLeft: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  tileInputName: {
+    marginLeft: 15,
+    color: 'white',
+    fontSize: 14,
+  },
+  button: {
+    marginVertical: 6,
+
+    alignSelf: 'center',
+    width: '80%',
+    height: 45,
+    backgroundColor: '#e7e7e7ff',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#000000ff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  userInputField: {
+    borderWidth: 1,
+    borderColor: '#c2c2c2ff',
+    paddingHorizontal: 10,
+    borderBlockColor: '#c2c2c2ff',
+    borderRadius: 8,
+
+    color: 'white',
+    width: '90%',
+    alignSelf: 'center',
+  },
+  noItemsInfoText: {
+    marginLeft: 15,
+    fontSize: 18,
+    fontStyle: 'italic',
+    color: '#a0a0a0ff',
+  },
+
+  // =========================
+  // =========================
+  // =========================
   text: {
     fontSize: 16,
     color: 'white',
@@ -62,7 +144,7 @@ const calculatorStyles = StyleSheet.create({
   },
   bottomMenu: {
     backgroundColor: '#1b1b1bff',
-    paddingTop:'2%',
+    paddingTop: '2%',
   },
   summaryContainer: {
     // backgroundColor: '#208135ff',
@@ -76,10 +158,10 @@ const calculatorStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
-    deleteButton: {
+  deleteButton: {
     backgroundColor: '#e9e3e3ff',
     borderRadius: 50,
-    width: 25,
+    width: 20,
     height: 25,
     alignItems: 'center',
     justifyContent: 'center',
@@ -88,41 +170,11 @@ const calculatorStyles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
   },
-  button: {
-    alignSelf: "center",
-    marginBottom: '2%',
-    marginTop: '2%',
-    width: "80%",
-    height: 50,
-    backgroundColor: "#1b1b1bff",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#c2c2c2ff",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  userInput: {
-    backgroundColor: '#494749ff',
-    
-    color: 'white',
-    paddingLeft: 10,
-    width: '90%',
-    alignSelf: 'center',
-  },
+
   noItemsInfo: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  noItemsInfoText: {
-    fontSize: 18,
-    fontStyle: 'italic',
-    color: '#a0a0a0ff',
   },
 });
 
