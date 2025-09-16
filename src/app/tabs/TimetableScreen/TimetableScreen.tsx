@@ -93,6 +93,8 @@ const TimetableScreen = () => {
 
     async function initialiseData() {
       try {
+        if (!groups.dean)
+          throw new Error('General group name is required to fetch timetable');
         const [hours, timetableResponse] = await Promise.all([
           getAcademicHours(),
           getTimetableByGroup(
@@ -148,7 +150,8 @@ const TimetableScreen = () => {
       if (groups.dean) {
         await fetchDependentGroups(groups.dean);
       }
-
+      if (!groups.dean)
+        throw new Error('General group name is required to fetch timetable');
       const [hours, timetableResponse] = await Promise.all([
         getAcademicHours(),
         getTimetableByGroup(
