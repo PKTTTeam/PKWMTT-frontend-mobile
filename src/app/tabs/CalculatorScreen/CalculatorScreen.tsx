@@ -4,7 +4,6 @@ import {
   Text,
   FlatList,
   TextInput,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import styles from './CalculatorStyles';
@@ -110,10 +109,10 @@ function CalculatorScreen() {
   const renderItem = ({ item }: { item: CalcItem }) => (
     <View style={styles.rootItemContainer}>
       <TouchableOpacity
-        style={styles.button}
+        style={styles.deleteButton}
         onPress={deleteItem.bind(null, item.key)}
       >
-        <Text style={styles.buttonText}>X</Text>
+        <Text style={styles.deleteButtonText}>X</Text>
       </TouchableOpacity>
       <View style={styles.itemContainer}>
         <Text style={[styles.text, styles.singleItem, styles.leftText]}>
@@ -154,16 +153,28 @@ function CalculatorScreen() {
       <View>
         <View style={styles.summaryContainer}>
           <View style={styles.summarySpacer}>
-            <Text style={[styles.text,styles.singleItem,styles.centerText]}>Średnia ocen</Text>
-            <Text style={[styles.text,styles.singleItem,styles.centerText]}>Suma ECTS</Text>
-            <Text style={[styles.text,styles.singleItem,styles.centerText]}>Średnia ważona</Text>
+            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+              Średnia ocen
+            </Text>
+            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+              Suma ECTS
+            </Text>
+            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+              Średnia ważona
+            </Text>
           </View>
           <View style={styles.summarySpacer}>
-            <Text style={[styles.text, styles.singleItem,styles.centerText]}>{averageGrade()}</Text>
-            <Text style={[styles.text, styles.singleItem,styles.centerText]}>{totalEcts()}</Text>
-            <Text style={[styles.text, styles.singleItem,styles.centerText]}>{weightedAverage()}</Text>
+            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+              {averageGrade()}
+            </Text>
+            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+              {totalEcts()}
+            </Text>
+            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+              {weightedAverage()}
+            </Text>
           </View>
-        </View>       
+        </View>
       </View>
 
       <View style={styles.bottomMenu}>
@@ -171,6 +182,7 @@ function CalculatorScreen() {
           ref={sbujectInput}
           style={styles.userInput}
           placeholder="nazwa..."
+          placeholderTextColor={styles.userInput.color}
           value={subjectName}
           onChangeText={setSubjectName}
         />
@@ -178,6 +190,7 @@ function CalculatorScreen() {
           ref={ectsInput}
           style={styles.userInput}
           placeholder="ilość ECTS..."
+          placeholderTextColor={styles.userInput.color}
           value={ectsPoints}
           onChangeText={setEctsPoints}
         />
@@ -185,10 +198,13 @@ function CalculatorScreen() {
           ref={gradeInput}
           style={styles.userInput}
           placeholder="ocena..."
+          placeholderTextColor={styles.userInput.color}
           value={grade}
           onChangeText={setGrade}
         />
-        <Button title="Dodaj" onPress={addSubject} />
+        <TouchableOpacity style={styles.button} onPress={addSubject}>
+          <Text style={styles.buttonText}>Dodaj przedmiot</Text>
+        </TouchableOpacity>
         {/* <Button title="Usuń" onPress={} /> */}
       </View>
     </View>

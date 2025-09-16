@@ -61,7 +61,8 @@ const calculatorStyles = StyleSheet.create({
     paddingLeft: 15,
   },
   bottomMenu: {
-    backgroundColor: '#2e3e57ff',
+    backgroundColor: '#1b1b1bff',
+    paddingTop:'2%',
   },
   summaryContainer: {
     // backgroundColor: '#208135ff',
@@ -75,7 +76,7 @@ const calculatorStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
-  button: {
+    deleteButton: {
     backgroundColor: '#e9e3e3ff',
     borderRadius: 50,
     width: 25,
@@ -83,12 +84,35 @@ const calculatorStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonText: {
+  deleteButtonText: {
     color: 'black',
     fontWeight: 'bold',
   },
+  button: {
+    alignSelf: "center",
+    marginBottom: '2%',
+    marginTop: '2%',
+    width: "80%",
+    height: 50,
+    backgroundColor: "#1b1b1bff",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#c2c2c2ff",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
   userInput: {
     backgroundColor: '#494749ff',
+    
+    color: 'white',
+    paddingLeft: 10,
+    width: '90%',
+    alignSelf: 'center',
   },
   noItemsInfo: {
     flex: 1,
