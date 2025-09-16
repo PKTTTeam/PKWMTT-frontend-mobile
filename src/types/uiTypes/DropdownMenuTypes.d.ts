@@ -8,4 +8,5 @@ export interface DropdownMenuProps {
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
+  placeholder: string;
 }

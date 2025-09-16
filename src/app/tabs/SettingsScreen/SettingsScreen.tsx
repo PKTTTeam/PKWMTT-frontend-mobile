@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import SettingsStyles from './SettingsStyles.ts';
@@ -7,6 +7,7 @@ import SettingsStyles from './SettingsStyles.ts';
 import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
 import Switch from '../../../components/ui/Switch.tsx';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
+import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
   const setShowEmptySlots = useSettingsStore(
@@ -22,6 +23,8 @@ const ShowEmptySlotsToggle = () => {
   );
 };
 function SettingsScreen() {
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
       <PaperProvider>
@@ -46,69 +49,35 @@ function SettingsScreen() {
             >
               <GroupSelect groupName="Projektowa" />
             </View>
+            <View style={SettingsStyles.elementsSpacing}>
+              {ShowEmptySlotsToggle()}
+            </View>
+
             <Text
               style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
             >
-              Powiadomienia
+              Autentykacja
             </Text>
             <View>
-              <View style={SettingsStyles.notifications}>
-                <Switch label="Egzamin" value={false} onChange={() => null} />
-                <Switch label="Kolokwium" value={false} onChange={() => null} />
-              </View>
-              <View
-                style={[
-                  SettingsStyles.notifications,
-                  SettingsStyles.elementsSpacing,
-                ]}
-              >
-                <Switch
-                  label="Zaliczenie"
-                  value={false}
-                  onChange={() => null}
-                />
-                <View style={SettingsStyles.elementsSpacing}>
-                  <Switch
-                    label="Projekt       "
-                    value={false}
-                    onChange={() => null}
-                  />
-                </View>
-              </View>
               <View
                 style={[
                   SettingsStyles.notificationsMid,
                   SettingsStyles.elementsSpacing,
                 ]}
               >
-                <Switch
-                  label="Aktualizacje rozkładu"
-                  value={false}
-                  onChange={() => null}
-                />
-                {ShowEmptySlotsToggle()}
+                <View style={SettingsStyles.elementsSpacing}>
+                  <Button
+                    title="Zweryfikuj status starosty"
+                    onPress={() => setModalVisible(true)}
+                  />
+                </View>
               </View>
             </View>
-            <Text
-              style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
-            >
-              Wygląd Aplikacji
-            </Text>
-            <View style={SettingsStyles.elementsSpacing}>
-              <Switch label="Tryb ciemny" value={false} onChange={() => null} />
-            </View>
-            <View style={SettingsStyles.elementsSpacing}>
-              <Switch
-                label="Czcionka powiększona"
-                value={false}
-                onChange={() => null}
-              />
-            </View>
-            <Text
-              style={[SettingsStyles.labelText, SettingsStyles.elementsSpacing]}
-            >
-              Język Aplikacji
-            </Text>
+            <RepresentativeAuthModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+              onSubmit={() => null}
+            />
           </View>
         </View>
       </PaperProvider>

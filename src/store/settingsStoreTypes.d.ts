@@ -14,6 +14,7 @@ export interface SettingsState {
   activeDropdown: GroupKey | null;
   showEmptySlots: boolean;
   error: string | null;
+  setupComplete: boolean;
 
   actions: {
     setGroup: (key: GroupKey, value: string) => void;
@@ -24,5 +25,6 @@ export interface SettingsState {
     toggleShowEmptySlots: () => void;
     setError: (value: string) => void;
     clearError: () => void;
+    setSetupComplete: (value: boolean) => void;
   };
 }

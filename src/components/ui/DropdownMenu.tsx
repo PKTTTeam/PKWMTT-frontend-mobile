@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { DropdownMenuProps } from '../../types/uiTypes/DropdownMenuTypes';
 import MenuStyles from '../../styles/uiStyles/DropdownMenuStyles';
 
+const ITEM_HEIGHT = 45;
+const MAX_LIST_HEIGHT = 200;
+
 const DropdownMenu: React.FC<DropdownMenuProps> = ({
   width,
   height,
@@ -13,31 +16,38 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   isOpen,
   onOpen,
   onClose,
+  placeholder,
 }) => {
+  const listHeight = Math.min(items.length * ITEM_HEIGHT, MAX_LIST_HEIGHT);
+
   return (
-    <View style={[{ width: width ?? 85, height: height ?? 40 }]}>
+    <View style={[{ width: width ?? 150, height: height ?? 40 }]}>
       <TouchableOpacity
         style={[MenuStyles.button, MenuStyles.buttonSizes]}
         onPress={() => (isOpen ? onClose() : onOpen())}
       >
-        <Text style={MenuStyles.groupSelectText}>
-          {selectedValue || 'none'}
-        </Text>
+        {selectedValue ? (
+          <Text style={MenuStyles.groupSelectText}>{selectedValue}</Text>
+        ) : (
+          <Text style={MenuStyles.placeholderText}>{placeholder}</Text>
+        )}
       </TouchableOpacity>
+
       {isOpen && (
         <View
           style={[
             MenuStyles.modal,
             MenuStyles.list,
-            /* eslint-disable-next-line react-native/no-inline-styles */
             {
-              top: listPosUp ? '-400%' : '100%',
+              top: listPosUp ? -listHeight : height ?? 40, // position above or below
+              height: listHeight,
             },
           ]}
         >
           <FlatList
             data={items}
             keyExtractor={item => item}
+            style={{ flexGrow: 0 }}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {

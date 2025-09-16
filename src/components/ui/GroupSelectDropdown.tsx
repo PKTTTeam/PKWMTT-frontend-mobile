@@ -51,6 +51,7 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
         isOpen={activeDropdown === key}
         onOpen={handleOpen}
         onClose={handleClose}
+        placeholder="Wybierz grupe"
       />
     </View>
   );

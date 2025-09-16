@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 const DropdownMenuStyles = StyleSheet.create({
-      buttonSizes: { width: '100%', height: '100%' },
+  buttonSizes: { width: '100%', height: '100%' },
   list: {
     zIndex: 100,
     width: '100%',
@@ -45,6 +45,10 @@ const DropdownMenuStyles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
   },
+  placeholderText: {
+    fontSize: 12,
+    color: '#9c9c9c',
+  },
 });
-  
+
 export default DropdownMenuStyles;
