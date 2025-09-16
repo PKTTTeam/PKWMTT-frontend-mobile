@@ -11,8 +11,10 @@ export async function getTimetableByGroup(
     throw new Error('General group name is required to fetch timetable');
   }
 
+  const subs = [k, l, p].filter(Boolean) as string[];
+
   return apiFetch<TimetableResponse>(`timetables/${generalGroupName}`, {
-    query: { sub: k, l, p },
+    query: { sub: subs },
   });
 }
 

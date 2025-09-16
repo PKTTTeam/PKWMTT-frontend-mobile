@@ -1,10 +1,6 @@
 export type GroupKey = 'dean' | 'lab' | 'proj' | 'comp';
-
-export type GroupName =
-  | 'Dziekańska'
-  | 'Komputerowa'
-  | 'Laboratoryjna'
-  | 'Projektowa';
+//GG - general group
+export type GroupName = 'GG' | 'K' | 'L' | 'P';
 
 export interface SettingsState {
   groups: Record<GroupKey, string | undefined>;

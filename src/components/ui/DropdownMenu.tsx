@@ -21,7 +21,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   const listHeight = Math.min(items.length * ITEM_HEIGHT, MAX_LIST_HEIGHT);
 
   return (
-    <View style={[{ width: width ?? 150, height: height ?? 40 }]}>
+    <View style={[{ width: width ?? 130, height: height ?? 40 }]}>
       <TouchableOpacity
         style={[MenuStyles.button, MenuStyles.buttonSizes]}
         onPress={() => (isOpen ? onClose() : onOpen())}

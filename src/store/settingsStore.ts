@@ -95,7 +95,7 @@ export const useSettingsStore = create<SettingsState>()(
             console.log(
               `fetch from store -> ${API_URL}timetables/groups/${encodeURIComponent(
                 deanGroup,
-              )}`,
+              )}, \n `,
             );
             const data: string[] = await res.json();
 

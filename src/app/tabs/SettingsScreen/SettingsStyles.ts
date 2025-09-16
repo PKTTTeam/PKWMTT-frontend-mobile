@@ -33,7 +33,7 @@ const settingsStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 16,
+    flexWrap: 'wrap',
   },
   notifications: {
     flexDirection: 'row',

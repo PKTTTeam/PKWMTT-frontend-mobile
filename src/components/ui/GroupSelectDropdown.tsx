@@ -1,4 +1,3 @@
-// components/ui/GroupSelectDropdown.tsx
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import DropdownMenu from './DropdownMenu';
@@ -8,17 +7,18 @@ import {
   useSettingsStore,
   useSettingsActions,
 } from '../../store/settingsStore';
-
 import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
+//GG - general group
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
-  Dziekańska: 'dean',
-  Komputerowa: 'comp',
-  Laboratoryjna: 'lab',
-  Projektowa: 'proj',
+  GG: 'dean',
+  K: 'comp',
+  L: 'lab',
+  P: 'proj',
 } as const;
 
 const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
+  groupTitle,
   groupName,
   listPosUp,
 }) => {
@@ -42,7 +42,7 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
 
   return (
     <View style={GroupSelectStyles.menuContainer}>
-      <Text style={GroupSelectStyles.text}>{groupName}</Text>
+      {groupTitle && <Text style={GroupSelectStyles.text}>{groupTitle}</Text>}
       <DropdownMenu
         listPosUp={listPosUp}
         items={options || []}

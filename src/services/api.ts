@@ -1,7 +1,7 @@
 import { API_URL, API_KEY } from '@env';
 
 interface ApiOptions extends RequestInit {
-  query?: Record<string, string | undefined>;
+  query?: Record<string, string | string[] | undefined>;
 }
 
 async function apiFetch<T = unknown>(
@@ -14,14 +14,18 @@ async function apiFetch<T = unknown>(
   if (query) {
     Object.entries(query).forEach(([key, value]) => {
       if (value !== undefined) {
-        searchParams.append(key, value);
+        if (Array.isArray(value)) {
+          value.forEach(v => searchParams.append(key, v)); // repeated keys
+        } else {
+          searchParams.append(key, value);
+        }
       }
     });
   }
   const queryString = searchParams.toString()
     ? `?${searchParams.toString()}`
     : '';
-
+  console.log(`${API_URL}${path}${queryString}`);
   const response = await fetch(`${API_URL}${path}${queryString}`, {
     headers: {
       'Content-Type': 'application/json',
@@ -43,7 +47,6 @@ async function apiFetch<T = unknown>(
     throw new Error(errorMessage);
   }
   const responseData = await response.json();
-  console.log(responseData);
   return responseData as Promise<T>;
 }
 

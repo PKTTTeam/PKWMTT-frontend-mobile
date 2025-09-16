@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
 import SettingsStyles from './SettingsStyles.ts';
 
-import GroupSelect from '../../../components/ui/GroupSelectDropdown.tsx';
 import Switch from '../../../components/ui/Switch.tsx';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
+import GroupCard from '../../../components/GroupCard.tsx';
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
   const setShowEmptySlots = useSettingsStore(
@@ -37,18 +37,12 @@ function SettingsScreen() {
                 SettingsStyles.elementsSpacing,
               ]}
             >
-              <GroupSelect groupName="Dziekańska" />
-              <GroupSelect groupName="Laboratoryjna" />
-              <GroupSelect groupName="Komputerowa" />
+              <GroupCard groupTitle="Dziekańska" groupName={'GG'} />
+              <GroupCard groupTitle="Laboratoryjna" groupName={'L'} />
+              <GroupCard groupTitle="Komputerowa" groupName={'K'} />
+              <GroupCard groupTitle="Projektowa" groupName={'P'} />
             </View>
-            <View
-              style={[
-                SettingsStyles.studentGroups,
-                SettingsStyles.elementsSpacing,
-              ]}
-            >
-              <GroupSelect groupName="Projektowa" />
-            </View>
+
             <View style={SettingsStyles.elementsSpacing}>
               {ShowEmptySlotsToggle()}
             </View>
@@ -59,18 +53,26 @@ function SettingsScreen() {
               Autentykacja
             </Text>
             <View>
-              <View
-                style={[
-                  SettingsStyles.notificationsMid,
-                  SettingsStyles.elementsSpacing,
-                ]}
-              >
-                <View style={SettingsStyles.elementsSpacing}>
-                  <Button
-                    title="Zweryfikuj status starosty"
-                    onPress={() => setModalVisible(true)}
-                  />
-                </View>
+              <View style={[SettingsStyles.elementsSpacing]}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#8d95fe',
+                    paddingVertical: 12,
+                    borderRadius: 6,
+                    marginRight: 8,
+                  }}
+                  onPress={() => setModalVisible(true)}
+                >
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}
+                  >
+                    Potwierdź
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
             <RepresentativeAuthModal

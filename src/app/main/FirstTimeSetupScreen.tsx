@@ -36,7 +36,14 @@ export default function FirstTimeSetupScreen({
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20,
+        backgroundColor: '#181818',
+      }}
+    >
       <Text
         style={{
           fontSize: 25,
@@ -60,12 +67,12 @@ export default function FirstTimeSetupScreen({
         Wybierz grupe dziekanska i podgrupy, aby kontynuowac.
       </Text>
       <View style={{ gap: 10 }}>
-        <GroupSelect groupName="Dziekańska" />
+        <GroupSelect groupTitle="Grupa Dziekańska" groupName="GG" />
         {groups.dean && (
           <View style={{ marginBottom: 35, gap: 10 }}>
-            <GroupSelect groupName="Laboratoryjna" />
-            <GroupSelect groupName="Komputerowa" />
-            <GroupSelect groupName="Projektowa" />
+            <GroupSelect groupTitle="Grupa - L" groupName="L" />
+            <GroupSelect groupTitle="Grupa - K" groupName="K" />
+            <GroupSelect groupTitle="Grupa - P" groupName="P" />
           </View>
         )}
       </View>
