@@ -1,5 +1,7 @@
 import { API_URL, API_KEY } from '@env';
 
+import { useAuthStore } from '../store/authStore';
+
 interface ApiOptions extends RequestInit {
   query?: Record<string, string | string[] | undefined>;
 }
@@ -9,6 +11,7 @@ async function apiFetch<T = unknown>(
   options: ApiOptions = {},
 ): Promise<T> {
   const { query, headers, ...rest } = options;
+  const token = useAuthStore.getState().token;
 
   const searchParams = new URLSearchParams();
   if (query) {
@@ -30,6 +33,7 @@ async function apiFetch<T = unknown>(
     headers: {
       'Content-Type': 'application/json',
       'X-API-KEY': API_KEY,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
     ...rest,

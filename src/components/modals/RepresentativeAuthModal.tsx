@@ -11,6 +11,8 @@ import {
 import { getOtpResponse } from '../../services/settings/SettingsService';
 import Toast from 'react-native-toast-message';
 
+import { useAuthStore } from '../../store/authStore';
+
 interface RepresentativeAuthModalProps {
   visible: boolean;
   onClose: () => void;
@@ -29,6 +31,8 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
   const [otp, setOtp] = useState(Array(OTP_LENGTH).fill(''));
   const [hasError, setHasError] = useState(false);
   const inputsRef = useRef<(TextInput | null)[]>([]);
+
+  const setToken = useAuthStore(state => state.setToken);
 
   // Reset state when modal opens
   useEffect(() => {
@@ -107,10 +111,14 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
     try {
       const res = await getOtpResponse(code);
       console.log(res);
-      Toast.show({
-        type: 'success',
-        text1: 'Autoryzacja potwierdzona',
-      });
+      if (typeof res === 'string') {
+        Toast.show({
+          type: 'success',
+          text1: 'Autoryzacja potwierdzona',
+        });
+        setToken(res);
+      }
+
       onClose();
     } catch (err) {
       console.log(err);
