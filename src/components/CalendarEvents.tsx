@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { useAuthStore } from '../store/authStore';
 
 type Event = {
   id: string;
@@ -22,6 +23,9 @@ type Props = {
 };
 
 export default function CalendarEvents({ selectedDate, events }: Props) {
+  // const repGroup = useAuthStore(state => state.repGroup);
+  const role = useAuthStore(state => state.role);
+
   let parseDate = (dateString: string): string => {
     if (!dateString) return '';
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,9 +39,12 @@ export default function CalendarEvents({ selectedDate, events }: Props) {
         <Text style={[styles.dateText, !selectedDate && styles.selectDateText]}>
           {parseDate(selectedDate) || 'Wybierz datę'}
         </Text>
-        <TouchableOpacity style={styles.addButton}>
-          <MaterialIcon name="add-circle-outline" color={'white'} size={30} />
-        </TouchableOpacity>
+
+        {role && (
+          <TouchableOpacity style={styles.addButton}>
+            <MaterialIcon name="add-circle-outline" color={'white'} size={30} />
+          </TouchableOpacity>
+        )}
       </View>
 
       <FlatList

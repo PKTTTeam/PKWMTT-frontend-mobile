@@ -19,3 +19,10 @@ export async function getExamsByGroup(): Promise<ExamResponse> {
     query: { generalGroups: slicedGroup },
   });
 }
+
+export async function createExams(exams: ExamInterface[]): Promise<void> {
+  apiFetch<ExamResponse>(`exams/by-groups`, {
+    method: 'POST',
+    body: JSON.stringify(exams),
+  });
+}

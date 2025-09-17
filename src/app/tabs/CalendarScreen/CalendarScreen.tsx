@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import CalendarEvents from '../../../components/CalendarEvents';
 import { getExamsByGroup } from '../../../services/calendar/CalendarService';
+import { useSettingsStore } from '../../../store/settingsStore';
 
 type Event = {
   id: string;
@@ -12,9 +13,10 @@ type Event = {
 };
 
 export default function CalendarScreen() {
+  const groups = useSettingsStore(state => state.groups.dean);
   useEffect(() => {
     getExamsByGroup();
-  }, []);
+  }, [groups]);
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [events] = useState<Record<string, Event[]>>({
     '2025-08-27': [

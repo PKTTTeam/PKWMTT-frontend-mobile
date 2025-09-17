@@ -29,9 +29,14 @@ async function apiFetch<T = unknown>(
     ? `?${searchParams.toString()}`
     : '';
   console.log(`${API_URL}${path}${queryString}`);
+
+  const isBodyRequest =
+    rest.method &&
+    ['POST', 'PUT', 'PATCH'].includes(rest.method?.toUpperCase());
+
   const response = await fetch(`${API_URL}${path}${queryString}`, {
     headers: {
-      'Content-Type': 'application/json',
+      ...(isBodyRequest ? { 'Content-Type': 'application/json' } : {}),
       'X-API-KEY': API_KEY,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
