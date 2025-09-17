@@ -8,6 +8,7 @@ import Switch from '../../../components/ui/Switch.tsx';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
 import GroupCard from '../../../components/GroupCard.tsx';
+import Toast from 'react-native-toast-message';
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
   const setShowEmptySlots = useSettingsStore(
@@ -77,8 +78,8 @@ function SettingsScreen() {
             <RepresentativeAuthModal
               visible={modalVisible}
               onClose={() => setModalVisible(false)}
-              onSubmit={() => null}
             />
+            <Toast autoHide={true} position="top" />
           </View>
         </View>
       </PaperProvider>

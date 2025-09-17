@@ -35,19 +35,30 @@ async function apiFetch<T = unknown>(
     ...rest,
   });
 
-  if (!response.ok) {
-    let errorMessage = `API error ${response.status}`;
-    try {
-      const errorData = await response.json();
-      errorMessage += `: ${JSON.stringify(errorData)}`;
-    } catch {
-      const text = await response.text();
-      if (text) errorMessage += `: ${text}`;
-    }
-    throw new Error(errorMessage);
+  let rawBody: string;
+  try {
+    rawBody = await response.text();
+  } catch {
+    throw new Error(`Failed to read response body`);
   }
-  const responseData = await response.json();
-  return responseData as Promise<T>;
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(rawBody);
+  } catch {
+    parsed = rawBody;
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      `API error ${response.status}: ${
+        typeof parsed === 'string' ? parsed : JSON.stringify(parsed)
+      }`,
+    );
+  }
+
+  console.log('responsedata =', parsed);
+  return parsed as T;
 }
 
 export default apiFetch;
