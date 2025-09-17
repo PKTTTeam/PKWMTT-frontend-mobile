@@ -9,6 +9,7 @@ import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
 import GroupCard from '../../../components/GroupCard.tsx';
 import Toast from 'react-native-toast-message';
+import { useAuthStore } from '../../../store/authStore.ts';
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
   const setShowEmptySlots = useSettingsStore(
@@ -25,6 +26,9 @@ const ShowEmptySlotsToggle = () => {
 };
 function SettingsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
+  const token = useAuthStore(state => state.token);
+  const repGroup = useAuthStore(state => state.repGroup);
+  const role = useAuthStore(state => state.role);
   return (
     <>
       <PaperProvider>
@@ -62,6 +66,7 @@ function SettingsScreen() {
                     marginRight: 8,
                   }}
                   onPress={() => setModalVisible(true)}
+                  disabled={!!token}
                 >
                   <Text
                     style={{
@@ -73,6 +78,9 @@ function SettingsScreen() {
                     Potwierdź
                   </Text>
                 </TouchableOpacity>
+                <Text style={SettingsStyles.labelText}>
+                  Status: {role}, {repGroup}
+                </Text>
               </View>
             </View>
             <RepresentativeAuthModal

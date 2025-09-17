@@ -114,7 +114,7 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
       if (typeof res === 'string') {
         Toast.show({
           type: 'success',
-          text1: 'Autoryzacja potwierdzona',
+          text1: '✅ Autoryzacja potwierdzona',
         });
         setToken(res);
       }
@@ -124,7 +124,7 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
       console.log(err);
       Toast.show({
         type: 'error',
-        text1: 'Autoryzacja odrzucona',
+        text1: '❌ Autoryzacja odrzucona',
       });
       setHasError(true);
       onClose();
