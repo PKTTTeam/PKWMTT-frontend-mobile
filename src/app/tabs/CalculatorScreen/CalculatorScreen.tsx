@@ -17,47 +17,38 @@ type CalcItem = {
   grade: string;
 };
 
+/**
+ * Main calculator screen for managing subjects, ECTS points, and grades.
+ * Allows adding, removing and calculates weighted average.
+ */
 function CalculatorScreen() {
   const [subjectList, setSubjectList] = useState<CalcItem[]>([]);
-
   const [subjectName, setSubjectName] = useState('');
   const [ectsPoints, setEctsPoints] = useState('');
   const [grade, setGrade] = useState('');
 
   const sbujectInput = useRef<TextInput>(null);
   const ectsInput = useRef<TextInput>(null);
-  // const gradeInput = useRef<TextInput>(null);
 
   const [gradeMenuVisible, setGradeMenuVisible] = useState(false);
-  // const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
 
   const grades = ['5', '4.5', '4', '3.5', '3', '2.5', '2'];
 
+  /**
+   * Selects a grade from the dropdown menu.
+   * @param item Selected grade value
+   */
   const handleSelect = (item: string) => {
     setGrade(item);
     setGradeMenuVisible(false);
   };
 
-  // const averageGrade = () => {
-  //   if (subjectList.length === 0) return 0;
-  //   const total = subjectList.reduce(
-  //     (sum, item) => sum + parseFloat(item.grade),
-  //     0,
-  //   );
-  //   return (total / subjectList.length).toFixed(2);
-  // };
-
-  // const totalEcts = () => {
-  //   if (subjectList.length === 0) return 0;
-  //   const total = subjectList.reduce(
-  //     (sum, item) => sum + parseInt(item.ects, 10),
-  //     0,
-  //   );
-  //   return total;
-  // };
-
+  /**
+   * Calculates the weighted average grade based on ECTS points.
+   * @returns Weighted average as string
+   */
   const weightedAverage = () => {
-    if (subjectList.length === 0) return 0;
+    if (subjectList.length === 0) return '0.00';
     const totalWeightedGrades = subjectList.reduce(
       (sum, item) => sum + parseFloat(item.grade) * parseInt(item.ects, 10),
       0,
@@ -69,6 +60,9 @@ function CalculatorScreen() {
     return (totalWeightedGrades / totalEctsPoints).toFixed(2);
   };
 
+  /**
+   * Adds a new subject to the list after validating input fields.
+   */
   const addSubject = () => {
     if (!subjectName.trim()) {
       sbujectInput.current?.focus();
@@ -78,22 +72,8 @@ function CalculatorScreen() {
     const ectsInt = parseInt(ectsPoints, 10);
     if (isNaN(ectsInt) || ectsInt <= 0) {
       ectsInput.current?.focus();
-
       return;
     }
-
-    // const gradePattern = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
-    // if (!gradePattern.test(grade)) {
-    //   gradeInput.current?.focus();
-    //   return;
-    // }
-
-    // const decimalPart = grade.includes('.') ? grade.split('.')[1] : '';
-    // if (decimalPart.length > 2) {
-    //   gradeInput.current?.focus();
-    //   // alert('Ocena może mieć maksymalnie 2 miejsca po przecinku');
-    //   return;
-    // }
 
     const newItem: CalcItem = {
       key: uuid.v4().toString(),
@@ -108,15 +88,22 @@ function CalculatorScreen() {
     setGrade('');
   };
 
+  /**
+   * Removes a subject from the list by key.
+   * @param key Subject key to remove
+   */
   const deleteItem = (key: string) => {
     setSubjectList(subjectList.filter(item => item.key !== key));
   };
 
+  /**
+   * Renders a single subject item in the list.
+   */
   const renderItem = ({ item }: { item: CalcItem }) => (
     <View style={styles.rootItemContainer}>
       <TouchableOpacity
         style={styles.deleteButton}
-        onPress={deleteItem.bind(null, item.key)}
+        onPress={() => deleteItem(item.key)}
       >
         <Text style={styles.deleteButtonText}>X</Text>
       </TouchableOpacity>
@@ -164,7 +151,6 @@ function CalculatorScreen() {
           style={styles.userInputField}
           placeholder="10..."
           placeholderTextColor={styles.userInputField.color}
-          
           value={ectsPoints}
           onChangeText={setEctsPoints}
         />
@@ -197,15 +183,6 @@ function CalculatorScreen() {
             </View>
           )}
         </View>
-
-        {/* <TextInput
-          ref={gradeInput}
-          style={styles.userInputField}
-          placeholder="ocena..."
-          placeholderTextColor={styles.userInputField.color}
-          value={grade}
-          onChangeText={setGrade}
-        /> */}
 
         <TouchableOpacity style={styles.button} onPress={addSubject}>
           <Text style={styles.buttonText}>Dodaj przedmiot</Text>
