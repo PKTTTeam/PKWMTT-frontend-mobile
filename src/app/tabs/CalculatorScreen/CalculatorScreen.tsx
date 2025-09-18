@@ -26,7 +26,17 @@ function CalculatorScreen() {
 
   const sbujectInput = useRef<TextInput>(null);
   const ectsInput = useRef<TextInput>(null);
-  const gradeInput = useRef<TextInput>(null);
+  // const gradeInput = useRef<TextInput>(null);
+
+  const [gradeMenuVisible, setGradeMenuVisible] = useState(false);
+  // const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
+
+  const grades = ['5', '4.5', '4', '3.5', '3', '2.5', '2'];
+
+  const handleSelect = (item: string) => {
+    setGrade(item);
+    setGradeMenuVisible(false);
+  };
 
   // const averageGrade = () => {
   //   if (subjectList.length === 0) return 0;
@@ -61,7 +71,6 @@ function CalculatorScreen() {
 
   const addSubject = () => {
     if (!subjectName.trim()) {
-      // subjectName validation
       sbujectInput.current?.focus();
       return;
     }
@@ -70,23 +79,21 @@ function CalculatorScreen() {
     if (isNaN(ectsInt) || ectsInt <= 0) {
       ectsInput.current?.focus();
 
-      // alert('ECTS musi być liczbą całkowitą większą od 0');
       return;
     }
 
-    const gradePattern = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
-    if (!gradePattern.test(grade)) {
-      gradeInput.current?.focus();
-      return;
-    }
+    // const gradePattern = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
+    // if (!gradePattern.test(grade)) {
+    //   gradeInput.current?.focus();
+    //   return;
+    // }
 
-    const decimalPart = grade.includes('.') ? grade.split('.')[1] : '';
-    if (decimalPart.length > 2) {
-      gradeInput.current?.focus();
-      // alert('Ocena może mieć maksymalnie 2 miejsca po przecinku');
-      return;
-    }
-
+    // const decimalPart = grade.includes('.') ? grade.split('.')[1] : '';
+    // if (decimalPart.length > 2) {
+    //   gradeInput.current?.focus();
+    //   // alert('Ocena może mieć maksymalnie 2 miejsca po przecinku');
+    //   return;
+    // }
 
     const newItem: CalcItem = {
       key: uuid.v4().toString(),
@@ -113,14 +120,20 @@ function CalculatorScreen() {
       >
         <Text style={styles.deleteButtonText}>X</Text>
       </TouchableOpacity>
-      <View style={styles.itemContainer}>
-        <Text style={[styles.text, styles.singleItem, styles.leftText]}>
+      <View style={styles.courseItemContainer}>
+        <Text
+          style={[styles.courseItemText, styles.singleItem, styles.leftText]}
+        >
           {item.subjectName}
         </Text>
-        <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+        <Text
+          style={[styles.courseItemText, styles.singleItem, styles.centerText]}
+        >
           {item.ects}
         </Text>
-        <Text style={[styles.text, styles.singleItem, styles.rightText]}>
+        <Text
+          style={[styles.courseItemText, styles.singleItem, styles.rightText]}
+        >
           {item.grade}
         </Text>
       </View>
@@ -139,7 +152,7 @@ function CalculatorScreen() {
         <TextInput
           ref={sbujectInput}
           style={styles.userInputField}
-          placeholder="e.g Mathematics..."
+          placeholder="Matematyka..."
           placeholderTextColor={styles.userInputField.color}
           value={subjectName}
           onChangeText={setSubjectName}
@@ -149,21 +162,51 @@ function CalculatorScreen() {
         <TextInput
           ref={ectsInput}
           style={styles.userInputField}
-          placeholder="6"
+          placeholder="10..."
           placeholderTextColor={styles.userInputField.color}
+          
           value={ectsPoints}
           onChangeText={setEctsPoints}
         />
 
         <Text style={styles.tileInputName}>Ocena</Text>
-        <TextInput
+        <View>
+          <TouchableOpacity
+            onPress={() => setGradeMenuVisible(!gradeMenuVisible)}
+            style={styles.dropdownButton}
+          >
+            <Text style={styles.dropdownButtonText}>
+              {grade ? `Wybrano: ${grade}` : 'Kliknij aby wybrać ocenę'}
+            </Text>
+          </TouchableOpacity>
+
+          {gradeMenuVisible && (
+            <View style={styles.dropdownMenu}>
+              <FlatList
+                data={grades}
+                keyExtractor={item => item}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => handleSelect(item)}
+                    style={styles.dropdownOption}
+                  >
+                    <Text style={styles.dropdownOptionText}>{item}</Text>
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          )}
+        </View>
+
+        {/* <TextInput
           ref={gradeInput}
           style={styles.userInputField}
           placeholder="ocena..."
           placeholderTextColor={styles.userInputField.color}
           value={grade}
           onChangeText={setGrade}
-        />
+        /> */}
+
         <TouchableOpacity style={styles.button} onPress={addSubject}>
           <Text style={styles.buttonText}>Dodaj przedmiot</Text>
         </TouchableOpacity>
@@ -196,7 +239,6 @@ function CalculatorScreen() {
           </View>
         </View>
       </View>
-
     </View>
   );
 }

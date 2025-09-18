@@ -28,13 +28,11 @@ const calculatorStyles = StyleSheet.create({
     marginLeft: 15,
     gap: 15,
     display: 'flex',
-    // backgroundColor: '#6df300ff',
     flexDirection: 'row',
     alignItems: 'center',
   },
   summaryCol: {
     display: 'flex',
-    // backgroundColor: '#f3cf00ff',
     flexDirection: 'column',
   },
   tileTitle: {
@@ -83,17 +81,62 @@ const calculatorStyles = StyleSheet.create({
     marginLeft: 15,
     fontSize: 18,
     fontStyle: 'italic',
-    color: '#a0a0a0ff',
+    color: 'white',
   },
 
   // =========================
   // =========================
   // =========================
-  text: {
+
+  dropdownButton: {
+    borderWidth: 1,
+    borderColor: '#c2c2c2ff',
+    paddingHorizontal: 10,
+    borderBlockColor: '#c2c2c2ff',
+    borderRadius: 8,
+
+    width: '90%',
+    height: 40,
+    justifyContent: 'center',
+
+    alignSelf: 'center',
+  },
+  dropdownButtonText: {
     fontSize: 16,
     color: 'white',
   },
-  itemContainer: {
+  dropdownMenu: {
+    position: 'absolute',
+    backgroundColor: '#444',
+
+    paddingLeft: 5,
+    paddingVertical: 5,
+
+    marginTop: 41,
+    marginLeft: 20,
+    maxWidth: '20%',
+    borderRadius: 8,
+
+    zIndex: 100,
+    width: '100%',
+    height: 'auto',
+  },
+  dropdownOption: {
+ 
+
+  },
+  dropdownOptionText: {
+    color: 'white',
+  },
+
+  // =========================
+  // =========================
+  // =========================
+  courseItemText: {
+    fontSize: 16,
+    color: 'white',
+  },
+  courseItemContainer: {
     flexDirection: 'row',
     width: '90%',
     height: '100%',
@@ -104,8 +147,6 @@ const calculatorStyles = StyleSheet.create({
 
   singleItem: {
     width: '33.33%',
-    // borderColor: 'black',
-    // borderWidth: 1,
   },
   leftText: {
     textAlign: 'left',
@@ -119,8 +160,6 @@ const calculatorStyles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   rootItemContainer: {
-    // backgroundColor: '#b43838ff',
-
     display: 'flex',
     flexDirection: 'row',
     gap: 5,
@@ -130,7 +169,6 @@ const calculatorStyles = StyleSheet.create({
     alignItems: 'center',
   },
   headerContainer: {
-    // backgroundColor: '#181414',
     alignSelf: 'center',
     marginTop: 5,
     marginLeft: 15,
