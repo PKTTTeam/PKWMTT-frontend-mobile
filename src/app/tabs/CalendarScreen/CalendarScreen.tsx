@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import CalendarEvents from '../../../components/CalendarEvents';
 import {
+  deleteExam,
   getExamsByGroup,
   getExamTypes,
 } from '../../../services/calendar/CalendarService';
@@ -12,6 +13,7 @@ import CreateExamModal from '../../../components/modals/ExamFormModal';
 type Event = {
   id: string;
   title: string;
+  description: string;
   time: string;
   color: string;
 };
@@ -45,13 +47,14 @@ export default function CalendarScreen() {
         const exams = await getExamsByGroup(); // backend response
 
         const mapped: Record<string, Event[]> = exams.reduce(
-          (acc: Record<string, Event[]>, exam, index) => {
+          (acc: Record<string, Event[]>, exam) => {
             const examDate = exam.date.split('T')[0]; // "YYYY-MM-DD"
             const examTime = exam.date.split('T')[1]?.substring(0, 5) || '';
 
             if (!acc[examDate]) acc[examDate] = [];
             acc[examDate].push({
-              id: `${index}-${exam.title}`,
+              id: String(exam.examId),
+              description: exam.description,
               title: exam.title,
               time: examTime,
               color: '#7B79FF', // optional: color by examType
@@ -131,6 +134,18 @@ export default function CalendarScreen() {
           selectedDate={selectedDate}
           events={events[selectedDate] || []}
           onAdd={() => setModalVisible(true)}
+          onDelete={async (id: number) => {
+            await deleteExam(id);
+            setEvents(prev => {
+              const updated = { ...prev };
+              if (updated[selectedDate]) {
+                updated[selectedDate] = updated[selectedDate].filter(
+                  e => Number(e.id) !== id,
+                );
+              }
+              return updated;
+            });
+          }}
         />
       </View>
       <CreateExamModal

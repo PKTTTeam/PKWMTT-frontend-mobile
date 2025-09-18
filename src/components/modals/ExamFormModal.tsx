@@ -39,9 +39,10 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
 
   //todo: hour,minute picker
   const backendDate = date
-    ? new Date(new Date(date).setHours(23, 59, 0, 0)).toISOString()
+    ? new Date(Date.UTC(2025, 8, 18, 23, 59, 0, 0)).toISOString()
     : '';
-  //todo: bug when selecting everything, ambigious groups Error creating exam: Error: API error 400: {"message":"Invalid group identifier: ambiguous general groups for subgroups","timestamp":"2025-09-18T00:44:42.85779894"}
+
+  //todo: fix, available klp groups only for one general group
 
   const slicedGroup = savedGroup && savedGroup.slice(0, -1);
   const relevantGroups = slicedGroup

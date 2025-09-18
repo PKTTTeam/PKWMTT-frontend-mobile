@@ -15,6 +15,7 @@ type Event = {
   id: string;
   title: string;
   time: string;
+  description: string;
   color: string;
 };
 
@@ -22,9 +23,15 @@ type Props = {
   selectedDate: string;
   events: Event[];
   onAdd: () => void;
+  onDelete: (id: number) => void;
 };
 
-export default function CalendarEvents({ selectedDate, events, onAdd }: Props) {
+export default function CalendarEvents({
+  selectedDate,
+  events,
+  onAdd,
+  onDelete,
+}: Props) {
   const repGroup = useAuthStore(state => state.repGroup);
   const role = useAuthStore(state => state.role);
   const group = useSettingsStore(state => state.groups.dean);
@@ -58,13 +65,13 @@ export default function CalendarEvents({ selectedDate, events, onAdd }: Props) {
         renderItem={({ item }) => (
           <View style={[styles.eventCard, { backgroundColor: item.color }]}>
             <Text style={styles.eventText}>
-              {item.time} {item.title}
+              {item.time} {item.title} {item.description}
             </Text>
             <View style={styles.actions}>
               <TouchableOpacity>
                 <MaterialIcon name="mode" size={20} />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => onDelete(Number(item.id))}>
                 <MaterialIcon name="restore-from-trash" size={20} />
               </TouchableOpacity>
             </View>
