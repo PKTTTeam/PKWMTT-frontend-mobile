@@ -9,6 +9,7 @@ import {
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useAuthStore } from '../store/authStore';
+import { useSettingsStore } from '../store/settingsStore';
 
 type Event = {
   id: string;
@@ -20,11 +21,14 @@ type Event = {
 type Props = {
   selectedDate: string;
   events: Event[];
+  onAdd: () => void;
 };
 
-export default function CalendarEvents({ selectedDate, events }: Props) {
-  // const repGroup = useAuthStore(state => state.repGroup);
+export default function CalendarEvents({ selectedDate, events, onAdd }: Props) {
+  const repGroup = useAuthStore(state => state.repGroup);
   const role = useAuthStore(state => state.role);
+  const group = useSettingsStore(state => state.groups.dean);
+  const slicedGroup = group ? group.slice(0, -1) : [];
 
   let parseDate = (dateString: string): string => {
     if (!dateString) return '';
@@ -40,8 +44,8 @@ export default function CalendarEvents({ selectedDate, events }: Props) {
           {parseDate(selectedDate) || 'Wybierz datę'}
         </Text>
 
-        {role && (
-          <TouchableOpacity style={styles.addButton}>
+        {role && repGroup === slicedGroup && selectedDate && (
+          <TouchableOpacity style={styles.addButton} onPress={onAdd}>
             <MaterialIcon name="add-circle-outline" color={'white'} size={30} />
           </TouchableOpacity>
         )}

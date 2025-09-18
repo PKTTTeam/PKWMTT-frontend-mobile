@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import CalendarEvents from '../../../components/CalendarEvents';
-import { getExamsByGroup } from '../../../services/calendar/CalendarService';
+import {
+  getExamsByGroup,
+  getExamTypes,
+} from '../../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../../store/settingsStore';
+import CreateExamModal from '../../../components/modals/ExamFormModal';
 
 type Event = {
   id: string;
@@ -12,28 +16,68 @@ type Event = {
   color: string;
 };
 
+// '2025-08-27': [
+//   {
+//     id: '1',
+//     title: 'Zaliczenie Mechaniki Ogólnej',
+//     time: '11:00',
+//     color: '#227338',
+//   },
+//   {
+//     id: '2',
+//     title: 'Egzamin z Sieci Komputerowych',
+//     time: '13:00',
+//     color: '#a6561e',
+//   },
+// ],
+
 export default function CalendarScreen() {
-  const groups = useSettingsStore(state => state.groups.dean);
-  useEffect(() => {
-    getExamsByGroup();
-  }, [groups]);
   const [selectedDate, setSelectedDate] = useState<string>('');
-  const [events] = useState<Record<string, Event[]>>({
-    '2025-08-27': [
-      {
-        id: '1',
-        title: 'Zaliczenie Mechaniki Ogólnej',
-        time: '11:00',
-        color: '#227338',
-      },
-      {
-        id: '2',
-        title: 'Egzamin z Sieci Komputerowych',
-        time: '13:00',
-        color: '#a6561e',
-      },
-    ],
-  });
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [examTypes, setExamTypes] = useState<string[]>([]);
+  const [events, setEvents] = useState<Record<string, Event[]>>({});
+
+  const groups = useSettingsStore(state => state.groups.dean);
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const exams = await getExamsByGroup(); // backend response
+
+        const mapped: Record<string, Event[]> = exams.reduce(
+          (acc: Record<string, Event[]>, exam, index) => {
+            const examDate = exam.date.split('T')[0]; // "YYYY-MM-DD"
+            const examTime = exam.date.split('T')[1]?.substring(0, 5) || '';
+
+            if (!acc[examDate]) acc[examDate] = [];
+            acc[examDate].push({
+              id: `${index}-${exam.title}`,
+              title: exam.title,
+              time: examTime,
+              color: '#7B79FF', // optional: color by examType
+            });
+
+            return acc;
+          },
+          {},
+        );
+
+        setEvents(mapped);
+      } catch (error) {
+        console.error('Error fetching exams:', error);
+      }
+    };
+
+    if (groups) fetchExams();
+  }, [groups]);
+
+  useEffect(() => {
+    const fetchExamTypes = async () => {
+      const types = await getExamTypes();
+      setExamTypes(types);
+    };
+    fetchExamTypes();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -86,8 +130,15 @@ export default function CalendarScreen() {
         <CalendarEvents
           selectedDate={selectedDate}
           events={events[selectedDate] || []}
+          onAdd={() => setModalVisible(true)}
         />
       </View>
+      <CreateExamModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        examTypes={examTypes}
+        date={selectedDate}
+      />
     </View>
   );
 }

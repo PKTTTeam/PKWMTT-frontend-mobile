@@ -26,7 +26,6 @@ const ShowEmptySlotsToggle = () => {
 };
 function SettingsScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const token = useAuthStore(state => state.token);
   const repGroup = useAuthStore(state => state.repGroup);
   const role = useAuthStore(state => state.role);
   return (
@@ -64,9 +63,10 @@ function SettingsScreen() {
                     paddingVertical: 12,
                     borderRadius: 6,
                     marginRight: 8,
+                    marginBottom: 5,
                   }}
                   onPress={() => setModalVisible(true)}
-                  disabled={!!token}
+                  disabled={!!repGroup}
                 >
                   <Text
                     style={{
@@ -78,9 +78,11 @@ function SettingsScreen() {
                     Potwierdź
                   </Text>
                 </TouchableOpacity>
-                <Text style={SettingsStyles.labelText}>
-                  Status: {role}, {repGroup}
-                </Text>
+                {repGroup && role && (
+                  <Text style={SettingsStyles.labelText}>
+                    Status: {role}, {repGroup}
+                  </Text>
+                )}
               </View>
             </View>
             <RepresentativeAuthModal
