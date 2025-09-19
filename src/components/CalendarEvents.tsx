@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -46,7 +47,7 @@ export default function CalendarEvents({
     const [year, month, day] = dateString.split('-');
     return `${day}.${month}`;
   };
-
+  console.log('CalendarEvents rendered', { selectedDate, events });
   return (
     <View style={styles.container}>
       <View style={styles.dateHeader}>
@@ -60,51 +61,56 @@ export default function CalendarEvents({
           </TouchableOpacity>
         )}
       </View>
-
-      <FlatList
-        data={events}
-        keyExtractor={item => item.id}
-        ListEmptyComponent={<Text style={styles.emptyText}>Brak wydarzeń</Text>}
-        renderItem={({ item }) => (
-          <View style={[styles.eventCard, { borderColor: item.color }]}>
-            <View style={styles.eventHeader}>
-              <Text style={styles.examTypeText}>{item.examType}</Text>
-              <View style={styles.actions}>
-                <TouchableOpacity>
-                  <MaterialIcon
-                    name="mode"
-                    size={20}
-                    onPress={() => onUpdate(item)}
-                    color={'white'}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => onDelete(Number(item.id))}>
-                  <MaterialIcon
-                    name="restore-from-trash"
-                    size={20}
-                    color={'white'}
-                  />
-                </TouchableOpacity>
+      <View style={styles.list}>
+        <FlatList
+          data={events}
+          keyExtractor={item => item.id}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>Brak wydarzeń</Text>
+          }
+          renderItem={({ item }) => (
+            <View style={[styles.eventCard, { borderColor: item.color }]}>
+              <View style={styles.eventHeader}>
+                <Text style={styles.examTypeText}>{item.examType}</Text>
+                <View style={styles.actions}>
+                  <TouchableOpacity>
+                    <MaterialIcon
+                      name="mode"
+                      size={20}
+                      onPress={() => onUpdate(item)}
+                      color={'white'}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => onDelete(Number(item.id))}>
+                    <MaterialIcon
+                      name="restore-from-trash"
+                      size={20}
+                      color={'white'}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
 
-            <Text style={styles.eventText}>
-              {item.time} {item.title} {item.description}
-            </Text>
-          </View>
-        )}
-      />
+              <Text style={styles.eventText}>
+                {item.time} {item.title} {item.description}
+              </Text>
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginTop: 16,
     padding: 16,
     borderRadius: 20,
     backgroundColor: '#1e1f1f',
+  },
+  list: {
+    maxHeight: Dimensions.get('window').height * 0.2,
   },
   dateHeader: {
     flexDirection: 'row',

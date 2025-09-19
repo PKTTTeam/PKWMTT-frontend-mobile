@@ -21,9 +21,9 @@ export default function CalendarScreen() {
   const [editingExam, setEditingExam] = useState<Event | null>(null);
 
   const dgroup = useSettingsStore(state => state.groups.dean);
-  const kgroup = useSettingsStore(state => state.groups.comp);
-  const lgroup = useSettingsStore(state => state.groups.lab);
-  const pgroup = useSettingsStore(state => state.groups.proj);
+  const kgroup = useSettingsStore(state => state.groups?.comp);
+  const lgroup = useSettingsStore(state => state.groups?.lab);
+  const pgroup = useSettingsStore(state => state.groups?.proj);
 
   const fetchExams = async () => {
     try {
