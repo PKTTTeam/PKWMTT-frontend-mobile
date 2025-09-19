@@ -39,7 +39,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
             MenuStyles.modal,
             MenuStyles.list,
             {
-              top: listPosUp ? -listHeight : height ?? 40, // position above or below
+              top: listPosUp ? -listHeight : height ?? 40,
               height: listHeight,
             },
           ]}
@@ -66,4 +66,5 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
   );
 };
 
-export default DropdownMenu;
+// Memoize to prevent unnecessary re-renders
+export default React.memo(DropdownMenu);

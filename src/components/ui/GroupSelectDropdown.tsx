@@ -29,15 +29,15 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
   const activeDropdown = useSettingsStore(state => state.activeDropdown);
   const setGroup = useSettingsActions().setGroup;
 
-  // Only fetch initial dean groups once on mount if this is the dean dropdown
+  const dropdownItems = React.useMemo(() => options || [], [options]);
+
   useEffect(() => {
-    if (key === 'dean' && !groups.dean) {
+    if (key === 'dean' && (!options || options.length === 0)) {
       fetchInitialDeanGroups();
     }
-  }, [key, groups.dean, fetchInitialDeanGroups]);
+  }, [key, options, fetchInitialDeanGroups]);
 
   const handleOpen = () => setActiveDropdown(key);
-
   const handleClose = () => setActiveDropdown(null);
 
   return (
@@ -45,7 +45,7 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
       {groupTitle && <Text style={GroupSelectStyles.text}>{groupTitle}</Text>}
       <DropdownMenu
         listPosUp={listPosUp}
-        items={options || []}
+        items={dropdownItems}
         selectedValue={groups[key]}
         onSelect={value => setGroup(key, value)}
         isOpen={activeDropdown === key}
@@ -57,4 +57,4 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
   );
 };
 
-export default GroupSelectDropdown;
+export default React.memo(GroupSelectDropdown);

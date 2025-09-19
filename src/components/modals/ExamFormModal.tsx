@@ -37,7 +37,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const savedGroup = useSettingsStore(state => state.groups.dean);
-  const allGroups = useSettingsStore(state => state.options.dean);
+  // const allGroups = useSettingsStore(state => state.options.dean);
   const kGroups = useSettingsStore(state => state.options.comp);
   const lGroups = useSettingsStore(state => state.options.lab);
   const pGroups = useSettingsStore(state => state.options.proj);
@@ -75,7 +75,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
       description: description,
       date: backendDateTime,
       examType: examType,
-      generalGroups: generalGroups,
+      // generalGroups: generalGroups,
+      generalGroups: [savedGroup ?? ''],
       subgroups: subgroups,
     });
     onCreated?.();
@@ -107,10 +108,10 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   };
 
   // Get relevant groups based on saved group
-  const slicedGroup = savedGroup && savedGroup.slice(0, -1);
-  const relevantGroups = slicedGroup
-    ? allGroups.filter(item => item.includes(slicedGroup))
-    : [];
+  // const slicedGroup = savedGroup && savedGroup.slice(0, -1);
+  // const relevantGroups = slicedGroup
+  //   ? allGroups.filter(item => item.includes(slicedGroup))
+  //   : [];
 
   const allSubgroups = [
     ...(kGroups || []),
@@ -200,8 +201,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                 <Text style={{ color: 'white' }}>{type}</Text>
               </TouchableOpacity>
             ))}
-
-            <Text style={styles.label}>Grupy ogólne</Text>
+            {/* //todo: */}
+            {/* <Text style={styles.label}>Grupy ogólne</Text>
             {relevantGroups.map(group => (
               <TouchableOpacity
                 key={group}
@@ -211,11 +212,12 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                 ]}
                 onPress={() =>
                   toggleGroup(group, generalGroups, setGeneralGroups)
+                  
                 }
               >
                 <Text style={{ color: 'white' }}>{group}</Text>
               </TouchableOpacity>
-            ))}
+            ))} */}
 
             <Text style={styles.label}>Podgrupy</Text>
             {allSubgroups.map(group => (
