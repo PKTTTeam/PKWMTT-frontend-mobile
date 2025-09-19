@@ -17,6 +17,7 @@ interface CreateExamModalProps {
   onClose: () => void;
   examTypes: string[];
   date: string;
+  onCreated: () => void;
 }
 
 const CreateExamModal: React.FC<CreateExamModalProps> = ({
@@ -24,6 +25,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   onClose,
   examTypes,
   date,
+  onCreated,
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -38,9 +40,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   const pGroups = useSettingsStore(state => state.options.proj);
 
   //todo: hour,minute picker
-  const backendDate = date
-    ? new Date(Date.UTC(2025, 8, 18, 23, 59, 0, 0)).toISOString()
-    : '';
+  const backendDate = date ? new Date(`${date}T23:59:00`).toISOString() : '';
 
   //todo: fix, available klp groups only for one general group
 
@@ -55,8 +55,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     ...(pGroups || []),
   ];
 
-  const handleSubmit = () => {
-    createExams({
+  const handleSubmit = async () => {
+    await createExams({
       title: title,
       description: description,
       date: backendDate,
@@ -64,6 +64,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
       generalGroups: generalGroups,
       subgroups: subgroups,
     });
+    onCreated?.();
 
     console.log(
       `${title}, ${description}, examType = ${examType}, genGr = ${generalGroups}, subGrp= ${subgroups}, data= ${date}`,

@@ -9,6 +9,7 @@ import {
 } from '../../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../../store/settingsStore';
 import CreateExamModal from '../../../components/modals/ExamFormModal';
+import { getExamColor } from '../../../utils/getExamColor';
 
 type Event = {
   id: string;
@@ -41,43 +42,37 @@ export default function CalendarScreen() {
 
   const groups = useSettingsStore(state => state.groups.dean);
 
+  const fetchExams = async () => {
+    try {
+      const exams = await getExamsByGroup();
+      const mapped = exams.reduce<Record<string, Event[]>>((acc, exam) => {
+        const examDate = exam.date.split('T')[0];
+        const examTime = exam.date.split('T')[1]?.substring(0, 5) || '';
+        if (!acc[examDate]) acc[examDate] = [];
+        acc[examDate].push({
+          id: String(exam.examId),
+          description: exam.description,
+          title: exam.title,
+          time: examTime,
+          color: getExamColor(exam.examType),
+        });
+        return acc;
+      }, {});
+      setEvents(mapped);
+    } catch (error) {
+      console.error('Error fetching exams:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchExams = async () => {
-      try {
-        const exams = await getExamsByGroup(); // backend response
-
-        const mapped: Record<string, Event[]> = exams.reduce(
-          (acc: Record<string, Event[]>, exam) => {
-            const examDate = exam.date.split('T')[0]; // "YYYY-MM-DD"
-            const examTime = exam.date.split('T')[1]?.substring(0, 5) || '';
-
-            if (!acc[examDate]) acc[examDate] = [];
-            acc[examDate].push({
-              id: String(exam.examId),
-              description: exam.description,
-              title: exam.title,
-              time: examTime,
-              color: '#7B79FF', // optional: color by examType
-            });
-
-            return acc;
-          },
-          {},
-        );
-
-        setEvents(mapped);
-      } catch (error) {
-        console.error('Error fetching exams:', error);
-      }
-    };
-
     if (groups) fetchExams();
   }, [groups]);
 
   useEffect(() => {
     const fetchExamTypes = async () => {
       const types = await getExamTypes();
-      setExamTypes(types);
+      const typeNames = types.map(item => item.name);
+      setExamTypes(typeNames);
     };
     fetchExamTypes();
   }, []);
@@ -153,6 +148,7 @@ export default function CalendarScreen() {
         onClose={() => setModalVisible(false)}
         examTypes={examTypes}
         date={selectedDate}
+        onCreated={fetchExams}
       />
     </View>
   );

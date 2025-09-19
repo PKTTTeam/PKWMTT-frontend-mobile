@@ -17,7 +17,7 @@ interface ExamType {
 }
 
 type ExamResponse = ExamInterface[];
-type ExamTypes = ExamType[];
+export type ExamTypes = ExamType[];
 
 export async function getExamsByGroup(): Promise<ExamResponse> {
   const group = useSettingsStore.getState().groups.dean;
@@ -62,8 +62,7 @@ export async function updateExams(exams: ExamInterface): Promise<void> {
   }
 }
 
-export async function getExamTypes(): Promise<string[]> {
+export async function getExamTypes(): Promise<ExamTypes> {
   const examResponse = await apiFetch<ExamTypes>(`exams/exam-types`);
-  const examArray: string[] = examResponse.map(item => item.name);
-  return examArray;
+  return examResponse;
 }
