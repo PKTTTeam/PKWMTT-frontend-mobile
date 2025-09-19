@@ -10,22 +10,20 @@ import {
 import { useSettingsStore } from '../../../store/settingsStore';
 import CreateExamModal from '../../../components/modals/ExamFormModal';
 import { getExamColor } from '../../../utils/getExamColor';
-
-type Event = {
-  id: string;
-  title: string;
-  description: string;
-  time: string;
-  color: string;
-};
+import type { Event } from '../../../components/CalendarEvents';
 
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [examTypes, setExamTypes] = useState<string[]>([]);
   const [events, setEvents] = useState<Record<string, Event[]>>({});
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [editingExam, setEditingExam] = useState<Event | null>(null);
 
-  const groups = useSettingsStore(state => state.groups.dean);
+  const dgroup = useSettingsStore(state => state.groups.dean);
+  const kgroup = useSettingsStore(state => state.groups.comp);
+  const lgroup = useSettingsStore(state => state.groups.lab);
+  const pgroup = useSettingsStore(state => state.groups.proj);
 
   const fetchExams = async () => {
     try {
@@ -46,6 +44,7 @@ export default function CalendarScreen() {
           title: exam.title,
           time: examTime,
           color: getExamColor(exam.examType),
+          examType: exam.examType,
         });
         return acc;
       }, {});
@@ -56,8 +55,8 @@ export default function CalendarScreen() {
   };
 
   useEffect(() => {
-    if (groups) fetchExams();
-  }, [groups]);
+    if (dgroup) fetchExams();
+  }, [dgroup, kgroup, lgroup, pgroup]);
 
   useEffect(() => {
     const fetchExamTypes = async () => {
@@ -119,7 +118,11 @@ export default function CalendarScreen() {
         <CalendarEvents
           selectedDate={selectedDate}
           events={events[selectedDate] || []}
-          onAdd={() => setModalVisible(true)}
+          onAdd={() => {
+            setIsUpdate(false);
+            setEditingExam(null);
+            setModalVisible(true);
+          }}
           onDelete={async (id: number) => {
             await deleteExam(id);
             setEvents(prev => {
@@ -132,6 +135,11 @@ export default function CalendarScreen() {
               return updated;
             });
           }}
+          onUpdate={(exam: Event) => {
+            setIsUpdate(true);
+            setEditingExam(exam);
+            setModalVisible(true);
+          }}
         />
       </View>
       <CreateExamModal
@@ -140,6 +148,8 @@ export default function CalendarScreen() {
         examTypes={examTypes}
         date={selectedDate}
         onCreated={fetchExams}
+        updateForm={isUpdate}
+        exam={editingExam}
       />
     </View>
   );

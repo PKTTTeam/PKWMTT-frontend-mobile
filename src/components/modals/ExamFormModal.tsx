@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   View,
@@ -10,8 +10,12 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { createExams } from '../../services/calendar/CalendarService';
+import {
+  createExams,
+  updateExams,
+} from '../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../store/settingsStore';
+import type { Event } from '../CalendarEvents';
 
 interface CreateExamModalProps {
   visible: boolean;
@@ -19,6 +23,8 @@ interface CreateExamModalProps {
   examTypes: string[];
   date: string;
   onCreated: () => void;
+  updateForm: boolean;
+  exam: Event | null;
 }
 
 const CreateExamModal: React.FC<CreateExamModalProps> = ({
@@ -27,14 +33,29 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   examTypes,
   date,
   onCreated,
+  updateForm,
+  exam,
 }) => {
   const [title, setTitle] = useState('');
+  const [id, setId] = useState(0);
   const [description, setDescription] = useState('');
   const [examType, setExamType] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [generalGroups, setGeneralGroups] = useState<string[]>([]);
   const [subgroups, setSubgroups] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
+
+  useEffect(() => {
+    if (updateForm && exam) {
+      setTitle(exam.title);
+      setDescription(exam.description);
+      setId(Number(exam.id));
+      setExamType(exam.examType);
+      setSelectedTime(new Date(`${date}T${exam.time}`));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateForm, exam]);
 
   const savedGroup = useSettingsStore(state => state.groups.dean);
   // const allGroups = useSettingsStore(state => state.options.dean);
@@ -57,6 +78,16 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     });
   };
 
+  const handleCancel = () => {
+    setTitle('');
+    setDescription('');
+    setExamType('');
+    setGeneralGroups([]);
+    setSubgroups([]);
+    setSelectedTime(new Date());
+    onClose();
+  };
+
   const handleSubmit = async () => {
     const dateTime = new Date(date);
     dateTime.setHours(selectedTime.getHours());
@@ -70,19 +101,30 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     );
 
     const backendDateTime = adjustedDateTime.toISOString();
-    await createExams({
-      title: title,
-      description: description,
-      date: backendDateTime,
-      examType: examType,
-      // generalGroups: generalGroups,
-      generalGroups: [savedGroup ?? ''],
-      subgroups: subgroups,
-    });
+    updateForm
+      ? await updateExams({
+          title: title,
+          description: description,
+          date: backendDateTime,
+          examType: examType,
+          // generalGroups: generalGroups,
+          generalGroups: [savedGroup ?? ''],
+          subgroups: subgroups,
+          examId: id,
+        })
+      : await createExams({
+          title: title,
+          description: description,
+          date: backendDateTime,
+          examType: examType,
+          // generalGroups: generalGroups,
+          generalGroups: [savedGroup ?? ''],
+          subgroups: subgroups,
+        });
     onCreated?.();
 
     console.log(
-      `${title}, ${description}, examType = ${examType}, genGr = ${generalGroups}, subGrp= ${subgroups}, data= ${backendDateTime}`,
+      `${title}, ${description}, examType = ${examType}, genGr = ${savedGroup}, subGrp= ${subgroups}, data= ${backendDateTime}`,
     );
 
     // Reset form
@@ -91,7 +133,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     setExamType('');
     setGeneralGroups([]);
     setSubgroups([]);
-    setSelectedTime(new Date()); // Reset time to current time
+    setSelectedTime(new Date());
     onClose();
   };
 
@@ -124,11 +166,11 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
       animationType="fade"
       transparent
       visible={visible}
-      onRequestClose={onClose}
+      onRequestClose={handleCancel}
     >
       <TouchableOpacity
         style={styles.modalOverlay}
-        onPress={onClose}
+        onPress={handleCancel}
         activeOpacity={1}
       >
         <TouchableOpacity
@@ -138,14 +180,18 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
         >
           <TouchableOpacity
             style={styles.closeBtn}
-            onPress={onClose}
+            onPress={handleCancel}
             hitSlop={20}
           >
             <Icon name="close" color="white" size={16} />
           </TouchableOpacity>
 
           <Icon name="event" size={40} color="#8d95fe" style={styles.icon} />
-          <Text style={styles.title}>Dodaj egzamin</Text>
+          {updateForm ? (
+            <Text style={styles.title}>Modyfikuj egzamin</Text>
+          ) : (
+            <Text style={styles.title}>Dodaj egzamin</Text>
+          )}
 
           <ScrollView
             style={{ width: '100%' }}
@@ -240,7 +286,10 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
               >
                 <Text style={styles.submitButtonText}>Dodaj</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={handleCancel}
+              >
                 <Text style={styles.closeButtonText}>Anuluj</Text>
               </TouchableOpacity>
             </View>

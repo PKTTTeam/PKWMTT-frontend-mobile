@@ -21,8 +21,14 @@ export type ExamTypes = ExamType[];
 
 export async function getExamsByGroup(): Promise<ExamResponse> {
   const group = useSettingsStore.getState().groups.dean;
+  const kgroup = useSettingsStore.getState().groups.comp;
+  const lgroup = useSettingsStore.getState().groups.lab;
+  const pgroup = useSettingsStore.getState().groups.proj;
+
+  const arrGroups = [kgroup, lgroup, pgroup].filter(Boolean) as string[];
+
   return apiFetch<ExamResponse>(`exams/by-groups`, {
-    query: { generalGroups: group },
+    query: { generalGroups: group, subgroups: arrGroups },
   });
 }
 
@@ -49,11 +55,11 @@ export async function deleteExam(id: number): Promise<void> {
   }
 }
 
-export async function updateExams(exams: ExamInterface): Promise<void> {
+export async function updateExams(exam: ExamInterface): Promise<void> {
   try {
-    const response = await apiFetch<ExamResponse>('exams', {
+    const response = await apiFetch<ExamResponse>(`exams/${exam.examId}`, {
       method: 'PUT',
-      body: JSON.stringify(exams),
+      body: JSON.stringify(exam),
     });
 
     console.log('Backend response:', response);
