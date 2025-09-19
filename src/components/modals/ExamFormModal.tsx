@@ -9,6 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { createExams } from '../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../store/settingsStore';
 
@@ -32,6 +33,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   const [examType, setExamType] = useState('');
   const [generalGroups, setGeneralGroups] = useState<string[]>([]);
   const [subgroups, setSubgroups] = useState<string[]>([]);
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
   const savedGroup = useSettingsStore(state => state.groups.dean);
   const allGroups = useSettingsStore(state => state.options.dean);
@@ -39,27 +42,38 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   const lGroups = useSettingsStore(state => state.options.lab);
   const pGroups = useSettingsStore(state => state.options.proj);
 
-  //todo: hour,minute picker
-  const backendDate = date ? new Date(`${date}T23:59:00`).toISOString() : '';
+  const handleTimeChange = (event: any, time?: Date) => {
+    setShowTimePicker(false);
+    if (time) {
+      setSelectedTime(time);
+    }
+  };
 
-  //todo: fix, available klp groups only for one general group
-
-  const slicedGroup = savedGroup && savedGroup.slice(0, -1);
-  const relevantGroups = slicedGroup
-    ? allGroups.filter(item => item.includes(slicedGroup))
-    : [];
-
-  const allSubgroups = [
-    ...(kGroups || []),
-    ...(lGroups || []),
-    ...(pGroups || []),
-  ];
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString('pl-PL', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  };
 
   const handleSubmit = async () => {
+    const dateTime = new Date(date);
+    dateTime.setHours(selectedTime.getHours());
+    dateTime.setMinutes(selectedTime.getMinutes());
+    dateTime.setSeconds(0);
+    dateTime.setMilliseconds(0);
+
+    const timezoneOffset = dateTime.getTimezoneOffset();
+    const adjustedDateTime = new Date(
+      dateTime.getTime() - timezoneOffset * 60000,
+    );
+
+    const backendDateTime = adjustedDateTime.toISOString();
     await createExams({
       title: title,
       description: description,
-      date: backendDate,
+      date: backendDateTime,
       examType: examType,
       generalGroups: generalGroups,
       subgroups: subgroups,
@@ -67,14 +81,16 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     onCreated?.();
 
     console.log(
-      `${title}, ${description}, examType = ${examType}, genGr = ${generalGroups}, subGrp= ${subgroups}, data= ${date}`,
+      `${title}, ${description}, examType = ${examType}, genGr = ${generalGroups}, subGrp= ${subgroups}, data= ${backendDateTime}`,
     );
 
+    // Reset form
     setTitle('');
     setDescription('');
     setExamType('');
     setGeneralGroups([]);
     setSubgroups([]);
+    setSelectedTime(new Date()); // Reset time to current time
     onClose();
   };
 
@@ -89,6 +105,18 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
       setList([...list, group]);
     }
   };
+
+  // Get relevant groups based on saved group
+  const slicedGroup = savedGroup && savedGroup.slice(0, -1);
+  const relevantGroups = slicedGroup
+    ? allGroups.filter(item => item.includes(slicedGroup))
+    : [];
+
+  const allSubgroups = [
+    ...(kGroups || []),
+    ...(lGroups || []),
+    ...(pGroups || []),
+  ];
 
   return (
     <Modal
@@ -138,6 +166,27 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
               multiline
             />
 
+            {/* Time Picker */}
+            <Text style={styles.label}>Godzina egzaminu</Text>
+            <TouchableOpacity
+              style={styles.timePickerButton}
+              onPress={() => setShowTimePicker(true)}
+            >
+              <Text style={styles.timeText}>{formatTime(selectedTime)}</Text>
+              <Icon name="access-time" size={20} color="#8d95fe" />
+            </TouchableOpacity>
+
+            {showTimePicker && (
+              <DateTimePicker
+                value={selectedTime}
+                mode="time"
+                is24Hour={true}
+                display="default"
+                onChange={handleTimeChange}
+                themeVariant="dark"
+              />
+            )}
+
             <Text style={styles.label}>Typ egzaminu</Text>
             {examTypes.map(type => (
               <TouchableOpacity
@@ -151,6 +200,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                 <Text style={{ color: 'white' }}>{type}</Text>
               </TouchableOpacity>
             ))}
+
             <Text style={styles.label}>Grupy ogólne</Text>
             {relevantGroups.map(group => (
               <TouchableOpacity
@@ -236,12 +286,19 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginBottom: 12,
   },
-  datePicker: {
+  timePickerButton: {
     width: '100%',
     backgroundColor: '#2a2b2b',
     padding: 12,
     borderRadius: 6,
     marginBottom: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  timeText: {
+    color: 'white',
+    fontSize: 16,
   },
   label: {
     color: '#CCCCCC',

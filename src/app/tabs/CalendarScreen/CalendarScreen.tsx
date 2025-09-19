@@ -19,21 +19,6 @@ type Event = {
   color: string;
 };
 
-// '2025-08-27': [
-//   {
-//     id: '1',
-//     title: 'Zaliczenie Mechaniki Ogólnej',
-//     time: '11:00',
-//     color: '#227338',
-//   },
-//   {
-//     id: '2',
-//     title: 'Egzamin z Sieci Komputerowych',
-//     time: '13:00',
-//     color: '#a6561e',
-//   },
-// ],
-
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -46,8 +31,14 @@ export default function CalendarScreen() {
     try {
       const exams = await getExamsByGroup();
       const mapped = exams.reduce<Record<string, Event[]>>((acc, exam) => {
-        const examDate = exam.date.split('T')[0];
-        const examTime = exam.date.split('T')[1]?.substring(0, 5) || '';
+        const examDateObj = new Date(exam.date);
+        const examDate = examDateObj.toISOString().split('T')[0];
+        const examTime = examDateObj.toLocaleTimeString('pl-PL', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        });
+        console.log(examTime);
         if (!acc[examDate]) acc[examDate] = [];
         acc[examDate].push({
           id: String(exam.examId),
