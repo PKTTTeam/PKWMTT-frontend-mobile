@@ -1,4 +1,3 @@
-// components/ui/GroupSelectDropdown.tsx
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import DropdownMenu from './DropdownMenu';
@@ -8,17 +7,18 @@ import {
   useSettingsStore,
   useSettingsActions,
 } from '../../store/settingsStore';
-
 import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
+//GG - general group
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
-  Dziekańska: 'dean',
-  Komputerowa: 'comp',
-  Laboratoryjna: 'lab',
-  Projektowa: 'proj',
+  GG: 'dean',
+  K: 'comp',
+  L: 'lab',
+  P: 'proj',
 } as const;
 
 const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
+  groupTitle,
   groupName,
   listPosUp,
 }) => {
@@ -29,31 +29,32 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
   const activeDropdown = useSettingsStore(state => state.activeDropdown);
   const setGroup = useSettingsActions().setGroup;
 
-  // Only fetch initial dean groups once on mount if this is the dean dropdown
+  const dropdownItems = React.useMemo(() => options || [], [options]);
+
   useEffect(() => {
-    if (key === 'dean' && !groups.dean) {
+    if (key === 'dean' && (!options || options.length === 0)) {
       fetchInitialDeanGroups();
     }
-  }, [key, groups.dean, fetchInitialDeanGroups]);
+  }, [key, options, fetchInitialDeanGroups]);
 
   const handleOpen = () => setActiveDropdown(key);
-
   const handleClose = () => setActiveDropdown(null);
 
   return (
     <View style={GroupSelectStyles.menuContainer}>
-      <Text style={GroupSelectStyles.text}>{groupName}</Text>
+      {groupTitle && <Text style={GroupSelectStyles.text}>{groupTitle}</Text>}
       <DropdownMenu
         listPosUp={listPosUp}
-        items={options || []}
+        items={dropdownItems}
         selectedValue={groups[key]}
         onSelect={value => setGroup(key, value)}
         isOpen={activeDropdown === key}
         onOpen={handleOpen}
         onClose={handleClose}
+        placeholder="Wybierz grupe"
       />
     </View>
   );
 };
 
-export default GroupSelectDropdown;
+export default React.memo(GroupSelectDropdown);

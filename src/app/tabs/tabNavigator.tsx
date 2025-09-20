@@ -58,7 +58,6 @@ const getScreenOptions = (insets: any) => ({
   tabBarIconStyle: {
     marginTop: 10,
   },
-  headerRight: () => <ActivityLegend />,
 });
 
 const renderTimetableIcon = ({
@@ -99,6 +98,8 @@ const TabNavigator: React.FC = () => {
         component={TimetableScreen}
         options={{
           tabBarIcon: renderTimetableIcon,
+          //eslint-disable-next-line  react/no-unstable-nested-components
+          headerRight: () => <ActivityLegend />,
         }}
       />
       <Tab.Screen

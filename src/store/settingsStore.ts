@@ -9,13 +9,13 @@ export const useSettingsStore = create<SettingsState>()(
   persist(
     (set, get) => ({
       groups: {
-        dean: '11A1',
+        dean: undefined,
         lab: undefined,
         proj: undefined,
         comp: undefined,
       },
       options: {
-        dean: ['11A1'],
+        dean: [],
         lab: [],
         proj: [],
         comp: [],
@@ -25,6 +25,7 @@ export const useSettingsStore = create<SettingsState>()(
       activeDropdown: null,
       showEmptySlots: false,
       error: null,
+      setupComplete: false,
 
       actions: {
         setGroup: (key, value) => {
@@ -37,8 +38,11 @@ export const useSettingsStore = create<SettingsState>()(
               groups: { ...state.groups, [key]: value },
             };
 
-            // Automatically fetch dependents when dean changes
-            if (key === 'dean' && value !== state.lastFetchedDean) {
+            if (key === 'dean') {
+              newState.groups.comp = undefined;
+              newState.groups.lab = undefined;
+              newState.groups.proj = undefined;
+
               get().actions.fetchDependentGroups(value);
             }
 
@@ -49,18 +53,19 @@ export const useSettingsStore = create<SettingsState>()(
         fetchInitialDeanGroups: async () => {
           set({ loading: true });
           try {
-            const res = await fetch(`${API_URL}/groups/general`, {
+            const res = await fetch(`${API_URL}timetables/groups/general`, {
               headers: {
                 'Content-Type': 'application/json',
                 'X-API-KEY': API_KEY,
               },
             });
-            console.log(`fetch from store -> ${API_URL}/groups/general}`);
+            console.log(
+              `fetch from store -> ${API_URL}timetables/groups/general}`,
+            );
             const data: string[] = await res.json();
-
+            console.log(data);
             if (data.length > 0) {
               set({
-                groups: { ...get().groups, dean: data[0] },
                 options: { ...get().options, dean: data }, // Store all dean options
                 loading: false,
                 error: null,
@@ -82,7 +87,7 @@ export const useSettingsStore = create<SettingsState>()(
           set({ loading: true });
           try {
             const res = await fetch(
-              `${API_URL}/groups/${encodeURIComponent(deanGroup)}`,
+              `${API_URL}timetables/groups/${encodeURIComponent(deanGroup)}`,
               {
                 headers: {
                   'Content-Type': 'application/json',
@@ -91,9 +96,9 @@ export const useSettingsStore = create<SettingsState>()(
               },
             );
             console.log(
-              `fetch from store -> ${API_URL}/groups/${encodeURIComponent(
+              `fetch from store -> ${API_URL}timetables/groups/${encodeURIComponent(
                 deanGroup,
-              )}`,
+              )}, \n `,
             );
             const data: string[] = await res.json();
 
@@ -151,6 +156,9 @@ export const useSettingsStore = create<SettingsState>()(
         },
         setError(value: string) {
           set({ error: value });
+        },
+        setSetupComplete(value: boolean) {
+          set({ setupComplete: value });
         },
       },
     }),

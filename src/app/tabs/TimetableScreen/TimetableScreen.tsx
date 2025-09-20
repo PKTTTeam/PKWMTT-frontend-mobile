@@ -93,6 +93,8 @@ const TimetableScreen = () => {
 
     async function initialiseData() {
       try {
+        if (!groups.dean)
+          throw new Error('General group name is required to fetch timetable');
         const [hours, timetableResponse] = await Promise.all([
           getAcademicHours(),
           getTimetableByGroup(
@@ -148,7 +150,8 @@ const TimetableScreen = () => {
       if (groups.dean) {
         await fetchDependentGroups(groups.dean);
       }
-
+      if (!groups.dean)
+        throw new Error('General group name is required to fetch timetable');
       const [hours, timetableResponse] = await Promise.all([
         getAcademicHours(),
         getTimetableByGroup(
@@ -323,9 +326,13 @@ const TimetableScreen = () => {
         </View>
 
         {/* Week indicator */}
-        <View style={styles.weekIndicator}>
+        <TouchableOpacity
+          style={styles.weekIndicator}
+          onPress={() => setIsOddWeek(prev => !prev)}
+        >
+          <Icon name={'sync-alt'} size={15} color={'white'} />
           <Text style={styles.weekText}>{getWeekTypeText()}</Text>
-        </View>
+        </TouchableOpacity>
 
         {/* Lessons list */}
         {timetable[currentDayIndex] && (
