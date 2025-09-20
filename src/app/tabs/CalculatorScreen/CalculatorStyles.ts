@@ -87,6 +87,13 @@ const calculatorStyles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
 
+    borderWidth: 1,
+    borderColor: '#6b6b6bff',
+    width: '95%',
+    paddingVertical: 7,
+    borderRadius: 8,
+    alignSelf: 'center',
+
     display: 'flex',
     flexDirection: 'column',
 
