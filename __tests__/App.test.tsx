@@ -6,34 +6,46 @@ import { NavigationContainer } from '@react-navigation/native';
 import checkActiveLesson from '../src/services/timetable/checkActiveLesson';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+beforeAll(() => {
+  jest.spyOn(console, 'log').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  jest.useRealTimers();
+  jest.clearAllMocks();
+});
+
 describe('basic rendering', () => {
-  test('renders App component without crash', () => {
+  test('renders App component without crash', async () => {
     render(<App />);
   });
 
-  test('TabNavigator contains expected tabs', () => {
+  test('TabNavigator contains expected tabs', async () => {
     const initialMetrics = {
       frame: { x: 0, y: 0, width: 320, height: 640 },
       insets: { top: 1, left: 0, right: 0, bottom: 0 },
     };
 
-    const { getByText } = render(
+    const { queryByText } = render(
       <SafeAreaProvider initialMetrics={initialMetrics}>
         <NavigationContainer>
           <TabNavigator />
         </NavigationContainer>
       </SafeAreaProvider>,
     );
-    expect(getByText('Rozkład zajęć') || getByText('Timetable')).toBeTruthy();
-    expect(getByText('Kalendarz') || getByText('Calendar')).toBeTruthy();
+
     expect(
-      getByText('Kalkulator ETCS') || getByText('Calculator ETCS'),
+      queryByText('Rozkład zajęć') || queryByText('Timetable'),
     ).toBeTruthy();
-    expect(getByText('Ustawienia') || getByText('Settings')).toBeTruthy();
+    expect(queryByText('Kalendarz') || queryByText('Calendar')).toBeTruthy();
+    expect(
+      queryByText('Kalkulator ETCS') || queryByText('Calculator ETCS'),
+    ).toBeTruthy();
+    expect(queryByText('Ustawienia') || queryByText('Settings')).toBeTruthy();
   });
 });
 
-test('returns true when lesson is currently active on correct week/day', () => {
+test('returns true when lesson is currently active on correct week/day', async () => {
   const lesson = { rowId: 2, name: 'Math', classroom: '101', type: 'lecture' };
   const aHours = ['8:00 - 8:45', '9:00 - 9:45', '10:00 - 10:45']; // rowId: 2 => 10:00-10:45
   const currentDayName = 'Poniedziałek';
@@ -42,7 +54,6 @@ test('returns true when lesson is currently active on correct week/day', () => {
   // Mock current time inside time window and correct week
   jest.useFakeTimers().setSystemTime(new Date('2025-07-21T10:15:00'));
 
-  expect(checkActiveLesson(lesson, aHours, currentDayName, isOddWeek)).toBe(
-    true,
-  );
+  const result = checkActiveLesson(lesson, aHours, currentDayName, isOddWeek);
+  expect(result).toBe(true);
 });
