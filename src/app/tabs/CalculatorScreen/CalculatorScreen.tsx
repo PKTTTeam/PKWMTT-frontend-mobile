@@ -16,9 +16,12 @@ type CalcItem = {
   grade: string;
 };
 
+/**
+ * CalculatorScreen allows users to add, view, and remove subjects with ECTS and grades.
+ * It calculates average grade, total ECTS, and weighted average.
+ */
 function CalculatorScreen() {
   const [subjectList, setSubjectList] = useState<CalcItem[]>([]);
-
   const [subjectName, setSubjectName] = useState('');
   const [ectsPoints, setEctsPoints] = useState('');
   const [grade, setGrade] = useState('');
@@ -29,8 +32,12 @@ function CalculatorScreen() {
 
   const [popUpMenuVisible, setPopUpMenuVisible] = useState(false);
 
+  /**
+   * Calculates the average grade for all subjects.
+   * @returns {string} Average grade as string with 2 decimals.
+   */
   const averageGrade = () => {
-    if (subjectList.length === 0) return 0;
+    if (subjectList.length === 0) return '0.00';
     const total = subjectList.reduce(
       (sum, item) => sum + parseFloat(item.grade),
       0,
@@ -38,6 +45,10 @@ function CalculatorScreen() {
     return (total / subjectList.length).toFixed(2);
   };
 
+  /**
+   * Calculates the total ECTS points for all subjects.
+   * @returns {number} Total ECTS points.
+   */
   const totalEcts = () => {
     if (subjectList.length === 0) return 0;
     const total = subjectList.reduce(
@@ -47,8 +58,12 @@ function CalculatorScreen() {
     return total;
   };
 
+  /**
+   * Calculates the weighted average grade based on ECTS points.
+   * @returns {string} Weighted average as string with 2 decimals.
+   */
   const weightedAverage = () => {
-    if (subjectList.length === 0) return 0;
+    if (subjectList.length === 0) return '0.00';
     const totalWeightedGrades = subjectList.reduce(
       (sum, item) => sum + parseFloat(item.grade) * parseInt(item.ects, 10),
       0,
@@ -60,17 +75,21 @@ function CalculatorScreen() {
     return (totalWeightedGrades / totalEctsPoints).toFixed(2);
   };
 
-
+  /**
+   * Resets input fields and closes the popup menu.
+   */
   const handleCancel = () => {
     setPopUpMenuVisible(false);
     setSubjectName('');
     setEctsPoints('');
     setGrade('');
-  }
+  };
 
+  /**
+   * Adds a new subject to the list after validating input fields.
+   */
   const addSubject = () => {
     if (!subjectName.trim()) {
-      // subjectName validation
       sbujectInput.current?.focus();
       return;
     }
@@ -78,26 +97,20 @@ function CalculatorScreen() {
     const ectsInt = parseInt(ectsPoints, 10);
     if (isNaN(ectsInt) || ectsInt <= 0) {
       ectsInput.current?.focus();
-
-      // alert('ECTS musi być liczbą całkowitą większą od 0');
       return;
     }
 
     const gradeFloat = parseFloat(grade);
     if (isNaN(gradeFloat) || gradeFloat < 0) {
       gradeInput.current?.focus();
-      // alert('Ocena musi być liczbą większą lub równą 0');
       return;
     }
 
     const decimalPart = grade.includes('.') ? grade.split('.')[1] : '';
     if (decimalPart.length > 1) {
       gradeInput.current?.focus();
-      // alert('Ocena może mieć maksymalnie 1 miejsca po przecinku');
       return;
     }
-
-    // if (!subjectName || !ectsPoints || !grade) return;
 
     const newItem: CalcItem = {
       key: uuid.v4().toString(),
@@ -113,10 +126,17 @@ function CalculatorScreen() {
     setPopUpMenuVisible(false);
   };
 
+  /**
+   * Removes a subject from the list by key.
+   * @param key Subject key to remove
+   */
   const deleteItem = (key: string) => {
     setSubjectList(subjectList.filter(item => item.key !== key));
   };
 
+  /**
+   * Renders a single subject item in the list.
+   */
   const renderItem = ({ item }: { item: CalcItem }) => (
     <View style={styles.rootItemContainer}>
       <TouchableOpacity
@@ -161,30 +181,30 @@ function CalculatorScreen() {
         keyExtractor={item => item.key}
       />
 
-        <View style={styles.summaryContainer}>
-          <View style={styles.summarySpacer}>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              Średnia ocen
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              Suma ECTS
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              Średnia ważona
-            </Text>
-          </View>
-          <View style={styles.summarySpacer}>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              {averageGrade()}
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              {totalEcts()}
-            </Text>
-            <Text style={[styles.text, styles.singleItem, styles.centerText]}>
-              {weightedAverage()}
-            </Text>
-          </View>
+      <View style={styles.summaryContainer}>
+        <View style={styles.summarySpacer}>
+          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+            Średnia ocen
+          </Text>
+          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+            Suma ECTS
+          </Text>
+          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+            Średnia ważona
+          </Text>
         </View>
+        <View style={styles.summarySpacer}>
+          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+            {averageGrade()}
+          </Text>
+          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+            {totalEcts()}
+          </Text>
+          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+            {weightedAverage()}
+          </Text>
+        </View>
+      </View>
 
       {popUpMenuVisible && (
         <View style={styles.overlayContainer}>
@@ -199,7 +219,6 @@ function CalculatorScreen() {
               onChangeText={setSubjectName}
             />
             <Text style={styles.overlayLabel}>Wartość ECTS</Text>
-
             <TextInput
               ref={ectsInput}
               style={styles.userInput}
@@ -209,7 +228,6 @@ function CalculatorScreen() {
               onChangeText={setEctsPoints}
             />
             <Text style={styles.overlayLabel}>Ocena</Text>
-
             <TextInput
               ref={gradeInput}
               style={styles.userInput}
