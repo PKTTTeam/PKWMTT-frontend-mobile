@@ -15,7 +15,7 @@ import {
   updateExams,
 } from '../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../store/settingsStore';
-import type { Event } from '../CalendarEvents';
+import type { Event } from './CalendarEventsModal';
 
 interface CreateExamModalProps {
   visible: boolean;

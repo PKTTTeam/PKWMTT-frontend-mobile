@@ -20,6 +20,7 @@
     "react": "19.1.0",
     "react-native": "0.80.1",
     "react-native-calendars": "^1.1313.0",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "^2.27.1",
     "react-native-paper": "^5.14.5",
     "react-native-paper-dropdown": "^2.3.1",

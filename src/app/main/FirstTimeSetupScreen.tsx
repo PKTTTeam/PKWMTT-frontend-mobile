@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Alert, TouchableOpacity } from 'react-native';
 import {
   useSettingsStore,
@@ -12,7 +12,10 @@ export default function FirstTimeSetupScreen({
 }: {
   onDone: () => void;
 }) {
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
   const groups = useSettingsStore(state => state.groups);
+  const options = useSettingsStore(state => state.options);
   const { fetchDependentGroups, setSetupComplete, fetchInitialDeanGroups } =
     useSettingsActions();
 
@@ -67,12 +70,38 @@ export default function FirstTimeSetupScreen({
         Wybierz grupe dziekanska i podgrupy, aby kontynuowac.
       </Text>
       <View style={{ gap: 10 }}>
-        <GroupSelect groupTitle="Grupa Dziekańska" groupName="GG" />
+        <GroupSelect
+          groupTitle="Grupa Dziekańska"
+          groupName="GG"
+          activeDropdown={activeDropdown}
+          setActiveDropdown={setActiveDropdown}
+        />
         {groups.dean && (
           <View style={{ marginBottom: 35, gap: 10 }}>
-            <GroupSelect groupTitle="Grupa - L" groupName="L" />
-            <GroupSelect groupTitle="Grupa - K" groupName="K" />
-            <GroupSelect groupTitle="Grupa - P" groupName="P" />
+            {options.lab.length !== 0 && (
+              <GroupSelect
+                groupTitle="Grupa - L"
+                groupName="L"
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+              />
+            )}
+            {options.comp.length !== 0 && (
+              <GroupSelect
+                groupTitle="Grupa - K"
+                groupName="K"
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+              />
+            )}
+            {options.proj.length !== 0 && (
+              <GroupSelect
+                groupTitle="Grupa - P"
+                groupName="P"
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+              />
+            )}
           </View>
         )}
       </View>

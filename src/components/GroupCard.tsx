@@ -61,7 +61,8 @@ const iconMap: Record<string, ReactElement> = {
 const GroupCard: React.FC<GroupSelectTypes> = ({
   groupTitle,
   groupName,
-  listPosUp,
+  activeDropdown,
+  setActiveDropdown,
 }) => {
   return (
     <View style={[GroupCardStyles.card]}>
@@ -78,7 +79,8 @@ const GroupCard: React.FC<GroupSelectTypes> = ({
           <GroupSelectDropdown
             groupTitle={''}
             groupName={groupName}
-            listPosUp={listPosUp}
+            activeDropdown={activeDropdown}
+            setActiveDropdown={setActiveDropdown}
           />
         </View>
       </View>
