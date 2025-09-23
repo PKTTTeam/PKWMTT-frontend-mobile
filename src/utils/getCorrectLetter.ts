@@ -13,7 +13,7 @@ export default function getCorrectLetter(lesson: string): string {
     case 'SEMINAR':
       return 'S';
     case 'OTHER':
-      return 'O';
+      return 'I';
     default:
       return '';
   }

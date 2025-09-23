@@ -19,7 +19,7 @@ export function getCorrectColor(color: string): string {
     case 'S':
       newColor = '#aaaa15';
       break;
-    case 'O':
+    case 'I':
       newColor = '#6e6e6e';
       break;
     default:
