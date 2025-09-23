@@ -125,16 +125,10 @@ jobs:
             exit 1
           fi
           
-          echo "Uploading APK: $APK_FILE"
-          echo "Using admin key: ${#secrets.ADMIN_KEY} characters"
-          echo "Upload URL: ${{ secrets.UPLOAD_URL }}"
-          
           # Upload with verbose output and error handling
           curl -v -X POST \
             -H "X-ADMIN-KEY: ${{ secrets.ADMIN_KEY }}" \
             -F "file=@$APK_FILE" \
-            -F "tag=${{ github.ref_name }}" \
-            -F "commit=${{ github.sha }}" \
             -w "HTTP Status: %{http_code}\n" \
             ${{ secrets.UPLOAD_URL }}
           
