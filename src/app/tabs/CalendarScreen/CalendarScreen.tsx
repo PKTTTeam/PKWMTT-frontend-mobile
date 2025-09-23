@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import CalendarEvents from '../../../components/CalendarEvents';
+import CalendarEventsModal, {
+  Event,
+} from '../../../components/modals/CalendarEventsModal';
+import CreateExamModal from '../../../components/modals/ExamFormModal';
 import {
   deleteExam,
   getExamsByGroup,
   getExamTypes,
 } from '../../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../../store/settingsStore';
-import CreateExamModal from '../../../components/modals/ExamFormModal';
 import { getExamColor } from '../../../utils/getExamColor';
-import type { Event } from '../../../components/CalendarEvents';
+import '../../../translation/CalendarLocale';
 
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [examTypes, setExamTypes] = useState<string[]>([]);
   const [events, setEvents] = useState<Record<string, Event[]>>({});
+  const [examModalVisible, setExamModalVisible] = useState(false);
+  const [examTypes, setExamTypes] = useState<string[]>([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const [editingExam, setEditingExam] = useState<Event | null>(null);
 
@@ -36,7 +38,7 @@ export default function CalendarScreen() {
           minute: '2-digit',
           hour12: false,
         });
-        console.log(examTime);
+
         if (!acc[examDate]) acc[examDate] = [];
         acc[examDate].push({
           id: String(exam.examId),
@@ -56,25 +58,30 @@ export default function CalendarScreen() {
 
   useEffect(() => {
     if (dgroup) fetchExams();
-  }, [dgroup, kgroup, lgroup, pgroup]);
+  }, [dgroup, kgroup, lgroup, pgroup, examModalVisible]);
 
   useEffect(() => {
     const fetchExamTypes = async () => {
       const types = await getExamTypes();
-      const typeNames = types.map(item => item.name);
-      setExamTypes(typeNames);
+      setExamTypes(types.map(t => t.name));
     };
     fetchExamTypes();
   }, []);
 
+  const handleDayPress = (date: { dateString: string }) => {
+    setSelectedDate(date.dateString);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.calendarContainer}>
+      <View style={styles.calendarWrapper}>
         <Calendar
           firstDay={1}
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{ borderRadius: 12 }}
           theme={{
-            backgroundColor: '#181818',
-            calendarBackground: '#181818',
+            backgroundColor: '#1e1f1f',
+            calendarBackground: '#1e1f1f',
             textSectionTitleColor: '#A9A9A9',
             selectedDayBackgroundColor: '#7B79FF',
             selectedDayTextColor: '#ffffff',
@@ -91,7 +98,7 @@ export default function CalendarScreen() {
             textDayHeaderFontSize: 12,
           }}
           markingType={'multi-dot'}
-          onDayPress={day => setSelectedDate(day.dateString)}
+          onDayPress={handleDayPress}
           markedDates={{
             ...Object.fromEntries(
               Object.entries(events).map(([date, eventList]) => [
@@ -114,37 +121,40 @@ export default function CalendarScreen() {
               : {}),
           }}
         />
-
-        <CalendarEvents
-          selectedDate={selectedDate}
-          events={events[selectedDate] || []}
-          onAdd={() => {
-            setIsUpdate(false);
-            setEditingExam(null);
-            setModalVisible(true);
-          }}
-          onDelete={async (id: number) => {
-            await deleteExam(id);
-            setEvents(prev => {
-              const updated = { ...prev };
-              if (updated[selectedDate]) {
-                updated[selectedDate] = updated[selectedDate].filter(
-                  e => Number(e.id) !== id,
-                );
-              }
-              return updated;
-            });
-          }}
-          onUpdate={(exam: Event) => {
-            setIsUpdate(true);
-            setEditingExam(exam);
-            setModalVisible(true);
-          }}
-        />
       </View>
+
+      <CalendarEventsModal
+        visible={!!selectedDate}
+        onClose={() => setSelectedDate('')}
+        selectedDate={selectedDate}
+        events={events[selectedDate] || []}
+        onAdd={() => {
+          setIsUpdate(false);
+          setEditingExam(null);
+          setExamModalVisible(true);
+        }}
+        onDelete={async id => {
+          await deleteExam(id);
+          setEvents(prev => {
+            const updated = { ...prev };
+            if (updated[selectedDate]) {
+              updated[selectedDate] = updated[selectedDate].filter(
+                e => Number(e.id) !== id,
+              );
+            }
+            return updated;
+          });
+        }}
+        onUpdate={exam => {
+          setIsUpdate(true);
+          setEditingExam(exam);
+          setExamModalVisible(true);
+        }}
+      />
+
       <CreateExamModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
+        visible={examModalVisible}
+        onClose={() => setExamModalVisible(false)}
         examTypes={examTypes}
         date={selectedDate}
         onCreated={fetchExams}
@@ -159,11 +169,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#181818',
-    padding: 16,
+    padding: 8,
   },
-  calendarContainer: {
-    backgroundColor: '#181818',
-    borderRadius: 8,
-    marginBottom: 16,
+  calendarWrapper: {
+    justifyContent: 'center',
+    flex: 1,
   },
 });

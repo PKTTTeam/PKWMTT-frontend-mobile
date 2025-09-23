@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import CalendarEvents from '../src/components/CalendarEvents';
+import CalendarEvents from '../src/components/modals/CalendarEventsModal';
 
 const mockEvents = [
   { id: '1', title: 'Test Event 1', time: '10:00', color: '#123456' },

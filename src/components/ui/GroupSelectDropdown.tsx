@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import DropdownMenu from './DropdownMenu';
+import DropDownPicker from 'react-native-dropdown-picker';
 import GroupSelectStyles from '../../styles/uiStyles/GroupSelectStyles';
-import { GroupSelectTypes } from '../../types/uiTypes/GroupSelectTypes';
 import {
   useSettingsStore,
   useSettingsActions,
 } from '../../store/settingsStore';
 import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
-//GG - general group
+
+interface Props {
+  groupTitle: string;
+  groupName: GroupName;
+  activeDropdown: string | null;
+  setActiveDropdown: (key: string | null) => void;
+}
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
   GG: 'dean',
@@ -17,19 +22,26 @@ const groupKeyMap: Record<GroupName, GroupKey> = {
   P: 'proj',
 } as const;
 
-const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
+const GroupSelectDropdown: React.FC<Props> = ({
   groupTitle,
   groupName,
-  listPosUp,
+  activeDropdown,
+  setActiveDropdown,
 }) => {
-  const key = groupKeyMap[groupName as GroupName];
-  const { fetchInitialDeanGroups, setActiveDropdown } = useSettingsActions();
+  const key = groupKeyMap[groupName];
+  const { fetchInitialDeanGroups } = useSettingsActions();
   const groups = useSettingsStore(state => state.groups);
   const options = useSettingsStore(state => state.options[key]);
-  const activeDropdown = useSettingsStore(state => state.activeDropdown);
   const setGroup = useSettingsActions().setGroup;
 
-  const dropdownItems = React.useMemo(() => options || [], [options]);
+  const [value, setValue] = useState(groups[key] || '');
+  const [items, setItems] = useState(
+    (options || []).map(opt => ({ label: opt, value: opt })),
+  );
+
+  useEffect(() => {
+    setItems((options || []).map(opt => ({ label: opt, value: opt })));
+  }, [options]);
 
   useEffect(() => {
     if (key === 'dean' && (!options || options.length === 0)) {
@@ -37,21 +49,47 @@ const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
     }
   }, [key, options, fetchInitialDeanGroups]);
 
-  const handleOpen = () => setActiveDropdown(key);
-  const handleClose = () => setActiveDropdown(null);
+  useEffect(() => {
+    setValue(groups[key] || '');
+  }, [groups, key]);
+
+  const open = activeDropdown === key;
 
   return (
     <View style={GroupSelectStyles.menuContainer}>
       {groupTitle && <Text style={GroupSelectStyles.text}>{groupTitle}</Text>}
-      <DropdownMenu
-        listPosUp={listPosUp}
-        items={dropdownItems}
-        selectedValue={groups[key]}
-        onSelect={value => setGroup(key, value)}
-        isOpen={activeDropdown === key}
-        onOpen={handleOpen}
-        onClose={handleClose}
-        placeholder="Wybierz grupe"
+
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={openValue => {
+          const isOpen =
+            typeof openValue === 'function' ? openValue(open) : openValue;
+          if (isOpen) {
+            setActiveDropdown(key); // open this dropdown
+          } else {
+            setActiveDropdown(null); // close all
+          }
+        }}
+        setValue={val => {
+          const newValue = typeof val === 'function' ? val(value) : val;
+          setValue(newValue);
+          setGroup(key, newValue);
+        }}
+        setItems={setItems}
+        placeholder="Wybierz grupę"
+        searchable
+        searchPlaceholder="Szukaj..."
+        dropDownContainerStyle={{
+          backgroundColor: '#222',
+          borderColor: '#666',
+        }}
+        containerStyle={{ width: 130 }}
+        style={{ backgroundColor: '#222', borderColor: '#666', zIndex: 1000 }}
+        textStyle={{ color: 'white' }}
+        searchTextInputStyle={{ color: 'white' }}
+        searchContainerStyle={{ backgroundColor: '#222' }}
       />
     </View>
   );
