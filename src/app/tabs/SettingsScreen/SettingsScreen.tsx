@@ -87,42 +87,35 @@ function SettingsScreen() {
                 <ShowEmptySlotsToggle />
               </View>
 
-              <Text
-                style={[
-                  SettingsStyles.labelText,
-                  SettingsStyles.elementsSpacing,
-                ]}
-              >
-                Autoryzacja
-              </Text>
-
               <View style={SettingsStyles.elementsSpacing}>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: '#8d95fe',
-                    paddingVertical: 12,
-                    borderRadius: 6,
-                    marginRight: 8,
-                    marginBottom: 5,
-                  }}
-                  onPress={() => setModalVisible(true)}
-                  disabled={!!repGroup}
-                >
-                  <Text
+                {!role && (
+                  <TouchableOpacity
                     style={{
-                      color: 'white',
-                      fontWeight: 'bold',
-                      textAlign: 'center',
+                      backgroundColor: '#8d95fe',
+                      paddingVertical: 12,
+                      borderRadius: 6,
+                      marginRight: 8,
+                      marginBottom: 5,
                     }}
+                    onPress={() => setModalVisible(true)}
+                    disabled={!!repGroup}
                   >
-                    Potwierdź
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Potwierdź
+                    </Text>
+                  </TouchableOpacity>
+                )}
 
                 {repGroup && role && (
                   <View style={SettingsStyles.elementsSpacing}>
                     <Text style={SettingsStyles.labelText}>
-                      Status: {role}, {repGroup}
+                      Starosta grupy {repGroup}
                     </Text>
                   </View>
                 )}
