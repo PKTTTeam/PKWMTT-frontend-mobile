@@ -10,7 +10,7 @@ import Toast from 'react-native-toast-message';
 import { useAuthStore } from '../../../store/authStore.ts';
 import { useTranslation } from 'react-i18next';
 
-import LanguageDropdown from '../../../components/ui/LanguageDropdown.tsx';
+import LanguageCard from '../../../components/LanguageCard.tsx';
 
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
@@ -167,9 +167,11 @@ function SettingsScreen() {
             <View style={SettingsStyles.elementsSpacing}>
               <ShowEmptySlotsToggle />
             </View>
-
             <View style={SettingsStyles.elementsSpacing}>
-              <LanguageDropdown
+              <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
+            </View>
+            <View style={SettingsStyles.elementsSpacing}>
+              <LanguageCard
                 activeDropdown={activeDropdown}
                 setActiveDropdown={setActiveDropdown}
               />

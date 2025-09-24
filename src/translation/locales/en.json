@@ -92,5 +92,6 @@
   "otpTitle": "Enter OTP code",
   "otpError": "Invalid OTP code. Please try again.",
   "confirmButton": "Confirm",
-  "checkingConfirmButton": "Checking..."
+  "checkingConfirmButton": "Checking...",
+  "appApperance": "Application Appearance"
 }
