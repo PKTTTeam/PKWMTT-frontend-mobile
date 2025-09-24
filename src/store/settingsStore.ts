@@ -23,7 +23,7 @@ export const useSettingsStore = create<SettingsState>()(
       loading: false,
       lastFetchedDean: null,
       activeDropdown: null,
-      showEmptySlots: false,
+      showEmptySlots: true,
       error: null,
       setupComplete: false,
 
@@ -168,6 +168,7 @@ export const useSettingsStore = create<SettingsState>()(
       partialize: state => ({
         groups: state.groups,
         options: state.options,
+        setupComplete: state.setupComplete,
       }),
     },
   ),

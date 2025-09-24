@@ -144,14 +144,21 @@ const TimetableScreen = () => {
     setRefreshing(true);
 
     try {
-      //refresh dean,dep grps
+      const currentDeanGroup = groups.dean;
 
       await fetchInitialDeanGroups();
-      if (groups.dean) {
+
+      if (currentDeanGroup && groups.dean !== currentDeanGroup) {
+        useSettingsStore.getState().actions.setGroup('dean', currentDeanGroup);
+        await fetchDependentGroups(currentDeanGroup);
+      } else if (groups.dean) {
         await fetchDependentGroups(groups.dean);
       }
+
+      // Refresh timetable data
       if (!groups.dean)
         throw new Error('General group name is required to fetch timetable');
+
       const [hours, timetableResponse] = await Promise.all([
         getAcademicHours(),
         getTimetableByGroup(
@@ -161,6 +168,7 @@ const TimetableScreen = () => {
           groups.proj || undefined,
         ),
       ]);
+
       setAHours(hours);
       setTimetable([...timetableResponse.data]);
     } catch (err: any) {
@@ -169,8 +177,15 @@ const TimetableScreen = () => {
     } finally {
       setRefreshing(false);
     }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groups.dean, groups.comp, groups.lab, groups.proj]);
+  }, [
+    groups.dean,
+    groups.comp,
+    groups.lab,
+    groups.proj,
+    fetchInitialDeanGroups,
+    fetchDependentGroups,
+    setError,
+  ]);
 
   const navigateToNextDay = () => {
     if (isNavigating) return; // Prevent rapid clicks
