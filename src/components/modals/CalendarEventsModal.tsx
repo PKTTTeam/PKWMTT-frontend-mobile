@@ -10,6 +10,7 @@ import {
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useAuthStore } from '../../store/authStore';
 import { useSettingsStore } from '../../store/settingsStore';
+import { useTranslation } from 'react-i18next';
 
 export type Event = {
   id: string;
@@ -39,6 +40,7 @@ const CalendarEventsModal: React.FC<CalendarEventsModalProps> = ({
   onDelete,
   onUpdate,
 }) => {
+  const { t } = useTranslation();
   const repGroup = useAuthStore(state => state.repGroup);
   const role = useAuthStore(state => state.role);
   const group = useSettingsStore(state => state.groups.dean);
@@ -73,7 +75,7 @@ const CalendarEventsModal: React.FC<CalendarEventsModalProps> = ({
           </TouchableOpacity>
 
           <Text style={styles.dateText}>
-            {parseDate(selectedDate) || 'Wybierz datę'}
+            {parseDate(selectedDate) || t('dateSelect')}
           </Text>
 
           {role && repGroup === slicedGroup && selectedDate && (
@@ -87,7 +89,7 @@ const CalendarEventsModal: React.FC<CalendarEventsModalProps> = ({
             keyExtractor={item => item.id}
             contentContainerStyle={{ paddingBottom: 16 }}
             ListEmptyComponent={
-              <Text style={styles.emptyText}>Brak wydarzeń</Text>
+              <Text style={styles.emptyText}>{t('noEvents')}</Text>
             }
             renderItem={({ item }) => (
               <View style={[styles.eventCard, { borderColor: item.color }]}>

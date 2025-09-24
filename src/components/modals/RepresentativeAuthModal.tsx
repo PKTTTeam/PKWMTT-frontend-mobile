@@ -12,6 +12,7 @@ import { getOtpResponse } from '../../services/settings/SettingsService';
 import Toast from 'react-native-toast-message';
 
 import { useAuthStore } from '../../store/authStore';
+import { useTranslation } from 'react-i18next';
 
 interface RepresentativeAuthModalProps {
   visible: boolean;
@@ -33,6 +34,8 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
   const inputsRef = useRef<(TextInput | null)[]>([]);
 
   const setToken = useAuthStore(state => state.setToken);
+
+  const { t } = useTranslation();
 
   // Reset state when modal opens
   useEffect(() => {
@@ -114,7 +117,7 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
       if (typeof res === 'string') {
         Toast.show({
           type: 'success',
-          text1: '✅ Autoryzacja potwierdzona',
+          text1: t('toastAuthSuccess'),
         });
         setToken(res);
       }
@@ -124,7 +127,7 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
       console.log(err);
       Toast.show({
         type: 'error',
-        text1: '❌ Autoryzacja odrzucona',
+        text1: t('toastAuthError'),
       });
       setHasError(true);
       onClose();
@@ -142,12 +145,10 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
     <Modal transparent visible={visible} animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.container}>
-          <Text style={styles.title}>Wprowadź kod OTP</Text>
+          <Text style={styles.title}>{t('otpTitle')}</Text>
 
           {(error || hasError) && (
-            <Text style={styles.errorText}>
-              {error || 'Nieprawidłowy kod OTP. Spróbuj ponownie.'}
-            </Text>
+            <Text style={styles.errorText}>{error || t('otpError')}</Text>
           )}
 
           <View style={styles.otpContainer}>
@@ -192,7 +193,7 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
                   loading && styles.disabledText,
                 ]}
               >
-                Anuluj
+                {t('cancelButton')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -204,7 +205,7 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
               disabled={!isComplete || loading}
             >
               <Text style={styles.confirmButtonText}>
-                {loading ? 'Sprawdzanie...' : 'Potwierdź'}
+                {loading ? t('checkingConfirmButton') : t('confirmButton')}
               </Text>
             </TouchableOpacity>
           </View>

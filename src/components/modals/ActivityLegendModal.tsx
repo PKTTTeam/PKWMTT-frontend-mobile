@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import LetterIcon from '../ui/letterIcon';
 import { getCorrectColor } from '../../utils/getCorrectColor';
 import { ActivityLegendModalProps } from '../../types/global';
+import { useTranslation } from 'react-i18next';
 
 const activityTypes = [
   { letter: 'W', label: 'Wykład' },
@@ -19,6 +20,7 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
   visible,
   onClose,
 }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       animationType="fade"
@@ -43,7 +45,7 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
           >
             <Icon name="close" color="white" size={12} />
           </TouchableOpacity>
-          <Text style={styles.title}>Legenda Aktywności</Text>
+          <Text style={styles.title}>{t('activityLegendText')}</Text>
           <View style={styles.items}>
             {activityTypes.map(({ letter, label }) => (
               <View key={letter} style={styles.itemRow}>

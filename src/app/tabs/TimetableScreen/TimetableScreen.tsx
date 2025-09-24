@@ -26,6 +26,7 @@ import {
 import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
+import { useTranslation } from 'react-i18next';
 
 const LessonSeparator = () => {
   return <View style={styles.separator} />;
@@ -39,6 +40,16 @@ const RenderRightArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-forward-ios" color={color} size={size} />
 );
 
+const dayNameMap: Record<string, string> = {
+  Poniedziałek: 'Monday',
+  Wtorek: 'Tuesday',
+  Środa: 'Wednesday',
+  Czwartek: 'Thursday',
+  Piątek: 'Friday',
+  Sobota: 'Saturday',
+  Niedziela: 'Sunday',
+};
+
 const TimetableScreen = () => {
   const [timetable, setTimetable] = useState<DaySchedule[]>([]);
   const [aHours, setAHours] = useState<string[]>([]);
@@ -46,6 +57,8 @@ const TimetableScreen = () => {
   const [isOddWeek, setIsOddWeek] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  const { t } = useTranslation();
 
   //state for error modal
   const error = useSettingsStore(state => state.error);
@@ -56,7 +69,7 @@ const TimetableScreen = () => {
   const loading = useSettingsStore(state => state.loading);
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
 
-  const { fetchInitialDeanGroups, fetchDependentGroups } = useSettingsActions();
+  const { fetchInitialDeanGroups } = useSettingsActions();
 
   const navigationRef = useRef({
     currentDayIndex,
@@ -144,17 +157,6 @@ const TimetableScreen = () => {
     setRefreshing(true);
 
     try {
-      const currentDeanGroup = groups.dean;
-
-      await fetchInitialDeanGroups();
-
-      if (currentDeanGroup && groups.dean !== currentDeanGroup) {
-        useSettingsStore.getState().actions.setGroup('dean', currentDeanGroup);
-        await fetchDependentGroups(currentDeanGroup);
-      } else if (groups.dean) {
-        await fetchDependentGroups(groups.dean);
-      }
-
       // Refresh timetable data
       if (!groups.dean)
         throw new Error('General group name is required to fetch timetable');
@@ -177,15 +179,7 @@ const TimetableScreen = () => {
     } finally {
       setRefreshing(false);
     }
-  }, [
-    groups.dean,
-    groups.comp,
-    groups.lab,
-    groups.proj,
-    fetchInitialDeanGroups,
-    fetchDependentGroups,
-    setError,
-  ]);
+  }, [groups.comp, groups.dean, groups.lab, groups.proj, setError]);
 
   const navigateToNextDay = () => {
     if (isNavigating) return; // Prevent rapid clicks
@@ -300,7 +294,7 @@ const TimetableScreen = () => {
   };
 
   const getWeekTypeText = () => {
-    return isOddWeek ? 'Nieparzysty' : 'Parzysty';
+    return isOddWeek ? t('oddWeek') : t('evenWeek');
   };
 
   // Show loading state
@@ -309,7 +303,7 @@ const TimetableScreen = () => {
       <View style={styles.bgContainer}>
         <View style={styles.container}>
           <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>Ładowanie grup...</Text>
+            <Text style={styles.loadingText}>{t('groupLoad')}</Text>
           </View>
         </View>
       </View>
@@ -329,7 +323,11 @@ const TimetableScreen = () => {
           </TouchableOpacity>
 
           <Text style={styles.dayTitle}>
-            {timetable[currentDayIndex]?.name || ''}
+            {t(
+              `dayNames.${
+                dayNameMap[timetable[currentDayIndex]?.name] || 'Monday'
+              }`,
+            )}
           </Text>
 
           <TouchableOpacity

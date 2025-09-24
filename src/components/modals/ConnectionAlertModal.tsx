@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -13,6 +14,7 @@ const ConnectionAlertModal: React.FC<ConnectionAlertModalProps> = ({
   onRetry,
   onClose,
 }) => {
+  const { t } = useTranslation();
   return (
     <Modal
       animationType="fade"
@@ -39,18 +41,15 @@ const ConnectionAlertModal: React.FC<ConnectionAlertModalProps> = ({
           </TouchableOpacity>
 
           <Icon name="wifi-off" size={40} color="#FF6B6B" style={styles.icon} />
-          <Text style={styles.title}>Brak połączenia</Text>
-          <Text style={styles.message}>
-            Nie można połączyć się z serwerem. Sprawdź swoje połączenie
-            internetowe i spróbuj ponownie.
-          </Text>
+          <Text style={styles.title}>{t('noConnection')}</Text>
+          <Text style={styles.message}>{t('noConnectionMessage')}</Text>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.retryButton} onPress={onRetry}>
-              <Text style={styles.retryButtonText}>Spróbuj ponownie</Text>
+              <Text style={styles.retryButtonText}>{t('retryButton')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Text style={styles.closeButtonText}>Zamknij</Text>
+              <Text style={styles.closeButtonText}>{t('closeButton')}</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

@@ -7,6 +7,7 @@ import {
   useSettingsActions,
 } from '../../store/settingsStore';
 import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   groupTitle: string;
@@ -35,6 +36,7 @@ const GroupSelectDropdown: React.FC<Props> = ({
   const groups = useSettingsStore(state => state.groups);
   const options = useSettingsStore(state => state.options[key]);
   const setGroup = useSettingsActions().setGroup;
+  const { t } = useTranslation();
 
   const [value, setValue] = useState(groups[key] || '');
   const [items, setItems] = useState(
@@ -80,9 +82,9 @@ const GroupSelectDropdown: React.FC<Props> = ({
           setGroup(key, newValue);
         }}
         setItems={setItems}
-        placeholder="Wybierz grupę"
+        placeholder={t('groupSelectPlaceholder')}
         searchable
-        searchPlaceholder="Szukaj..."
+        searchPlaceholder={t('searchPlaceholder')}
         dropDownContainerStyle={{
           backgroundColor: '#222',
           borderColor: '#666',
@@ -90,8 +92,8 @@ const GroupSelectDropdown: React.FC<Props> = ({
         containerStyle={{ width: 130 }}
         style={{
           backgroundColor: '#222',
-          borderColor: hasError ? '#ff6b6b' : '#666', // Red border when has error
-          borderWidth: hasError ? 2 : 1, // Thicker border for error
+          borderColor: hasError ? '#ff6b6b' : '#666',
+          borderWidth: hasError ? 2 : 1,
           zIndex: 1000,
         }}
         textStyle={{ color: 'white' }}

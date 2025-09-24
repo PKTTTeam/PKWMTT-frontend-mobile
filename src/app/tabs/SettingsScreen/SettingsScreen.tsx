@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { Provider as PaperProvider } from 'react-native-paper';
 
 import SettingsStyles from './SettingsStyles.ts';
 import Switch from '../../../components/ui/Switch.tsx';
@@ -9,16 +8,20 @@ import RepresentativeAuthModal from '../../../components/modals/RepresentativeAu
 import GroupCard from '../../../components/GroupCard.tsx';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '../../../store/authStore.ts';
+import { useTranslation } from 'react-i18next';
+
+import LanguageDropdown from '../../../components/ui/LanguageDropdown.tsx';
 
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
   const setShowEmptySlots = useSettingsStore(
     state => state.actions.setShowEmptySlots,
   );
+  const { t } = useTranslation();
 
   return (
     <Switch
-      label="Pokaz wolne godziny"
+      label={t('freeHoursText')}
       value={showEmptySlots}
       onChange={setShowEmptySlots}
     />
@@ -36,6 +39,7 @@ function SettingsScreen() {
     new Set(),
   );
   const [wasValid, setWasValid] = useState(false);
+  const { t } = useTranslation();
 
   // Check if LPK groups are present
   const hasLPKGroups =
@@ -59,19 +63,15 @@ function SettingsScreen() {
     return errors.size === 0;
   };
 
-  // Check if a specific group has validation error
   const hasError = (groupKey: string) => validationErrors.has(groupKey);
 
-  // Validate when groups change
   const [didMount, setDidMount] = useState(false);
 
-  // Run once on mount just to set validation state
   useEffect(() => {
     validateGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Run later when groups/options actually change
   useEffect(() => {
     if (!didMount) {
       setDidMount(true);
@@ -83,8 +83,8 @@ function SettingsScreen() {
     if (isValid && !wasValid) {
       Toast.show({
         type: 'success',
-        text1: 'Zapisano',
-        text2: 'Ustawienia grup zostały zapisane',
+        text1: t('toastSaveMessage1'),
+        text2: t('toastSaveMessage2'),
         visibilityTime: 2000,
       });
       setWasValid(true);
@@ -96,116 +96,128 @@ function SettingsScreen() {
 
   return (
     <View style={SettingsStyles.bgContainer}>
-      <PaperProvider>
-        <FlatList
-          data={[]}
-          keyExtractor={() => 'dummy'}
-          renderItem={() => null}
-          ListHeaderComponent={
-            <View style={SettingsStyles.container}>
-              <Text style={SettingsStyles.labelText}>Grupy Studenckie</Text>
+      <FlatList
+        data={[]}
+        keyExtractor={() => 'dummy'}
+        renderItem={() => null}
+        ListHeaderComponent={
+          <View style={SettingsStyles.container}>
+            <Text style={SettingsStyles.labelText}>
+              {t('studentGroups') || 'Grupy Studenckie'}
+            </Text>
 
-              {validationErrors.size > 0 && (
-                <Text
-                  style={[
-                    SettingsStyles.labelText,
-                    { color: '#ff6b6b', fontSize: 14, marginBottom: 10 },
-                  ]}
-                >
-                  Proszę wybrać wszystkie wymagane grupy
-                </Text>
-              )}
-
-              <View
+            {validationErrors.size > 0 && (
+              <Text
                 style={[
-                  SettingsStyles.studentGroups,
-                  SettingsStyles.elementsSpacing,
+                  SettingsStyles.labelText,
+                  { color: '#ff6b6b', fontSize: 14, marginBottom: 10 },
                 ]}
               >
-                <View style={{ zIndex: 5000 }}>
-                  <GroupCard
-                    groupTitle="Dziekańska"
-                    groupName="GG"
-                    activeDropdown={activeDropdown}
-                    setActiveDropdown={setActiveDropdown}
-                    hasError={hasError('dean')}
-                  />
-                </View>
-                {options.lab.length !== 0 && (
-                  <GroupCard
-                    groupTitle="Laboratoryjna"
-                    groupName="L"
-                    activeDropdown={activeDropdown}
-                    setActiveDropdown={setActiveDropdown}
-                    hasError={hasError('lab')}
-                  />
-                )}
-                {options.comp.length !== 0 && (
-                  <GroupCard
-                    groupTitle="Komputerowa"
-                    groupName="K"
-                    activeDropdown={activeDropdown}
-                    setActiveDropdown={setActiveDropdown}
-                    hasError={hasError('comp')}
-                  />
-                )}
-                {options.proj.length !== 0 && (
-                  <GroupCard
-                    groupTitle="Projektowa"
-                    groupName="P"
-                    activeDropdown={activeDropdown}
-                    setActiveDropdown={setActiveDropdown}
-                    hasError={hasError('proj')}
-                  />
-                )}
+                {t('selectRequiredGroups') ||
+                  'Proszę wybrać wszystkie wymagane grupy'}
+              </Text>
+            )}
+
+            {/* Student group dropdowns */}
+            <View
+              style={[
+                SettingsStyles.studentGroups,
+                SettingsStyles.elementsSpacing,
+              ]}
+            >
+              <View style={{ zIndex: 5000 }}>
+                <GroupCard
+                  groupTitle={t('deanGroup')}
+                  groupName="GG"
+                  activeDropdown={activeDropdown}
+                  setActiveDropdown={setActiveDropdown}
+                  hasError={hasError('dean')}
+                />
               </View>
+              {options.lab.length !== 0 && (
+                <GroupCard
+                  groupTitle={t('labGroup')}
+                  groupName="L"
+                  activeDropdown={activeDropdown}
+                  setActiveDropdown={setActiveDropdown}
+                  hasError={hasError('lab')}
+                />
+              )}
+              {options.comp.length !== 0 && (
+                <GroupCard
+                  groupTitle={t('compGroup')}
+                  groupName="K"
+                  activeDropdown={activeDropdown}
+                  setActiveDropdown={setActiveDropdown}
+                  hasError={hasError('comp')}
+                />
+              )}
+              {options.proj.length !== 0 && (
+                <GroupCard
+                  groupTitle={t('projGroup')}
+                  groupName="P"
+                  activeDropdown={activeDropdown}
+                  setActiveDropdown={setActiveDropdown}
+                  hasError={hasError('proj')}
+                />
+              )}
+            </View>
 
-              <View style={SettingsStyles.elementsSpacing}>
-                <ShowEmptySlotsToggle />
-              </View>
+            {/* Toggle and language dropdown */}
+            <View style={SettingsStyles.elementsSpacing}>
+              <ShowEmptySlotsToggle />
+            </View>
 
-              <View style={SettingsStyles.elementsSpacing}>
-                {!role && (
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: '#8d95fe',
-                      paddingVertical: 12,
-                      borderRadius: 6,
-                      marginRight: 8,
-                      marginBottom: 5,
-                    }}
-                    onPress={() => setModalVisible(true)}
-                    disabled={!!repGroup}
-                  >
-                    <Text
-                      style={{
-                        color: 'white',
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                      }}
-                    >
-                      Potwierdź status starosty
-                    </Text>
-                  </TouchableOpacity>
-                )}
-
-                {repGroup && role && (
-                  <View style={SettingsStyles.elementsSpacing}>
-                    <Text style={SettingsStyles.labelText}>
-                      Starosta grupy {repGroup}
-                    </Text>
-                  </View>
-                )}
-              </View>
-
-              <RepresentativeAuthModal
-                visible={modalVisible}
-                onClose={() => setModalVisible(false)}
+            <View style={SettingsStyles.elementsSpacing}>
+              <LanguageDropdown
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
               />
             </View>
-          }
-        />
-      </PaperProvider>
+
+            {/* Rep auth */}
+            <View style={SettingsStyles.elementsSpacing}>
+              {!role && (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#8d95fe',
+                    paddingVertical: 12,
+                    borderRadius: 6,
+                    marginRight: 8,
+                    marginBottom: 5,
+                  }}
+                  onPress={() => setModalVisible(true)}
+                  disabled={!!repGroup}
+                >
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                    }}
+                  >
+                    {t('confirmRepStatus') || 'Potwierdź status starosty'}
+                  </Text>
+                </TouchableOpacity>
+              )}
+
+              {repGroup && role && (
+                <View style={SettingsStyles.elementsSpacing}>
+                  <Text style={SettingsStyles.labelText}>
+                    {t('repOfGroup', { group: repGroup }) ||
+                      `Starosta grupy ${repGroup}`}
+                  </Text>
+                </View>
+              )}
+            </View>
+
+            <RepresentativeAuthModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+            />
+          </View>
+        }
+      />
       <Toast autoHide position="bottom" />
     </View>
   );
