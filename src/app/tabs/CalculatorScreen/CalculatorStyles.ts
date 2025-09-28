@@ -7,8 +7,23 @@ const calculatorStyles = StyleSheet.create({
     // height: '80%', // j
     backgroundColor: '#1c1c1c',
   },
-  overlayLabel: {color: 'white', fontSize: 16, paddingLeft: 15, paddingBottom: 5},
-  text: {
+  overlayLabel: {
+    color: 'white',
+    fontSize: 16,
+    paddingLeft: 15,
+    paddingBottom: 5,
+  },
+  overlayLabelErr: {
+    color: '#ff6467',
+    fontSize: 16,
+    paddingLeft: 15,
+    paddingBottom: 5,
+  },
+  countersText: {
+    fontSize: 16,
+    color: '#a1a1a1',
+  },
+  bottomMenu: {
     fontSize: 16,
     color: 'white',
   },
@@ -66,9 +81,9 @@ const calculatorStyles = StyleSheet.create({
     paddingVertical: 20,
 
     borderWidth: 1,
-    borderColor: '#c2c2c2ff',
+    borderColor: '#3b3b3b',
 
-    backgroundColor: '#1b1b1bff',
+    backgroundColor: '#191919',
     position: 'absolute',
     justifyContent: 'center',
 
@@ -80,8 +95,8 @@ const calculatorStyles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-    zIndex: 1, 
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 1,
   },
   summaryContainer: {
     paddingLeft: 15,
@@ -134,22 +149,62 @@ const calculatorStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#c2c2c2ff',
   },
+  cancelButton: {
+    alignSelf: 'center',
+    marginBottom: '2%',
+    marginTop: '2%',
+    width: '80%',
+    height: 50,
+    backgroundColor: '#232323',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#3b3b3b',
+  },
+  confirmButton: {
+    alignSelf: 'center',
+    marginBottom: '2%',
+    marginTop: '2%',
+    width: '80%',
+    height: 50,
+    backgroundColor: '#2e2e2e',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#232323',
+  },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
   userInput: {
-    backgroundColor: '#494749ff',
-
+    backgroundColor: '#232323',
     color: 'white',
-
 
     paddingLeft: 10,
     alignSelf: 'center',
 
     borderRadius: 8,
     width: '90%',
+
+    borderWidth: 1,
+    borderColor: '#3b3b3b',
+  },
+  invalidUserInput: {
+    backgroundColor: '#232323',
+    color: 'white',
+
+    paddingLeft: 10,
+    alignSelf: 'center',
+
+    borderRadius: 8,
+    width: '90%',
+
+    borderWidth: 1,
+    borderColor: '#ff6467',
   },
   noItemsInfo: {
     flex: 1,
@@ -164,16 +219,15 @@ const calculatorStyles = StyleSheet.create({
   // -----------------------------
 
   addCourseMenuBtnText: {
-    fontSize: 30,
+    fontSize: 35,
     color: 'white',
-
   },
   addCourseMenuBtn: {
     width: 50,
     height: 50,
     borderRadius: 50,
 
-    backgroundColor: '#812ea1ff',
+    backgroundColor: '#727dff',
 
     display: 'flex',
     alignSelf: 'center',
@@ -183,6 +237,19 @@ const calculatorStyles = StyleSheet.create({
 
     marginBottom: 20,
   },
+  // -----------------------------
+
+  grayLabel: {
+    color: '#a0a0a0ff',
+    fontSize: 16,
+    paddingLeft: 15,
+  },
+  inputErrorFeed: {
+    color: '#ff6467',
+    fontSize: 14,
+    paddingLeft: 15,
+
+  }
 });
 
 export default calculatorStyles;

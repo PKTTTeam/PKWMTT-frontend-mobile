@@ -30,6 +30,10 @@ function CalculatorScreen() {
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
+  const [subjectError, setSubjectError] = useState<string | null>(null);
+  const [ectsError, setEctsError] = useState<string | null>(null);
+  const [gradeError, setGradeError] = useState<string | null>(null);
+
   const [popUpMenuVisible, setPopUpMenuVisible] = useState(false);
 
   /**
@@ -79,6 +83,9 @@ function CalculatorScreen() {
    * Resets input fields and closes the popup menu.
    */
   const handleCancel = () => {
+    setSubjectError(null);
+    setEctsError(null);
+    setGradeError(null);
     setPopUpMenuVisible(false);
     setSubjectName('');
     setEctsPoints('');
@@ -89,28 +96,36 @@ function CalculatorScreen() {
    * Adds a new subject to the list after validating input fields.
    */
   const addSubject = () => {
+    let hasError = false;
+
+    setSubjectError(null);
+    setEctsError(null);
+    setGradeError(null);
+
     if (!subjectName.trim()) {
-      sbujectInput.current?.focus();
-      return;
+      setSubjectError('Nazwa przedmiotu jest wymagana');
+      hasError = true;
     }
 
     const ectsInt = parseInt(ectsPoints, 10);
     if (isNaN(ectsInt) || ectsInt <= 0) {
-      ectsInput.current?.focus();
-      return;
+      setEctsError('Podaj prawidłową wartość ECTS');
+      hasError = true;
     }
 
     const gradeFloat = parseFloat(grade);
     if (isNaN(gradeFloat) || gradeFloat < 0) {
-      gradeInput.current?.focus();
-      return;
+      setGradeError('Podaj prawidłową wartość ECTS');
+      hasError = true;
     }
 
     const decimalPart = grade.includes('.') ? grade.split('.')[1] : '';
     if (decimalPart.length > 1) {
-      gradeInput.current?.focus();
-      return;
+      setGradeError('Podaj prawidłową ocenę');
+      hasError = true;
     }
+
+    if (hasError) return;
 
     const newItem: CalcItem = {
       key: uuid.v4().toString(),
@@ -146,13 +161,13 @@ function CalculatorScreen() {
         <Text style={styles.deleteButtonText}>X</Text>
       </TouchableOpacity>
       <View style={styles.itemContainer}>
-        <Text style={[styles.text, styles.singleItem, styles.leftText]}>
+        <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>
           {item.subjectName}
         </Text>
-        <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+        <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
           {item.ects}
         </Text>
-        <Text style={[styles.text, styles.singleItem, styles.rightText]}>
+        <Text style={[styles.bottomMenu, styles.singleItem, styles.rightText]}>
           {item.grade}
         </Text>
       </View>
@@ -162,9 +177,9 @@ function CalculatorScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.text}>Nazwa</Text>
-        <Text style={styles.text}>Wartość ECTS</Text>
-        <Text style={styles.text}>Ocena</Text>
+        <Text style={styles.bottomMenu}>Nazwa</Text>
+        <Text style={styles.bottomMenu}>Wartość ECTS</Text>
+        <Text style={styles.bottomMenu}>Ocena</Text>
       </View>
 
       {subjectList.length === 0 && (
@@ -183,24 +198,36 @@ function CalculatorScreen() {
 
       <View style={styles.summaryContainer}>
         <View style={styles.summarySpacer}>
-          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.countersText, styles.singleItem, styles.centerText]}
+          >
             Średnia ocen
           </Text>
-          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.countersText, styles.singleItem, styles.centerText]}
+          >
             Suma ECTS
           </Text>
-          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.countersText, styles.singleItem, styles.centerText]}
+          >
             Średnia ważona
           </Text>
         </View>
         <View style={styles.summarySpacer}>
-          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
             {averageGrade()}
           </Text>
-          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
             {totalEcts()}
           </Text>
-          <Text style={[styles.text, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
             {weightedAverage()}
           </Text>
         </View>
@@ -209,38 +236,68 @@ function CalculatorScreen() {
       {popUpMenuVisible && (
         <View style={styles.overlayContainer}>
           <View style={styles.popUpMenu}>
-            <Text style={styles.overlayLabel}>Nazwa</Text>
+            <Text style={styles.overlayLabel}>Dodaj przedmiot</Text>
+            <Text style={styles.grayLabel}>
+              Podaj nazwę przedmiotu, wartość ECTS oraz ocenę.
+            </Text>
+            <Text
+              style={
+                subjectError ? styles.overlayLabelErr : styles.overlayLabel
+              }
+            >
+              Nazwa
+            </Text>
             <TextInput
               ref={sbujectInput}
-              style={styles.userInput}
+              style={subjectError ? styles.invalidUserInput : styles.userInput}
               placeholder="np. Mechanika"
-              placeholderTextColor={styles.userInput.color}
+              placeholderTextColor={'#a1a1a1'}
               value={subjectName}
               onChangeText={setSubjectName}
             />
-            <Text style={styles.overlayLabel}>Wartość ECTS</Text>
+            {subjectError && (
+              <Text style={styles.inputErrorFeed}>{subjectError}</Text>
+            )}
+
+            <Text
+              style={ectsError ? styles.overlayLabelErr : styles.overlayLabel}
+            >
+              Wartość ECTS
+            </Text>
             <TextInput
               ref={ectsInput}
-              style={styles.userInput}
+              style={ectsError ? styles.invalidUserInput : styles.userInput}
               placeholder="np. 6"
-              placeholderTextColor={styles.userInput.color}
+              placeholderTextColor={'#a1a1a1'}
               value={ectsPoints}
               onChangeText={setEctsPoints}
             />
-            <Text style={styles.overlayLabel}>Ocena</Text>
+            {ectsError && (
+              <Text style={styles.inputErrorFeed}>{ectsError}</Text>
+            )}
+
+            <Text
+              style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}
+            >
+              Ocena
+            </Text>
             <TextInput
               ref={gradeInput}
-              style={styles.userInput}
+              style={gradeError ? styles.invalidUserInput : styles.userInput}
               placeholder="np. 4"
-              placeholderTextColor={styles.userInput.color}
+              placeholderTextColor={'#a1a1a1'}
               value={grade}
               onChangeText={setGrade}
             />
-            <TouchableOpacity style={styles.button} onPress={addSubject}>
-              <Text style={styles.buttonText}>Dodaj przedmiot</Text>
+            {gradeError && (
+              <Text style={styles.inputErrorFeed}>{gradeError}</Text>
+            )}
+
+            <TouchableOpacity style={styles.confirmButton} onPress={addSubject}>
+              <Text style={styles.buttonText}>Potwierdź</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.button}
+              style={styles.cancelButton}
               onPress={handleCancel}
             >
               <Text style={styles.buttonText}>Anuluj</Text>
