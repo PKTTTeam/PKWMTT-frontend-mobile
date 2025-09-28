@@ -1,153 +1,180 @@
 import { StyleSheet } from 'react-native';
 
+export const colors = {
+  // =========================
+  // Background colors
+  // =========================
+  backgroundPrimary: '#191919', // główne tło aplikacji
+  backgroundSecondary: '#232323', // tło inputów i standardowych przycisków
+  backgroundItem: '#313131', // tło elementów listy
+  backgroundPopup: '#191919', // tło popupów/modalów
+  backgroundHeader: '#161415', // tło headera
+  overlay: 'rgba(0, 0, 0, 0.5)', // tło overlay
+
+  // =========================
+  // Border colors
+  // =========================
+  borderDefault: '#3b3b3b', // standardowa obwódka
+  borderLight: '#c2c2c2', // jasna obwódka np. przy przyciskach
+  borderDanger: '#ff6467', // kolor błędu
+  borderGray: '#6b6b6b', // szara obwódka np. summary
+  cancelButtonBorder: '#3b3b3b', // border cancel button
+
+  // =========================
+  // Accent colors
+  // =========================
+  accentBlue: '#727dff', // przycisk dodawania kursu
+
+  // =========================
+  // Text colors
+  // =========================
+  textPrimary: 'white', // główny kolor tekstu
+  textSecondary: '#a1a1a1', // szary tekst np. liczniki
+  textError: '#ff6467', // czerwony tekst błędu
+
+  // =========================
+  // Button backgrounds
+  // =========================
+  confirmButtonBg: '#2e2e2e',
+  cancelButtonBg: '#232323',
+};
+
 const calculatorStyles = StyleSheet.create({
+  // =========================
+  // Container
+  // =========================
   container: {
     display: 'flex',
     height: '100%',
-    // height: '80%', // j
-    backgroundColor: '#1c1c1c',
+    backgroundColor: colors.backgroundPrimary,
   },
+
+  // =========================
+  // Labels & Text
+  // =========================
   overlayLabel: {
-    color: 'white',
+    color: colors.textPrimary,
     fontSize: 16,
     paddingLeft: 15,
     paddingBottom: 5,
   },
   overlayLabelErr: {
-    color: '#ff6467',
+    color: colors.textError,
     fontSize: 16,
     paddingLeft: 15,
     paddingBottom: 5,
   },
   countersText: {
     fontSize: 16,
-    color: '#a1a1a1',
+    color: colors.textSecondary,
   },
   bottomMenu: {
     fontSize: 16,
-    color: 'white',
+    color: colors.textPrimary,
   },
+  grayLabel: {
+    color: colors.textSecondary,
+    fontSize: 16,
+    paddingLeft: 15,
+  },
+  noItemsInfoText: {
+    fontSize: 18,
+    fontStyle: 'italic',
+    color: colors.textSecondary,
+  },
+  addCourseMenuBtnText: {
+    fontSize: 35,
+    color: colors.textPrimary,
+  },
+  buttonText: {
+    color: colors.textPrimary,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  inputErrorFeed: {
+    color: colors.borderDanger,
+    fontSize: 14,
+    paddingLeft: 15,
+  },
+
+  // =========================
+  // Item containers
+  // =========================
   itemContainer: {
     flexDirection: 'row',
     width: '90%',
     height: '100%',
-    backgroundColor: '#313131',
-    // borderRadius: 50,
     paddingHorizontal: 15,
   },
-
-  singleItem: {
-    width: '33.33%',
-    // borderColor: 'black',
-    // borderWidth: 1,
-  },
-  leftText: {
-    textAlign: 'left',
-  },
-  centerText: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-  },
-  rightText: {
-    textAlign: 'right',
-    textAlignVertical: 'center',
-  },
+  singleItem: { width: '33.33%' },
+  leftText: { textAlign: 'left', textAlignVertical: 'center' },
+  centerText: { textAlign: 'center', textAlignVertical: 'center' },
+  rightText: { textAlign: 'right', textAlignVertical: 'center' },
   rootItemContainer: {
-    // backgroundColor: '#b43838ff',
+    backgroundColor: colors.backgroundItem,
+    paddingLeft: 10,
+    borderRadius: 8,
+    height:'auto',
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 5,
+    marginTop: 5,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  headerRootItemContainer: {
+    backgroundColor: colors.backgroundHeader,
+    paddingLeft: 10,
+    borderRadius: 8,
+
+    height: 40,
 
     display: 'flex',
     flexDirection: 'row',
     gap: 5,
     marginTop: 5,
     alignSelf: 'center',
-
     alignItems: 'center',
   },
   headerContainer: {
-    // backgroundColor: '#181414',
-    alignSelf: 'center',
-    marginTop: 5,
-    marginLeft: 15,
-
-    display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '90%',
-
-    paddingLeft: 15,
+    height: '100%',
+    paddingHorizontal: 10,
   },
-  popUpMenu: {
-    gap: 5,
-    paddingVertical: 20,
-
-    borderWidth: 1,
-    borderColor: '#3b3b3b',
-
-    backgroundColor: '#191919',
-    position: 'absolute',
-    justifyContent: 'center',
-
-    width: '80%',
-    height: 'auto',
-    borderRadius: 8,
-  },
-  overlayContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 1,
+  singleItemHeader: {
+    width: '33.33%',
   },
   summaryContainer: {
     paddingLeft: 15,
     paddingRight: 15,
-
     borderWidth: 1,
-    borderColor: '#6b6b6bff',
+    borderColor: colors.borderGray,
     width: '95%',
     paddingVertical: 7,
     borderRadius: 8,
     alignSelf: 'center',
-
     display: 'flex',
     flexDirection: 'column',
-
     marginBottom: 20,
   },
-  summarySpacer: {
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  deleteButton: {
-    // backgroundColor: '#e9e3e3ff',
+  summarySpacer: { display: 'flex', flexDirection: 'row' },
 
-    borderWidth: 1.2,
-    borderColor: '#c9c9c9ff',
-
-    borderRadius: 4,
-    width: 17,
-    height: 17,
-
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  deleteButtonText: {
-    fontSize: 11,
-    color: 'white',
-    fontWeight: 'bold',
-  },
+  // =========================
+  // Buttons
+  // =========================
   button: {
     alignSelf: 'center',
     marginBottom: '2%',
     marginTop: '2%',
     width: '80%',
     height: 50,
-    backgroundColor: '#1b1b1bff',
+    backgroundColor: colors.backgroundSecondary,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#c2c2c2ff',
+    borderColor: colors.borderLight,
   },
   cancelButton: {
     alignSelf: 'center',
@@ -155,12 +182,12 @@ const calculatorStyles = StyleSheet.create({
     marginTop: '2%',
     width: '80%',
     height: 50,
-    backgroundColor: '#232323',
+    backgroundColor: colors.cancelButtonBg,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#3b3b3b',
+    borderColor: colors.cancelButtonBorder,
   },
   confirmButton: {
     alignSelf: 'center',
@@ -168,88 +195,96 @@ const calculatorStyles = StyleSheet.create({
     marginTop: '2%',
     width: '80%',
     height: 50,
-    backgroundColor: '#2e2e2e',
+    backgroundColor: colors.confirmButtonBg,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#232323',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  userInput: {
-    backgroundColor: '#232323',
-    color: 'white',
-
-    paddingLeft: 10,
-    alignSelf: 'center',
-
-    borderRadius: 8,
-    width: '90%',
-
-    borderWidth: 1,
-    borderColor: '#3b3b3b',
-  },
-  invalidUserInput: {
-    backgroundColor: '#232323',
-    color: 'white',
-
-    paddingLeft: 10,
-    alignSelf: 'center',
-
-    borderRadius: 8,
-    width: '90%',
-
-    borderWidth: 1,
-    borderColor: '#ff6467',
-  },
-  noItemsInfo: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noItemsInfoText: {
-    fontSize: 18,
-    fontStyle: 'italic',
-    color: '#a0a0a0ff',
-  },
-  // -----------------------------
-
-  addCourseMenuBtnText: {
-    fontSize: 35,
-    color: 'white',
   },
   addCourseMenuBtn: {
     width: 50,
     height: 50,
     borderRadius: 50,
-
-    backgroundColor: '#727dff',
-
+    backgroundColor: colors.accentBlue,
     display: 'flex',
     alignSelf: 'center',
-
     alignItems: 'center',
     justifyContent: 'center',
-
     marginBottom: 20,
   },
-  // -----------------------------
 
-  grayLabel: {
-    color: '#a0a0a0ff',
-    fontSize: 16,
-    paddingLeft: 15,
+  // =========================
+  // Inputs
+  // =========================
+  userInput: {
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.textPrimary,
+    paddingLeft: 10,
+    alignSelf: 'center',
+    borderRadius: 8,
+    width: '90%',
+    borderWidth: 1,
+    borderColor: colors.borderDefault,
   },
-  inputErrorFeed: {
-    color: '#ff6467',
-    fontSize: 14,
-    paddingLeft: 15,
+  invalidUserInput: {
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.textPrimary,
+    paddingLeft: 10,
+    alignSelf: 'center',
+    borderRadius: 8,
+    width: '90%',
+    borderWidth: 1,
+    borderColor: colors.borderDanger,
+  },
 
-  }
+  // =========================
+  // Overlays & Popups
+  // =========================
+  overlayContainer: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.overlay,
+    zIndex: 1,
+  },
+  popUpMenu: {
+    gap: 5,
+    paddingVertical: 20,
+    borderWidth: 1,
+    borderColor: colors.borderDefault,
+    backgroundColor: colors.backgroundPopup,
+    position: 'absolute',
+    justifyContent: 'center',
+    width: '80%',
+    height: 'auto',
+    borderRadius: 8,
+  },
+
+  // =========================
+  // Delete Button
+  // =========================
+  deleteButton: {
+    borderWidth: 1.2,
+    borderColor: colors.borderLight,
+    borderRadius: 4,
+    width: 17,
+    height: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  deleteButtonText: {
+    fontSize: 11,
+    color: colors.textPrimary,
+    fontWeight: 'bold',
+  },
+
+  // =========================
+  // No items info
+  // =========================
+  noItemsInfo: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default calculatorStyles;

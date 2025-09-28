@@ -176,10 +176,16 @@ function CalculatorScreen() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.headerRootItemContainer}>
+
+        <TouchableOpacity style={styles.deleteButton}>
+          <Text style={styles.deleteButtonText}>X</Text>
+        </TouchableOpacity>
       <View style={styles.headerContainer}>
-        <Text style={styles.bottomMenu}>Nazwa</Text>
-        <Text style={styles.bottomMenu}>Wartość ECTS</Text>
-        <Text style={styles.bottomMenu}>Ocena</Text>
+        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.leftText]}>Nazwa</Text>
+        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.centerText]}>Wartość ECTS</Text>
+        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.rightText]}>Ocena</Text>
+      </View>
       </View>
 
       {subjectList.length === 0 && (
