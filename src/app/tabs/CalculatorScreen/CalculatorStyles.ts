@@ -6,6 +6,7 @@ export const colors = {
   // =========================
   backgroundPrimary: '#191919', // główne tło aplikacji
   backgroundSecondary: '#232323', // tło inputów i standardowych przycisków
+  backgroundSelectItem: 'white', 
   backgroundItem: '#313131', // tło elementów listy
   backgroundPopup: '#191919', // tło popupów/modalów
   backgroundHeader: '#161415', // tło headera
@@ -16,7 +17,7 @@ export const colors = {
   // =========================
   borderDefault: '#3b3b3b', // standardowa obwódka
   borderLight: '#c2c2c2', // jasna obwódka np. przy przyciskach
-  borderDanger: '#ff6467', // kolor błędu
+  borderError: '#ff6467', // kolor błędu
   borderGray: '#6b6b6b', // szara obwódka np. summary
   cancelButtonBorder: '#3b3b3b', // border cancel button
 
@@ -24,12 +25,16 @@ export const colors = {
   // Accent colors
   // =========================
   accentBlue: '#727dff', // przycisk dodawania kursu
+  accentRed: '#a44648', // przycisk dodawania kursu
+  accentRedTransparent: '#a44648ea', // przycisk dodawania kursu
+  accentBlueTransparent: '#727effb6', // przycisk dodawania kursu
 
   // =========================
   // Text colors
   // =========================
   textPrimary: 'white', // główny kolor tekstu
   textSecondary: '#a1a1a1', // szary tekst np. liczniki
+  textContrast: '#000000ff', // szary tekst np. liczniki
   textError: '#ff6467', // czerwony tekst błędu
 
   // =========================
@@ -86,13 +91,17 @@ const calculatorStyles = StyleSheet.create({
     fontSize: 35,
     color: colors.textPrimary,
   },
+  removeCourseMenuBtnText: {
+    fontSize: 20,
+    color: colors.textPrimary,
+  },
   buttonText: {
     color: colors.textPrimary,
     fontSize: 16,
     fontWeight: '600',
   },
   inputErrorFeed: {
-    color: colors.borderDanger,
+    color: colors.borderError,
     fontSize: 14,
     paddingLeft: 15,
   },
@@ -211,7 +220,24 @@ const calculatorStyles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
+  removeCourseMenuBtn: {
+    width: 250,
+    height: 45,
+    marginTop: 5,
+    borderRadius: 50,
+    backgroundColor: colors.accentRed,
+    display: 'flex',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+removeButtonContents: {
+  display: 'flex',
+  flexDirection: 'row',
+  gap: 10,
 
+},
   // =========================
   // Inputs
   // =========================
@@ -225,6 +251,32 @@ const calculatorStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.borderDefault,
   },
+  userInputFocused: {
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.textPrimary,
+    paddingLeft: 10,
+    alignSelf: 'center',
+    borderRadius: 8,
+    width: '90%',
+    borderWidth: 1,
+    borderColor: colors.borderDefault,
+
+    outlineColor: colors.borderGray,
+    outlineWidth: 4,
+  },
+  userInputFocusedError: {
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.textPrimary,
+    paddingLeft: 10,
+    alignSelf: 'center',
+    borderRadius: 8,
+    width: '90%',
+    borderWidth: 1,
+    borderColor: colors.borderDefault,
+
+    outlineColor: colors.accentRedTransparent,
+    outlineWidth: 4,
+  },
   invalidUserInput: {
     backgroundColor: colors.backgroundSecondary,
     color: colors.textPrimary,
@@ -233,7 +285,7 @@ const calculatorStyles = StyleSheet.create({
     borderRadius: 8,
     width: '90%',
     borderWidth: 1,
-    borderColor: colors.borderDanger,
+    borderColor: colors.borderError,
   },
 
   // =========================
@@ -263,18 +315,25 @@ const calculatorStyles = StyleSheet.create({
   // Delete Button
   // =========================
   deleteButton: {
+    backgroundColor: colors.backgroundSelectItem,
     borderWidth: 1.2,
     borderColor: colors.borderLight,
-    borderRadius: 4,
-    width: 17,
-    height: 17,
+    width: 15,
+    height: 15,
+
+    textAlignVertical: 'center',
+    alignContent: 'center',
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
   deleteButtonText: {
-    fontSize: 11,
-    color: colors.textPrimary,
-    fontWeight: 'bold',
+    color: colors.textContrast,
+    fontSize: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    lineHeight: 10,
   },
 
   // =========================

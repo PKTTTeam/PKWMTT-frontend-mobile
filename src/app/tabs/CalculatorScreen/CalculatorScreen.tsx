@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import styles from './CalculatorStyles';
 import uuid from 'react-native-uuid';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 type CalcItem = {
   key: string;
@@ -35,6 +36,13 @@ function CalculatorScreen() {
   const [gradeError, setGradeError] = useState<string | null>(null);
 
   const [popUpMenuVisible, setPopUpMenuVisible] = useState(false);
+
+  const iconCheck = '\u2713';
+  const iconSquare = '\u25A0';
+
+  const [SubjectFocused, setSubjectFocused] = useState(false);
+  const [ectsFocused, setEctsFocused] = useState(false);
+  const [gradeFocused, setGradeFocused] = useState(false);
 
   /**
    * Calculates the average grade for all subjects.
@@ -90,6 +98,9 @@ function CalculatorScreen() {
     setSubjectName('');
     setEctsPoints('');
     setGrade('');
+    setSubjectFocused(false);
+    setEctsFocused(false);
+    setGradeFocused(false);
   };
 
   /**
@@ -141,51 +152,126 @@ function CalculatorScreen() {
     setPopUpMenuVisible(false);
   };
 
+  const changeSelectedItemsIcon = () => {
+    if (
+      selectedItems.length === subjectList.length &&
+      selectedItems.length > 0
+    ) {
+      return iconCheck;
+    } else if (
+      selectedItems.length < subjectList.length &&
+      selectedItems.length > 0
+    ) {
+      return iconSquare;
+    } else {
+      return '';
+    }
+  };
+
   /**
    * Removes a subject from the list by key.
    * @param key Subject key to remove
    */
-  const deleteItem = (key: string) => {
-    setSubjectList(subjectList.filter(item => item.key !== key));
+
+  const deleteSelectedItems = () => {
+    setSelectedItems([]);
+    setSubjectList(
+      subjectList.filter(item => !selectedItems.includes(item.key)),
+    );
+  };
+
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const selectItem = (key: string) => {
+    if (selectedItems.includes(key)) {
+      setSelectedItems(selectedItems.filter(k => k !== key));
+    } else {
+      setSelectedItems([...selectedItems, key]);
+    }
+  };
+
+  const selectAllItems = () => {
+    if (selectedItems.length === subjectList.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(subjectList.map(item => item.key));
+    }
   };
 
   /**
    * Renders a single subject item in the list.
    */
-  const renderItem = ({ item }: { item: CalcItem }) => (
-    <View style={styles.rootItemContainer}>
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={deleteItem.bind(null, item.key)}
-      >
-        <Text style={styles.deleteButtonText}>X</Text>
-      </TouchableOpacity>
-      <View style={styles.itemContainer}>
-        <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>
-          {item.subjectName}
-        </Text>
-        <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
-          {item.ects}
-        </Text>
-        <Text style={[styles.bottomMenu, styles.singleItem, styles.rightText]}>
-          {item.grade}
-        </Text>
+  const renderItem = ({ item }: { item: CalcItem }) => {
+    const isSelected = selectedItems.includes(item.key);
+
+    return (
+      <View style={styles.rootItemContainer}>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => selectItem(item.key)}
+        >
+          <Text style={styles.deleteButtonText}>
+            {isSelected ? iconCheck : ''}
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.itemContainer}>
+          <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>
+            {item.subjectName}
+          </Text>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
+            {item.ects}
+          </Text>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.rightText]}
+          >
+            {item.grade}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.headerRootItemContainer}>
-
-        <TouchableOpacity style={styles.deleteButton}>
-          <Text style={styles.deleteButtonText}>X</Text>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => selectAllItems()}
+        >
+          <Text style={styles.deleteButtonText}>
+            {changeSelectedItemsIcon()}
+          </Text>
         </TouchableOpacity>
-      <View style={styles.headerContainer}>
-        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.leftText]}>Nazwa</Text>
-        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.centerText]}>Wartość ECTS</Text>
-        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.rightText]}>Ocena</Text>
-      </View>
+        <View style={styles.headerContainer}>
+          <Text
+            style={[
+              styles.bottomMenu,
+              styles.singleItemHeader,
+              styles.leftText,
+            ]}
+          >
+            Nazwa
+          </Text>
+          <Text
+            style={[
+              styles.bottomMenu,
+              styles.singleItemHeader,
+              styles.centerText,
+            ]}
+          >
+            Wartość ECTS
+          </Text>
+          <Text
+            style={[
+              styles.bottomMenu,
+              styles.singleItemHeader,
+              styles.rightText,
+            ]}
+          >
+            Ocena
+          </Text>
+        </View>
       </View>
 
       {subjectList.length === 0 && (
@@ -195,6 +281,14 @@ function CalculatorScreen() {
           </Text>
         </View>
       )}
+
+      {/* DEBUG */}
+      {/* DEBUG */}
+
+      {/* <Text style={styles.inputErrorFeed}>{selectedItems}</Text> */}
+
+      {/* DEBUG */}
+      {/* DEBUG */}
 
       <FlatList
         data={subjectList}
@@ -255,11 +349,21 @@ function CalculatorScreen() {
             </Text>
             <TextInput
               ref={sbujectInput}
-              style={subjectError ? styles.invalidUserInput : styles.userInput}
+              style={
+                SubjectFocused && subjectError
+                  ? styles.userInputFocusedError
+                  : subjectError
+                  ? styles.invalidUserInput
+                  : SubjectFocused
+                  ? styles.userInputFocused
+                  : styles.userInput
+              }
               placeholder="np. Mechanika"
               placeholderTextColor={'#a1a1a1'}
               value={subjectName}
               onChangeText={setSubjectName}
+              onFocus={() => setSubjectFocused(true)}
+              onBlur={() => setSubjectFocused(false)}
             />
             {subjectError && (
               <Text style={styles.inputErrorFeed}>{subjectError}</Text>
@@ -272,11 +376,22 @@ function CalculatorScreen() {
             </Text>
             <TextInput
               ref={ectsInput}
-              style={ectsError ? styles.invalidUserInput : styles.userInput}
+              style={
+                ectsFocused && ectsError
+                  ? styles.userInputFocusedError
+                  : ectsError
+                  ? styles.invalidUserInput
+                  : ectsFocused
+                  ? styles.userInputFocused
+                  : styles.userInput
+              }
               placeholder="np. 6"
               placeholderTextColor={'#a1a1a1'}
               value={ectsPoints}
               onChangeText={setEctsPoints}
+              keyboardType="numeric"
+               onFocus={() => setEctsFocused(true)}
+              onBlur={() => setEctsFocused(false)}
             />
             {ectsError && (
               <Text style={styles.inputErrorFeed}>{ectsError}</Text>
@@ -289,11 +404,22 @@ function CalculatorScreen() {
             </Text>
             <TextInput
               ref={gradeInput}
-              style={gradeError ? styles.invalidUserInput : styles.userInput}
+              style={
+                gradeFocused && gradeError
+                  ? styles.userInputFocusedError
+                  : gradeError
+                  ? styles.invalidUserInput
+                  : gradeFocused
+                  ? styles.userInputFocused
+                  : styles.userInput
+              }
               placeholder="np. 4"
               placeholderTextColor={'#a1a1a1'}
               value={grade}
               onChangeText={setGrade}
+              keyboardType="numeric"
+               onFocus={() => setGradeFocused(true)}
+              onBlur={() => setGradeFocused(false)}
             />
             {gradeError && (
               <Text style={styles.inputErrorFeed}>{gradeError}</Text>
@@ -311,13 +437,26 @@ function CalculatorScreen() {
           </View>
         </View>
       )}
-      <View style={styles.addCourseMenuBtn}>
-        <TouchableOpacity
-          onPress={() => setPopUpMenuVisible(!popUpMenuVisible)}
-        >
-          <Text style={styles.addCourseMenuBtnText}>+</Text>
-        </TouchableOpacity>
-      </View>
+      {selectedItems.length > 0 ? (
+        <View style={styles.removeCourseMenuBtn}>
+          <TouchableOpacity onPress={() => deleteSelectedItems()}>
+            <View style={styles.removeButtonContents}>
+              <MaterialIcons name="delete" size={24} color="#fff" />
+              <Text style={styles.removeCourseMenuBtnText}>
+                usuń zaznaczone
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.addCourseMenuBtn}>
+          <TouchableOpacity
+            onPress={() => setPopUpMenuVisible(!popUpMenuVisible)}
+          >
+            <Text style={styles.addCourseMenuBtnText}>+</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
