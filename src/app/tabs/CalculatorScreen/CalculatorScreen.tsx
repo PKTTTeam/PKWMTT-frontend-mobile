@@ -18,31 +18,40 @@ type CalcItem = {
 };
 
 /**
- * CalculatorScreen allows users to add, view, and remove subjects with ECTS and grades.
- * It calculates average grade, total ECTS, and weighted average.
+ * Main calculator screen for managing subjects, ECTS points, and grades.
+ * Allows adding, removing, and listing subjects, and calculates weighted average.
  */
 function CalculatorScreen() {
+  // State for subject list and input fields
   const [subjectList, setSubjectList] = useState<CalcItem[]>([]);
   const [subjectName, setSubjectName] = useState('');
   const [ectsPoints, setEctsPoints] = useState('');
   const [grade, setGrade] = useState('');
 
+  // Refs for input fields
   const sbujectInput = useRef<TextInput>(null);
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
+  // Error states for validation
   const [subjectError, setSubjectError] = useState<string | null>(null);
   const [ectsError, setEctsError] = useState<string | null>(null);
   const [gradeError, setGradeError] = useState<string | null>(null);
 
+  // Popup menu visibility
   const [popUpMenuVisible, setPopUpMenuVisible] = useState(false);
 
-  const iconCheck = '\u2713';
-  const iconSquare = '\u25A0';
-
+  // Focus states for input styling
   const [SubjectFocused, setSubjectFocused] = useState(false);
   const [ectsFocused, setEctsFocused] = useState(false);
   const [gradeFocused, setGradeFocused] = useState(false);
+
+  // Selection for batch delete
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  // Unicode icons for selection
+  const iconCheck = '\u2713';
+  const iconSquare = '\u25A0';
 
   /**
    * Calculates the average grade for all subjects.
@@ -63,11 +72,10 @@ function CalculatorScreen() {
    */
   const totalEcts = () => {
     if (subjectList.length === 0) return 0;
-    const total = subjectList.reduce(
+    return subjectList.reduce(
       (sum, item) => sum + parseInt(item.ects, 10),
       0,
     );
-    return total;
   };
 
   /**
@@ -80,10 +88,7 @@ function CalculatorScreen() {
       (sum, item) => sum + parseFloat(item.grade) * parseInt(item.ects, 10),
       0,
     );
-    const totalEctsPoints = subjectList.reduce(
-      (sum, item) => sum + parseInt(item.ects, 10),
-      0,
-    );
+    const totalEctsPoints = totalEcts();
     return (totalWeightedGrades / totalEctsPoints).toFixed(2);
   };
 
@@ -104,75 +109,71 @@ function CalculatorScreen() {
   };
 
   /**
-   * Adds a new subject to the list after validating input fields.
+   * Validates and adds a new subject to the list.
+   * @returns {void}
    */
   const addSubject = () => {
-    let hasError = false;
+  let hasError = false;
+  setSubjectError(null);
+  setEctsError(null);
+  setGradeError(null);
 
-    setSubjectError(null);
-    setEctsError(null);
-    setGradeError(null);
+  if (!subjectName.trim()) {
+    setSubjectError('Podaj nazwę przedmiotu');
+    hasError = true;
+  }
 
-    if (!subjectName.trim()) {
-      setSubjectError('Nazwa przedmiotu jest wymagana');
-      hasError = true;
-    }
+  const ectsInt = parseInt(ectsPoints, 10);
+  if (isNaN(ectsInt) || ectsInt <= 0) {
+    setEctsError('Podaj poprawną wartość ECTS');
+    hasError = true;
+  }
 
-    const ectsInt = parseInt(ectsPoints, 10);
-    if (isNaN(ectsInt) || ectsInt <= 0) {
-      setEctsError('Podaj prawidłową wartość ECTS');
-      hasError = true;
-    }
+  const gradeRegex = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
+  if (!gradeRegex.test(grade)) {
+    setGradeError('Podaj poprawną ocenę');
+    hasError = true;
+  }
 
-    const gradeFloat = parseFloat(grade);
-    if (isNaN(gradeFloat) || gradeFloat < 0) {
-      setGradeError('Podaj prawidłową wartość ECTS');
-      hasError = true;
-    }
+  if (hasError) return;
 
-    const decimalPart = grade.includes('.') ? grade.split('.')[1] : '';
-    if (decimalPart.length > 1) {
-      setGradeError('Podaj prawidłową ocenę');
-      hasError = true;
-    }
-
-    if (hasError) return;
-
-    const newItem: CalcItem = {
-      key: uuid.v4().toString(),
-      subjectName,
-      ects: ectsPoints,
-      grade,
-    };
-
-    setSubjectList([...subjectList, newItem]);
-    setSubjectName('');
-    setEctsPoints('');
-    setGrade('');
-    setPopUpMenuVisible(false);
+  const newItem: CalcItem = {
+    key: uuid.v4().toString(),
+    subjectName,
+    ects: ectsPoints,
+    grade,
   };
+  setSubjectList([...subjectList, newItem]);
+  setSubjectName('');
+  setEctsPoints('');
+  setGrade('');
+  setPopUpMenuVisible(false);
+};
 
-  const changeSelectedItemsIcon = () => {
-    if (
-      selectedItems.length === subjectList.length &&
-      selectedItems.length > 0
-    ) {
-      return iconCheck;
-    } else if (
-      selectedItems.length < subjectList.length &&
-      selectedItems.length > 0
-    ) {
-      return iconSquare;
-    } else {
-      return '';
-    }
+  /**
+   * Selects/deselects an item for batch actions.
+   * @param {string} key - Subject key to select/deselect
+   */
+  const selectItem = (key: string) => {
+    setSelectedItems(selectedItems.includes(key)
+      ? selectedItems.filter(k => k !== key)
+      : [...selectedItems, key]);
   };
 
   /**
-   * Removes a subject from the list by key.
-   * @param key Subject key to remove
+   * Selects/deselects all items.
    */
+  const selectAllItems = () => {
+    setSelectedItems(
+      selectedItems.length === subjectList.length
+        ? []
+        : subjectList.map(item => item.key)
+    );
+  };
 
+  /**
+   * Deletes all selected items.
+   */
   const deleteSelectedItems = () => {
     setSelectedItems([]);
     setSubjectList(
@@ -180,29 +181,27 @@ function CalculatorScreen() {
     );
   };
 
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const selectItem = (key: string) => {
-    if (selectedItems.includes(key)) {
-      setSelectedItems(selectedItems.filter(k => k !== key));
+  /**
+   * Returns icon for selection state.
+   * @returns {string} Icon character
+   */
+  const changeSelectedItemsIcon = () => {
+    if (selectedItems.length === subjectList.length && selectedItems.length > 0) {
+      return iconCheck;
+    } else if (selectedItems.length < subjectList.length && selectedItems.length > 0) {
+      return iconSquare;
     } else {
-      setSelectedItems([...selectedItems, key]);
-    }
-  };
-
-  const selectAllItems = () => {
-    if (selectedItems.length === subjectList.length) {
-      setSelectedItems([]);
-    } else {
-      setSelectedItems(subjectList.map(item => item.key));
+      return '';
     }
   };
 
   /**
-   * Renders a single subject item in the list.
+   * Renders a single subject item.
+   * @param {{ item: CalcItem }} param0 - Subject item to render
+   * @returns {JSX.Element}
    */
   const renderItem = ({ item }: { item: CalcItem }) => {
     const isSelected = selectedItems.includes(item.key);
-
     return (
       <View style={styles.rootItemContainer}>
         <TouchableOpacity
@@ -217,14 +216,10 @@ function CalculatorScreen() {
           <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>
             {item.subjectName}
           </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-          >
+          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
             {item.ects}
           </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.rightText]}
-          >
+          <Text style={[styles.bottomMenu, styles.singleItem, styles.rightText]}>
             {item.grade}
           </Text>
         </View>
@@ -234,46 +229,30 @@ function CalculatorScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Header row with select all */}
       <View style={styles.headerRootItemContainer}>
         <TouchableOpacity
           style={styles.deleteButton}
-          onPress={() => selectAllItems()}
+          onPress={selectAllItems}
         >
           <Text style={styles.deleteButtonText}>
             {changeSelectedItemsIcon()}
           </Text>
         </TouchableOpacity>
         <View style={styles.headerContainer}>
-          <Text
-            style={[
-              styles.bottomMenu,
-              styles.singleItemHeader,
-              styles.leftText,
-            ]}
-          >
+          <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.leftText]}>
             Nazwa
           </Text>
-          <Text
-            style={[
-              styles.bottomMenu,
-              styles.singleItemHeader,
-              styles.centerText,
-            ]}
-          >
-            Wartość ECTS
+          <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.centerText]}>
+            ECTS
           </Text>
-          <Text
-            style={[
-              styles.bottomMenu,
-              styles.singleItemHeader,
-              styles.rightText,
-            ]}
-          >
+          <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.rightText]}>
             Ocena
           </Text>
         </View>
       </View>
 
+      {/* Empty list info */}
       {subjectList.length === 0 && (
         <View style={styles.noItemsInfo}>
           <Text style={styles.noItemsInfoText}>
@@ -282,57 +261,40 @@ function CalculatorScreen() {
         </View>
       )}
 
-      {/* DEBUG */}
-      {/* DEBUG */}
-
-      {/* <Text style={styles.inputErrorFeed}>{selectedItems}</Text> */}
-
-      {/* DEBUG */}
-      {/* DEBUG */}
-
+      {/* Subject list */}
       <FlatList
         data={subjectList}
         renderItem={renderItem}
         keyExtractor={item => item.key}
       />
 
+      {/* Summary row */}
       <View style={styles.summaryContainer}>
         <View style={styles.summarySpacer}>
-          <Text
-            style={[styles.countersText, styles.singleItem, styles.centerText]}
-          >
+          <Text style={[styles.countersText, styles.singleItem, styles.centerText]}>
             Średnia ocen
           </Text>
-          <Text
-            style={[styles.countersText, styles.singleItem, styles.centerText]}
-          >
+          <Text style={[styles.countersText, styles.singleItem, styles.centerText]}>
             Suma ECTS
           </Text>
-          <Text
-            style={[styles.countersText, styles.singleItem, styles.centerText]}
-          >
+          <Text style={[styles.countersText, styles.singleItem, styles.centerText]}>
             Średnia ważona
           </Text>
         </View>
         <View style={styles.summarySpacer}>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-          >
+          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
             {averageGrade()}
           </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-          >
+          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
             {totalEcts()}
           </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-          >
+          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
             {weightedAverage()}
           </Text>
         </View>
       </View>
 
+      {/* Popup for adding subject */}
       {popUpMenuVisible && (
         <View style={styles.overlayContainer}>
           <View style={styles.popUpMenu}>
@@ -340,17 +302,13 @@ function CalculatorScreen() {
             <Text style={styles.grayLabel}>
               Podaj nazwę przedmiotu, wartość ECTS oraz ocenę.
             </Text>
-            <Text
-              style={
-                subjectError ? styles.overlayLabelErr : styles.overlayLabel
-              }
-            >
+            <Text style={subjectError ? styles.overlayLabelErr : styles.overlayLabel}>
               Nazwa
             </Text>
             <TextInput
               ref={sbujectInput}
               style={
-                SubjectFocused && subjectError
+                subjectError && SubjectFocused
                   ? styles.userInputFocusedError
                   : subjectError
                   ? styles.invalidUserInput
@@ -369,15 +327,13 @@ function CalculatorScreen() {
               <Text style={styles.inputErrorFeed}>{subjectError}</Text>
             )}
 
-            <Text
-              style={ectsError ? styles.overlayLabelErr : styles.overlayLabel}
-            >
+            <Text style={ectsError ? styles.overlayLabelErr : styles.overlayLabel}>
               Wartość ECTS
             </Text>
             <TextInput
               ref={ectsInput}
               style={
-                ectsFocused && ectsError
+                ectsError && ectsFocused
                   ? styles.userInputFocusedError
                   : ectsError
                   ? styles.invalidUserInput
@@ -390,22 +346,20 @@ function CalculatorScreen() {
               value={ectsPoints}
               onChangeText={setEctsPoints}
               keyboardType="numeric"
-               onFocus={() => setEctsFocused(true)}
+              onFocus={() => setEctsFocused(true)}
               onBlur={() => setEctsFocused(false)}
             />
             {ectsError && (
               <Text style={styles.inputErrorFeed}>{ectsError}</Text>
             )}
 
-            <Text
-              style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}
-            >
+            <Text style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}>
               Ocena
             </Text>
             <TextInput
               ref={gradeInput}
               style={
-                gradeFocused && gradeError
+                gradeError && gradeFocused
                   ? styles.userInputFocusedError
                   : gradeError
                   ? styles.invalidUserInput
@@ -418,7 +372,7 @@ function CalculatorScreen() {
               value={grade}
               onChangeText={setGrade}
               keyboardType="numeric"
-               onFocus={() => setGradeFocused(true)}
+              onFocus={() => setGradeFocused(true)}
               onBlur={() => setGradeFocused(false)}
             />
             {gradeError && (
@@ -437,13 +391,15 @@ function CalculatorScreen() {
           </View>
         </View>
       )}
+
+      {/* Batch delete or add button */}
       {selectedItems.length > 0 ? (
         <View style={styles.removeCourseMenuBtn}>
-          <TouchableOpacity onPress={() => deleteSelectedItems()}>
+          <TouchableOpacity onPress={deleteSelectedItems}>
             <View style={styles.removeButtonContents}>
               <MaterialIcons name="delete" size={24} color="#fff" />
               <Text style={styles.removeCourseMenuBtnText}>
-                usuń zaznaczone
+                Usuń zaznaczone
               </Text>
             </View>
           </TouchableOpacity>
