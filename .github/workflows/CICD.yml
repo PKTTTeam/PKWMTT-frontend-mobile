@@ -55,6 +55,7 @@ jobs:
         run: |
           echo "API_URL=${{ secrets.API_URL }}" > .env
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "VEXO_KEY=${{ secrets.VEXO_KEY }}" >> .env
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -101,7 +102,7 @@ jobs:
         run: |
           echo "Checking APK files in build directory:"
           ls -la android/app/build/outputs/apk/release/
-          APK_COUNT=$(find android/app/build/outputs/apk/release -name "PKWMTT-*-release.apk" | wc -l)
+          APK_COUNT=$(find android/app/build/outputs/apk/release -name "PKWMApp-*-release.apk" | wc -l)
           echo "Found $APK_COUNT APK file(s) matching pattern"
           if [ $APK_COUNT -eq 0 ]; then
             echo "No APK files found!"
@@ -112,13 +113,13 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          files: android/app/build/outputs/apk/release/PKWMTT-*-release.apk
-          name: PKWMTT-${{ github.ref_name }}.apk
+          files: android/app/build/outputs/apk/release/PKWMApp-*-release.apk
+          name: PKWMApp-${{ github.ref_name }}.apk
 
       - name: Upload APK to Backend Server
         run: |
           # Find the exact APK file
-          APK_FILE=$(find android/app/build/outputs/apk/release -name "PKWMTT-*-release.apk" | head -1)
+          APK_FILE=$(find android/app/build/outputs/apk/release -name "PKWMApp-*-release.apk" | head -1)
           
           if [ -z "$APK_FILE" ]; then
             echo "APK file not found!"
