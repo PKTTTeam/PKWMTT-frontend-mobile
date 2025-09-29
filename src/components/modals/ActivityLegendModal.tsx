@@ -6,21 +6,21 @@ import { getCorrectColor } from '../../utils/getCorrectColor';
 import { ActivityLegendModalProps } from '../../types/global';
 import { useTranslation } from 'react-i18next';
 
-const activityTypes = [
-  { letter: 'W', label: 'Wykład' },
-  { letter: 'Ć', label: 'Ćwiczenia' },
-  { letter: 'L', label: 'Laboratorium' },
-  { letter: 'K', label: 'Laboratorium Komputerowe' },
-  { letter: 'P', label: 'Projekt' },
-  { letter: 'S', label: 'Seminarium' },
-  { letter: 'I', label: 'Inne' },
-];
-
 const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
   visible,
   onClose,
 }) => {
   const { t } = useTranslation();
+
+  const activityTypes = [
+    { letter: 'W', label: t('lecture') },
+    { letter: 'Ć', label: t('excercises') },
+    { letter: 'L', label: t('lab') },
+    { letter: 'K', label: t('compLab') },
+    { letter: 'P', label: t('project') },
+    { letter: 'S', label: t('seminar') },
+    { letter: 'I', label: t('other') },
+  ];
   return (
     <Modal
       animationType="fade"

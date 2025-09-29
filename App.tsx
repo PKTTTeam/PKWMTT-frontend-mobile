@@ -11,8 +11,12 @@ import { getLatestVersion } from './src/services/versionService';
 import { getAppVersion } from './src/utils/getAppVersion';
 import UpdateAlertModal from './src/components/modals/UpdateAlertModal';
 
+import { vexo } from 'vexo-analytics';
+import { VEXO_KEY } from '@env';
+
 const App = () => {
   const isSetupComplete = useSettingsStore(state => state.setupComplete);
+  vexo(VEXO_KEY);
   const handleSetupDone = () => {
     useSettingsStore.getState().setupComplete = true;
   };

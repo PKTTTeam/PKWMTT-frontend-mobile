@@ -6,6 +6,7 @@ import {
   useSettingsActions,
 } from '../../store/settingsStore';
 import GroupSelect from '../../components/ui/GroupSelectDropdown';
+import { useTranslation } from 'react-i18next';
 
 export default function FirstTimeSetupScreen({
   onDone,
@@ -16,6 +17,9 @@ export default function FirstTimeSetupScreen({
   const [validationErrors, setValidationErrors] = useState<Set<string>>(
     new Set(),
   );
+  const [showErrors, setShowErrors] = useState(false);
+
+  const { t } = useTranslation();
 
   const groups = useSettingsStore(state => state.groups);
   const options = useSettingsStore(state => state.options);
@@ -49,6 +53,7 @@ export default function FirstTimeSetupScreen({
   };
 
   const handleContinue = async () => {
+    setShowErrors(true);
     const isValid = validateGroups();
 
     if (!isValid) {
@@ -65,11 +70,6 @@ export default function FirstTimeSetupScreen({
     // Proceed to main app
     onDone();
   };
-
-  useEffect(() => {
-    validateGroups();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [groups]);
 
   // Check if a specific group has validation error
   const hasError = (groupKey: string) => validationErrors.has(groupKey);
@@ -92,7 +92,7 @@ export default function FirstTimeSetupScreen({
           color: 'white',
         }}
       >
-        Witaj w PKWMTT!
+        {t('welcomeText')}
       </Text>
       <Text
         style={{
@@ -103,10 +103,10 @@ export default function FirstTimeSetupScreen({
           color: '#9c9c9c',
         }}
       >
-        Wybierz grupe dziekanska i podgrupy, aby kontynuowac.
+        {t('selectGroupText')}
       </Text>
 
-      {validationErrors.size > 0 && (
+      {showErrors && validationErrors.size > 0 && (
         <Text
           style={{
             fontSize: 14,
@@ -117,7 +117,7 @@ export default function FirstTimeSetupScreen({
             textAlign: 'center',
           }}
         >
-          Proszę wybrać wszystkie wymagane grupy
+          {t('selectGroupText')}
         </Text>
       )}
 
@@ -164,7 +164,7 @@ export default function FirstTimeSetupScreen({
 
       <TouchableOpacity
         style={{
-          backgroundColor: validationErrors.size === 0 ? '#8d95fe' : '#555',
+          backgroundColor: '#8d95fe',
           paddingVertical: 12,
           borderRadius: 6,
           marginTop: 20,
@@ -172,16 +172,11 @@ export default function FirstTimeSetupScreen({
           width: '60%',
         }}
         onPress={handleContinue}
-        disabled={validationErrors.size > 0}
       >
         <Text
-          style={{
-            color: validationErrors.size === 0 ? 'white' : '#999',
-            fontWeight: 'bold',
-            textAlign: 'center',
-          }}
+          style={{ color: 'white', fontWeight: 'bold', textAlign: 'center' }}
         >
-          Potwierdź
+          {t('confirmButton')}
         </Text>
       </TouchableOpacity>
     </View>
