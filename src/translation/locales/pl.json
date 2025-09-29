@@ -93,5 +93,8 @@
   "otpError": "Nieprawidłowy kod OTP. Spróbuj ponownie.",
   "confirmButton": "Potwierdź",
   "checkingConfirmButton": "Sprawdzanie...",
-  "appApperance": "Wygląd Aplikacji"
+  "appApperance": "Wygląd Aplikacji",
+  "updateAvailable": "Dostepna aktualizacja!",
+  "updateMessage": "Twoja aplikacja jest przestarzala! Zainstalowana wersja: {{currentVersion}}, najnowsza wersja {{latestVersion}}",
+  "updateButton": "Zaktualizuj"
 }

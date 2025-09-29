@@ -9,7 +9,7 @@
   "labGroup": "Laboratory",
   "compGroup": "Computer Lab",
   "projGroup": "Project",
-  "freeHoursText": "Show free hours",
+  "freeHoursText": "Display free periods",
   "language": "Language",
   "groupSelectPlaceholder": "Select group",
   "searchPlaceholder": "Find...",
@@ -93,5 +93,8 @@
   "otpError": "Invalid OTP code. Please try again.",
   "confirmButton": "Confirm",
   "checkingConfirmButton": "Checking...",
-  "appApperance": "Application Appearance"
+  "appApperance": "Application Appearance",
+  "updateAvailable": "Update available!",
+  "updateMessage": "Your application is outdated ! Installed version: {{currentVersion}}, latest version {{latestVersion}}",
+  "updateButton": "Update"
 }

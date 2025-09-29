@@ -96,32 +96,36 @@ const TabNavigator: React.FC = () => {
   return (
     <Tab.Navigator screenOptions={getScreenOptions(insets)}>
       <Tab.Screen
-        name={t('timetable')}
+        name="timetable"
         component={TimetableScreen}
         options={{
+          tabBarLabel: t('timetable'),
           tabBarIcon: renderTimetableIcon,
           //eslint-disable-next-line  react/no-unstable-nested-components
           headerRight: () => <ActivityLegend />,
         }}
       />
       <Tab.Screen
-        name={t('calendar')}
+        name="Calendar"
         component={CalendarScreen}
         options={{
+          tabBarLabel: t('calendar'),
           tabBarIcon: renderCalendarIcon,
         }}
       />
       <Tab.Screen
-        name={t('ECTSCalc')}
+        name="ECTS Calculator"
         component={CalculatorScreen}
         options={{
+          tabBarLabel: t('ECTSCalc'),
           tabBarIcon: renderCalcIcon,
         }}
       />
       <Tab.Screen
-        name={t('settings')}
+        name="Settings"
         component={SettingsScreen}
         options={{
+          tabBarLabel: t('settings'),
           tabBarIcon: renderSettingsIcon,
         }}
       />
