@@ -256,7 +256,10 @@ function CalculatorScreen() {
       {subjectList.length === 0 && (
         <View style={styles.noItemsInfo}>
           <Text style={styles.noItemsInfoText}>
-            Brak przedmiotów do wyświetlenia
+            Brak dodanych przedmiotów. 
+          </Text>
+          <Text style={styles.noItemsInfoText}>
+            Kliknij przycisk + aby dodać pierwszy przedmiot.
           </Text>
         </View>
       )}

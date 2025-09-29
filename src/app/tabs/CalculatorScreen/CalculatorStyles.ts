@@ -155,6 +155,7 @@ const calculatorStyles = StyleSheet.create({
     width: '33.33%',
   },
   summaryContainer: {
+    marginTop: 5,
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 1,
