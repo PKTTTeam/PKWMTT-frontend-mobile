@@ -3,18 +3,26 @@ import { useTranslation } from 'react-i18next';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-interface ConnectionAlertModalProps {
+interface UpdateAlertModalProps {
   visible: boolean;
-  onRetry: () => void;
+  currentVersion: string;
+  latestVersion: string;
   onClose: () => void;
 }
 
-const ConnectionAlertModal: React.FC<ConnectionAlertModalProps> = ({
+const UpdateAlertModal: React.FC<UpdateAlertModalProps> = ({
   visible,
-  onRetry,
+  currentVersion,
+  latestVersion,
   onClose,
 }) => {
   const { t } = useTranslation();
+
+  //   const handleUpdate = async () => {
+  //     const response: string = await apiFetch('apk/download');
+  //     console.log(response);
+  //   };
+
   return (
     <Modal
       animationType="fade"
@@ -40,14 +48,24 @@ const ConnectionAlertModal: React.FC<ConnectionAlertModalProps> = ({
             <Icon name="close" color="white" size={16} />
           </TouchableOpacity>
 
-          <Icon name="wifi-off" size={40} color="#FF6B6B" style={styles.icon} />
-          <Text style={styles.title}>{t('noConnection')}</Text>
-          <Text style={styles.message}>{t('noConnectionMessage')}</Text>
+          <Icon
+            name="system-update"
+            size={40}
+            color="white"
+            style={styles.icon}
+          />
+          <Text style={styles.title}>{t('updateAvailable')}</Text>
+          <Text style={styles.message}>
+            {t('updateMessage', { currentVersion, latestVersion })}
+          </Text>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.retryButton} onPress={onRetry}>
-              <Text style={styles.retryButtonText}>{t('retryButton')}</Text>
-            </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={styles.updateButton}
+              onPress={handleUpdate}
+            >
+              <Text style={styles.updateButtonText}>{t('updateButton')}</Text>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.closeButton} onPress={onClose}>
               <Text style={styles.closeButtonText}>{t('closeButton')}</Text>
             </TouchableOpacity>
@@ -97,7 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
   },
-  retryButton: {
+  updateButton: {
     backgroundColor: '#8d95fe',
     paddingVertical: 12,
     paddingHorizontal: 20,
@@ -105,7 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
   },
-  retryButtonText: {
+  updateButtonText: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
@@ -125,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConnectionAlertModal;
+export default UpdateAlertModal;

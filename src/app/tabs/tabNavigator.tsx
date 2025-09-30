@@ -12,6 +12,7 @@ import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
 import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
 import { StyleSheet } from 'react-native';
 import { ActivityLegend } from '../../components/ActivityLegend';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
@@ -90,36 +91,41 @@ const renderSettingsIcon = ({
 
 const TabNavigator: React.FC = () => {
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
 
   return (
     <Tab.Navigator screenOptions={getScreenOptions(insets)}>
       <Tab.Screen
-        name="Rozkład zajęć"
+        name="timetable"
         component={TimetableScreen}
         options={{
+          tabBarLabel: t('timetable'),
           tabBarIcon: renderTimetableIcon,
           //eslint-disable-next-line  react/no-unstable-nested-components
           headerRight: () => <ActivityLegend />,
         }}
       />
       <Tab.Screen
-        name="Kalendarz"
+        name="Calendar"
         component={CalendarScreen}
         options={{
+          tabBarLabel: t('calendar'),
           tabBarIcon: renderCalendarIcon,
         }}
       />
       <Tab.Screen
-        name="Kalkulator ETCS"
+        name="ECTS Calculator"
         component={CalculatorScreen}
         options={{
+          tabBarLabel: t('ECTSCalc'),
           tabBarIcon: renderCalcIcon,
         }}
       />
       <Tab.Screen
-        name="Ustawienia"
+        name="Settings"
         component={SettingsScreen}
         options={{
+          tabBarLabel: t('settings'),
           tabBarIcon: renderSettingsIcon,
         }}
       />

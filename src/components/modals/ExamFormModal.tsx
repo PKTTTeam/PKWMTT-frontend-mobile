@@ -16,6 +16,7 @@ import {
 } from '../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../store/settingsStore';
 import type { Event } from './CalendarEventsModal';
+import { useTranslation } from 'react-i18next';
 
 interface CreateExamModalProps {
   visible: boolean;
@@ -62,6 +63,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   const kGroups = useSettingsStore(state => state.options.comp);
   const lGroups = useSettingsStore(state => state.options.lab);
   const pGroups = useSettingsStore(state => state.options.proj);
+
+  const { t } = useTranslation();
 
   const handleTimeChange = (event: any, time?: Date) => {
     setShowTimePicker(false);
@@ -188,9 +191,9 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
 
           <Icon name="event" size={40} color="#8d95fe" style={styles.icon} />
           {updateForm ? (
-            <Text style={styles.title}>Modyfikuj egzamin</Text>
+            <Text style={styles.title}>{t('modifyExam')}</Text>
           ) : (
-            <Text style={styles.title}>Dodaj egzamin</Text>
+            <Text style={styles.title}>{t('addExam')}</Text>
           )}
 
           <ScrollView
@@ -214,7 +217,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
             />
 
             {/* Time Picker */}
-            <Text style={styles.label}>Godzina egzaminu</Text>
+            <Text style={styles.label}>{t('hoursExam')}</Text>
             <TouchableOpacity
               style={styles.timePickerButton}
               onPress={() => setShowTimePicker(true)}
@@ -234,7 +237,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
               />
             )}
 
-            <Text style={styles.label}>Typ egzaminu</Text>
+            <Text style={styles.label}>{t('typeExam')}</Text>
             {examTypes.map(type => (
               <TouchableOpacity
                 key={type}
@@ -248,7 +251,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
               </TouchableOpacity>
             ))}
             {/* //todo: */}
-            {/* <Text style={styles.label}>Grupy ogólne</Text>
+            {/* <Text style={styles.label}>{t('generalGroups')}</Text>
             {relevantGroups.map(group => (
               <TouchableOpacity
                 key={group}
@@ -265,7 +268,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
               </TouchableOpacity>
             ))} */}
 
-            <Text style={styles.label}>Podgrupy</Text>
+            <Text style={styles.label}>{t('subGroups')}</Text>
             {allSubgroups.map(group => (
               <TouchableOpacity
                 key={group + '-sub'}
@@ -284,13 +287,13 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                 style={styles.submitButton}
                 onPress={handleSubmit}
               >
-                <Text style={styles.submitButtonText}>Dodaj</Text>
+                <Text style={styles.submitButtonText}>{t('addButton')}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.closeButton}
                 onPress={handleCancel}
               >
-                <Text style={styles.closeButtonText}>Anuluj</Text>
+                <Text style={styles.closeButtonText}>{t('cancelButton')}</Text>
               </TouchableOpacity>
             </View>
           </ScrollView>

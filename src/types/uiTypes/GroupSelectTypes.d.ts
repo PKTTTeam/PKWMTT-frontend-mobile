@@ -4,4 +4,5 @@ export type GroupSelectTypes = {
   groupName: GroupName;
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
+  hasError?: boolean;
 };

@@ -63,6 +63,7 @@ const GroupCard: React.FC<GroupSelectTypes> = ({
   groupName,
   activeDropdown,
   setActiveDropdown,
+  hasError,
 }) => {
   return (
     <View style={[GroupCardStyles.card]}>
@@ -81,6 +82,7 @@ const GroupCard: React.FC<GroupSelectTypes> = ({
             groupName={groupName}
             activeDropdown={activeDropdown}
             setActiveDropdown={setActiveDropdown}
+            hasError={hasError}
           />
         </View>
       </View>

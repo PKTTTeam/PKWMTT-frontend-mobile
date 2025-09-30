@@ -7,12 +7,14 @@ import {
   useSettingsActions,
 } from '../../store/settingsStore';
 import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   groupTitle: string;
   groupName: GroupName;
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
+  hasError?: boolean; // Add this prop
 }
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
@@ -27,12 +29,14 @@ const GroupSelectDropdown: React.FC<Props> = ({
   groupName,
   activeDropdown,
   setActiveDropdown,
+  hasError = false,
 }) => {
   const key = groupKeyMap[groupName];
   const { fetchInitialDeanGroups } = useSettingsActions();
   const groups = useSettingsStore(state => state.groups);
   const options = useSettingsStore(state => state.options[key]);
   const setGroup = useSettingsActions().setGroup;
+  const { t } = useTranslation();
 
   const [value, setValue] = useState(groups[key] || '');
   const [items, setItems] = useState(
@@ -67,9 +71,9 @@ const GroupSelectDropdown: React.FC<Props> = ({
           const isOpen =
             typeof openValue === 'function' ? openValue(open) : openValue;
           if (isOpen) {
-            setActiveDropdown(key); // open this dropdown
+            setActiveDropdown(key);
           } else {
-            setActiveDropdown(null); // close all
+            setActiveDropdown(null);
           }
         }}
         setValue={val => {
@@ -78,15 +82,20 @@ const GroupSelectDropdown: React.FC<Props> = ({
           setGroup(key, newValue);
         }}
         setItems={setItems}
-        placeholder="Wybierz grupę"
+        placeholder={t('groupSelectPlaceholder')}
         searchable
-        searchPlaceholder="Szukaj..."
+        searchPlaceholder={t('searchPlaceholder')}
         dropDownContainerStyle={{
           backgroundColor: '#222',
           borderColor: '#666',
         }}
         containerStyle={{ width: 130 }}
-        style={{ backgroundColor: '#222', borderColor: '#666', zIndex: 1000 }}
+        style={{
+          backgroundColor: '#222',
+          borderColor: hasError ? '#ff6b6b' : '#666',
+          borderWidth: hasError ? 2 : 1,
+          zIndex: 1000,
+        }}
         textStyle={{ color: 'white' }}
         searchTextInputStyle={{ color: 'white' }}
         searchContainerStyle={{ backgroundColor: '#222' }}

@@ -12,7 +12,8 @@ import {
 } from '../../../services/calendar/CalendarService';
 import { useSettingsStore } from '../../../store/settingsStore';
 import { getExamColor } from '../../../utils/getExamColor';
-import '../../../translation/CalendarLocale';
+import { setCalendarLocale } from '../../../utils/setCalendarLocale';
+import i18n from '../../../../i18n';
 
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -21,11 +22,19 @@ export default function CalendarScreen() {
   const [examTypes, setExamTypes] = useState<string[]>([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const [editingExam, setEditingExam] = useState<Event | null>(null);
+  const [calendarKey, setCalendarKey] = useState(0);
 
   const dgroup = useSettingsStore(state => state.groups.dean);
   const kgroup = useSettingsStore(state => state.groups?.comp);
   const lgroup = useSettingsStore(state => state.groups?.lab);
   const pgroup = useSettingsStore(state => state.groups?.proj);
+
+  useEffect(() => {
+    // apply calendar locale on language change
+    setCalendarLocale();
+    setCalendarKey(prev => prev + 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
 
   const fetchExams = async () => {
     try {
@@ -76,6 +85,7 @@ export default function CalendarScreen() {
     <View style={styles.container}>
       <View style={styles.calendarWrapper}>
         <Calendar
+          key={calendarKey}
           firstDay={1}
           // eslint-disable-next-line react-native/no-inline-styles
           style={{ borderRadius: 12 }}

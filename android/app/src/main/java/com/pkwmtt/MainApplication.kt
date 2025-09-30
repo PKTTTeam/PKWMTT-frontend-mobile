@@ -1,4 +1,4 @@
-package com.pkwmtt
+package com.pkwmapp
 
 import com.oblador.vectoricons.VectorIconsPackage;
 import android.app.Application

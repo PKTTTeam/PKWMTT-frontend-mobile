@@ -64,6 +64,11 @@ describe('getCurrentWeekType', () => {
     expect(getCurrentWeekType()).toBe(true);
   });
 
+  it('returns correct week type during start of semester (odd week)', () => {
+    mockDate('2025-10-01T12:00:00Z'); // 1 week after Oct 1
+    expect(getCurrentWeekType()).toBe(false);
+  });
+
   it('uses previous year if before Oct 1st', () => {
     // Sept 25, 2024 should use Oct 1st, 2023 as reference
     mockDate('2024-09-25T12:00:00Z');
