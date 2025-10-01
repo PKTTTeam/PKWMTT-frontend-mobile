@@ -52,7 +52,10 @@ jobs:
         run: npm ci --include=dev
 
       - name: Create .env file
-        run: echo "API_URL=${{ secrets.API_URL }}" > .env
+        run: |
+          echo "API_URL=${{ secrets.API_URL }}" > .env
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+          echo "VEXO_KEY=${{ secrets.VEXO_KEY }}" >> .env
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -73,20 +76,18 @@ jobs:
           rm -rf node_modules/.cache
           cd android && ./gradlew clean
 
-      # Try codegen generation with fallback
+      
       - name: Generate Codegen artifacts
         run: |
           cd android
-          # Try the new task first, fallback to old approach if it fails
-          ./gradlew generateCodegenArtifactsFromSchema || \
-          echo "Codegen task not available, proceeding with build"
+          ./gradlew generateCodegenArtifactsFromSchema || echo "Codegen task not available, proceeding with build"
 
       - name: Force autolinking regeneration
         run: |
           rm -rf android/app/build/generated/autolinking
           npx react-native config
 
-      # Pre-build step to ensure all dependencies are properly configured
+      
       - name: Pre-build configuration
         run: |
           cd android
@@ -97,9 +98,45 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
+      - name: Verify APK exists
+        run: |
+          echo "Checking APK files in build directory:"
+          ls -la android/app/build/outputs/apk/release/
+          APK_COUNT=$(find android/app/build/outputs/apk/release -name "PKWMApp-*-release.apk" | wc -l)
+          echo "Found $APK_COUNT APK file(s) matching pattern"
+          if [ $APK_COUNT -eq 0 ]; then
+            echo "No APK files found!"
+            exit 1
+          fi
+
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          files: android/app/build/outputs/apk/release/app-release.apk
-          name: PKWMTT-${{ github.ref_name }}.apk
+          files: android/app/build/outputs/apk/release/PKWMApp-*-release.apk
+          name: PKWMApp-${{ github.ref_name }}.apk
+
+      - name: Upload APK to Backend Server
+        run: |
+          # Find the exact APK file
+          APK_FILE=$(find android/app/build/outputs/apk/release -name "PKWMApp-*-release.apk" | head -1)
+          
+          if [ -z "$APK_FILE" ]; then
+            echo "APK file not found!"
+            exit 1
+          fi
+          
+          # Upload with verbose output and error handling
+          curl -v -X POST \
+            -H "X-ADMIN-KEY: ${{ secrets.ADMIN_KEY }}" \
+            -F "file=@$APK_FILE" \
+            -w "HTTP Status: %{http_code}\n" \
+            ${{ secrets.UPLOAD_URL }}
+          
+          # Check exit code
+          if [ $? -eq 0 ]; then
+            echo "Upload successful!"
+          else
+            echo "Upload failed!"
+            exit 1
+          fi

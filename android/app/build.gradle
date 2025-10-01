@@ -71,19 +71,25 @@ def enableProguardInReleaseBuilds = false
  * this variant is about 6MiB larger per architecture than default.
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
+def packageJsonFile = file("../../package.json")
+def packageJsonText = packageJsonFile.text
+def npmVersion = (packageJsonText =~ /"version"\s*:\s*"([^"]+)"/)[0][1]
 
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.pkwmtt"
+    namespace "com.pkwmapp"
     defaultConfig {
-        applicationId "com.pkwmtt"
+        applicationId "com.pkwmapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        def parts = npmVersion.tokenize('.')
+        while (parts.size() < 3) { parts << "0" }
+        def tokenizedCode = (parts[0].toInteger() * 10000) + (parts[1].toInteger() * 100) + parts[2].toInteger()
+        versionCode tokenizedCode 
+        versionName npmVersion
     }
     signingConfigs {
         debug {
@@ -93,6 +99,16 @@ android {
             keyPassword 'android'
         }
     }
+     applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def appName = "PKWMApp"
+            def versionName = variant.versionName
+            def buildType = variant.buildType.name
+
+            outputFileName = "${appName}-${versionName}-${buildType}.apk"
+        }
+    }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -105,6 +121,7 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    
 }
 
 dependencies {

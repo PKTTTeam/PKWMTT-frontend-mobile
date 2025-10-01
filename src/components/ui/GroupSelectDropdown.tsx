@@ -1,59 +1,107 @@
-// components/ui/GroupSelectDropdown.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
-import DropdownMenu from './DropdownMenu';
+import DropDownPicker from 'react-native-dropdown-picker';
 import GroupSelectStyles from '../../styles/uiStyles/GroupSelectStyles';
-import { GroupSelectTypes } from '../../types/uiTypes/GroupSelectTypes';
 import {
   useSettingsStore,
   useSettingsActions,
 } from '../../store/settingsStore';
-
 import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
+import { useTranslation } from 'react-i18next';
+
+interface Props {
+  groupTitle: string;
+  groupName: GroupName;
+  activeDropdown: string | null;
+  setActiveDropdown: (key: string | null) => void;
+  hasError?: boolean; // Add this prop
+}
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
-  Dziekańska: 'dean',
-  Komputerowa: 'comp',
-  Laboratoryjna: 'lab',
-  Projektowa: 'proj',
+  GG: 'dean',
+  K: 'comp',
+  L: 'lab',
+  P: 'proj',
 } as const;
 
-const GroupSelectDropdown: React.FC<GroupSelectTypes> = ({
+const GroupSelectDropdown: React.FC<Props> = ({
+  groupTitle,
   groupName,
-  listPosUp,
+  activeDropdown,
+  setActiveDropdown,
+  hasError = false,
 }) => {
-  const key = groupKeyMap[groupName as GroupName];
-  const { fetchInitialDeanGroups, setActiveDropdown } = useSettingsActions();
+  const key = groupKeyMap[groupName];
+  const { fetchInitialDeanGroups } = useSettingsActions();
   const groups = useSettingsStore(state => state.groups);
   const options = useSettingsStore(state => state.options[key]);
-  const activeDropdown = useSettingsStore(state => state.activeDropdown);
   const setGroup = useSettingsActions().setGroup;
+  const { t } = useTranslation();
 
-  // Only fetch initial dean groups once on mount if this is the dean dropdown
+  const [value, setValue] = useState(groups[key] || '');
+  const [items, setItems] = useState(
+    (options || []).map(opt => ({ label: opt, value: opt })),
+  );
+
   useEffect(() => {
-    if (key === 'dean' && !groups.dean) {
+    setItems((options || []).map(opt => ({ label: opt, value: opt })));
+  }, [options]);
+
+  useEffect(() => {
+    if (key === 'dean' && (!options || options.length === 0)) {
       fetchInitialDeanGroups();
     }
-  }, [key, groups.dean, fetchInitialDeanGroups]);
+  }, [key, options, fetchInitialDeanGroups]);
 
-  const handleOpen = () => setActiveDropdown(key);
+  useEffect(() => {
+    setValue(groups[key] || '');
+  }, [groups, key]);
 
-  const handleClose = () => setActiveDropdown(null);
+  const open = activeDropdown === key;
 
   return (
     <View style={GroupSelectStyles.menuContainer}>
-      <Text style={GroupSelectStyles.text}>{groupName}</Text>
-      <DropdownMenu
-        listPosUp={listPosUp}
-        items={options || []}
-        selectedValue={groups[key]}
-        onSelect={value => setGroup(key, value)}
-        isOpen={activeDropdown === key}
-        onOpen={handleOpen}
-        onClose={handleClose}
+      {groupTitle && <Text style={GroupSelectStyles.text}>{groupTitle}</Text>}
+
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={openValue => {
+          const isOpen =
+            typeof openValue === 'function' ? openValue(open) : openValue;
+          if (isOpen) {
+            setActiveDropdown(key);
+          } else {
+            setActiveDropdown(null);
+          }
+        }}
+        setValue={val => {
+          const newValue = typeof val === 'function' ? val(value) : val;
+          setValue(newValue);
+          setGroup(key, newValue);
+        }}
+        setItems={setItems}
+        placeholder={t('groupSelectPlaceholder')}
+        searchable
+        searchPlaceholder={t('searchPlaceholder')}
+        dropDownContainerStyle={{
+          backgroundColor: '#222',
+          borderColor: '#666',
+        }}
+        containerStyle={{ width: 130 }}
+        style={{
+          backgroundColor: '#222',
+          borderColor: hasError ? '#ff6b6b' : '#666',
+          borderWidth: hasError ? 2 : 1,
+          zIndex: 1000,
+        }}
+        textStyle={{ color: 'white' }}
+        searchTextInputStyle={{ color: 'white' }}
+        searchContainerStyle={{ backgroundColor: '#222' }}
       />
     </View>
   );
 };
 
-export default GroupSelectDropdown;
+export default React.memo(GroupSelectDropdown);
