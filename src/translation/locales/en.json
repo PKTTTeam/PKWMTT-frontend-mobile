@@ -106,5 +106,18 @@
   "compLab": "Computer Laboratory",
   "project": "Project",
   "seminar": "Seminar",
-  "other": "Other"
+  "other": "Other",
+  "subjectName": "Subject",
+  "gradeName": "Grade",
+  "noItemsAddedInfoText": "No added subjects",
+  "noItemsInfoText": "Click + button to add subject",
+  "gradeAverage": "Grade average",
+  "ectsSum": "Sum of ECTS",
+  "weightedAverage": "Weighted average",
+  "addSubject": "Add subject",
+  "addSubjectText": "Input name of subject, value of ECTS and grade",
+  "placeholderCalc": "eg. Mechanika",
+  "placeholderCalc2": "eg. 2",
+  "ECTSVal": "ECTS Value",
+  "removeCourseMenuBtnText": "Remove selected"
 }

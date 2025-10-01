@@ -9,6 +9,7 @@ import {
 import styles from './CalculatorStyles';
 import uuid from 'react-native-uuid';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useTranslation } from 'react-i18next';
 
 type CalcItem = {
   key: string;
@@ -22,6 +23,8 @@ type CalcItem = {
  * Allows adding, removing, and listing subjects, and calculates weighted average.
  */
 function CalculatorScreen() {
+  const { t } = useTranslation();
+
   // State for subject list and input fields
   const [subjectList, setSubjectList] = useState<CalcItem[]>([]);
   const [subjectName, setSubjectName] = useState('');
@@ -29,7 +32,7 @@ function CalculatorScreen() {
   const [grade, setGrade] = useState('');
 
   // Refs for input fields
-  const sbujectInput = useRef<TextInput>(null);
+  const subjectInput = useRef<TextInput>(null);
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
@@ -72,10 +75,7 @@ function CalculatorScreen() {
    */
   const totalEcts = () => {
     if (subjectList.length === 0) return 0;
-    return subjectList.reduce(
-      (sum, item) => sum + parseInt(item.ects, 10),
-      0,
-    );
+    return subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
   };
 
   /**
@@ -113,51 +113,53 @@ function CalculatorScreen() {
    * @returns {void}
    */
   const addSubject = () => {
-  let hasError = false;
-  setSubjectError(null);
-  setEctsError(null);
-  setGradeError(null);
+    let hasError = false;
+    setSubjectError(null);
+    setEctsError(null);
+    setGradeError(null);
 
-  if (!subjectName.trim()) {
-    setSubjectError('Podaj nazwę przedmiotu');
-    hasError = true;
-  }
+    if (!subjectName.trim()) {
+      setSubjectError('Podaj nazwę przedmiotu');
+      hasError = true;
+    }
 
-  const ectsInt = parseInt(ectsPoints, 10);
-  if (isNaN(ectsInt) || ectsInt <= 0) {
-    setEctsError('Podaj poprawną wartość ECTS');
-    hasError = true;
-  }
+    const ectsInt = parseInt(ectsPoints, 10);
+    if (isNaN(ectsInt) || ectsInt <= 0) {
+      setEctsError('Podaj poprawną wartość ECTS');
+      hasError = true;
+    }
 
-  const gradeRegex = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
-  if (!gradeRegex.test(grade)) {
-    setGradeError('Podaj poprawną ocenę');
-    hasError = true;
-  }
+    const gradeRegex = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
+    if (!gradeRegex.test(grade)) {
+      setGradeError('Podaj poprawną ocenę');
+      hasError = true;
+    }
 
-  if (hasError) return;
+    if (hasError) return;
 
-  const newItem: CalcItem = {
-    key: uuid.v4().toString(),
-    subjectName,
-    ects: ectsPoints,
-    grade,
+    const newItem: CalcItem = {
+      key: uuid.v4().toString(),
+      subjectName,
+      ects: ectsPoints,
+      grade,
+    };
+    setSubjectList([...subjectList, newItem]);
+    setSubjectName('');
+    setEctsPoints('');
+    setGrade('');
+    setPopUpMenuVisible(false);
   };
-  setSubjectList([...subjectList, newItem]);
-  setSubjectName('');
-  setEctsPoints('');
-  setGrade('');
-  setPopUpMenuVisible(false);
-};
 
   /**
    * Selects/deselects an item for batch actions.
    * @param {string} key - Subject key to select/deselect
    */
   const selectItem = (key: string) => {
-    setSelectedItems(selectedItems.includes(key)
-      ? selectedItems.filter(k => k !== key)
-      : [...selectedItems, key]);
+    setSelectedItems(
+      selectedItems.includes(key)
+        ? selectedItems.filter(k => k !== key)
+        : [...selectedItems, key],
+    );
   };
 
   /**
@@ -167,7 +169,7 @@ function CalculatorScreen() {
     setSelectedItems(
       selectedItems.length === subjectList.length
         ? []
-        : subjectList.map(item => item.key)
+        : subjectList.map(item => item.key),
     );
   };
 
@@ -186,9 +188,15 @@ function CalculatorScreen() {
    * @returns {string} Icon character
    */
   const changeSelectedItemsIcon = () => {
-    if (selectedItems.length === subjectList.length && selectedItems.length > 0) {
+    if (
+      selectedItems.length === subjectList.length &&
+      selectedItems.length > 0
+    ) {
       return iconCheck;
-    } else if (selectedItems.length < subjectList.length && selectedItems.length > 0) {
+    } else if (
+      selectedItems.length < subjectList.length &&
+      selectedItems.length > 0
+    ) {
       return iconSquare;
     } else {
       return '';
@@ -216,10 +224,14 @@ function CalculatorScreen() {
           <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>
             {item.subjectName}
           </Text>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
             {item.ects}
           </Text>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.rightText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.rightText]}
+          >
             {item.grade}
           </Text>
         </View>
@@ -231,23 +243,38 @@ function CalculatorScreen() {
     <View style={styles.container}>
       {/* Header row with select all */}
       <View style={styles.headerRootItemContainer}>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={selectAllItems}
-        >
+        <TouchableOpacity style={styles.deleteButton} onPress={selectAllItems}>
           <Text style={styles.deleteButtonText}>
             {changeSelectedItemsIcon()}
           </Text>
         </TouchableOpacity>
         <View style={styles.headerContainer}>
-          <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.leftText]}>
-            Nazwa
+          <Text
+            style={[
+              styles.bottomMenu,
+              styles.singleItemHeader,
+              styles.leftText,
+            ]}
+          >
+            {t('subjectName')}
           </Text>
-          <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.centerText]}>
+          <Text
+            style={[
+              styles.bottomMenu,
+              styles.singleItemHeader,
+              styles.centerText,
+            ]}
+          >
             ECTS
           </Text>
-          <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.rightText]}>
-            Ocena
+          <Text
+            style={[
+              styles.bottomMenu,
+              styles.singleItemHeader,
+              styles.rightText,
+            ]}
+          >
+            {t('gradeName')}
           </Text>
         </View>
       </View>
@@ -256,11 +283,9 @@ function CalculatorScreen() {
       {subjectList.length === 0 && (
         <View style={styles.noItemsInfo}>
           <Text style={styles.noItemsInfoText}>
-            Brak dodanych przedmiotów. 
+            {t('noItemsAddedInfoText')}
           </Text>
-          <Text style={styles.noItemsInfoText}>
-            Kliknij przycisk + aby dodać pierwszy przedmiot.
-          </Text>
+          <Text style={styles.noItemsInfoText}>{t('noItemsInfoText')}</Text>
         </View>
       )}
 
@@ -274,24 +299,36 @@ function CalculatorScreen() {
       {/* Summary row */}
       <View style={styles.summaryContainer}>
         <View style={styles.summarySpacer}>
-          <Text style={[styles.countersText, styles.singleItem, styles.centerText]}>
-            Średnia ocen
+          <Text
+            style={[styles.countersText, styles.singleItem, styles.centerText]}
+          >
+            {t('gradeAverage')}
           </Text>
-          <Text style={[styles.countersText, styles.singleItem, styles.centerText]}>
-            Suma ECTS
+          <Text
+            style={[styles.countersText, styles.singleItem, styles.centerText]}
+          >
+            {t('ectsSum')}
           </Text>
-          <Text style={[styles.countersText, styles.singleItem, styles.centerText]}>
-            Średnia ważona
+          <Text
+            style={[styles.countersText, styles.singleItem, styles.centerText]}
+          >
+            {t('weightedAverage')}
           </Text>
         </View>
         <View style={styles.summarySpacer}>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
             {averageGrade()}
           </Text>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
             {totalEcts()}
           </Text>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
             {weightedAverage()}
           </Text>
         </View>
@@ -301,15 +338,17 @@ function CalculatorScreen() {
       {popUpMenuVisible && (
         <View style={styles.overlayContainer}>
           <View style={styles.popUpMenu}>
-            <Text style={styles.overlayLabel}>Dodaj przedmiot</Text>
-            <Text style={styles.grayLabel}>
-              Podaj nazwę przedmiotu, wartość ECTS oraz ocenę.
-            </Text>
-            <Text style={subjectError ? styles.overlayLabelErr : styles.overlayLabel}>
-              Nazwa
+            <Text style={styles.overlayLabel}>{t('addSubject')}</Text>
+            <Text style={styles.grayLabel}>{t('addSubjectText')}</Text>
+            <Text
+              style={
+                subjectError ? styles.overlayLabelErr : styles.overlayLabel
+              }
+            >
+              {t('subjectName')}
             </Text>
             <TextInput
-              ref={sbujectInput}
+              ref={subjectInput}
               style={
                 subjectError && SubjectFocused
                   ? styles.userInputFocusedError
@@ -319,7 +358,7 @@ function CalculatorScreen() {
                   ? styles.userInputFocused
                   : styles.userInput
               }
-              placeholder="np. Mechanika"
+              placeholder={t('placeholderCalc')}
               placeholderTextColor={'#a1a1a1'}
               value={subjectName}
               onChangeText={setSubjectName}
@@ -330,8 +369,10 @@ function CalculatorScreen() {
               <Text style={styles.inputErrorFeed}>{subjectError}</Text>
             )}
 
-            <Text style={ectsError ? styles.overlayLabelErr : styles.overlayLabel}>
-              Wartość ECTS
+            <Text
+              style={ectsError ? styles.overlayLabelErr : styles.overlayLabel}
+            >
+              {t('ECTSVal')}
             </Text>
             <TextInput
               ref={ectsInput}
@@ -344,7 +385,7 @@ function CalculatorScreen() {
                   ? styles.userInputFocused
                   : styles.userInput
               }
-              placeholder="np. 6"
+              placeholder={t('placeholderCalc2')}
               placeholderTextColor={'#a1a1a1'}
               value={ectsPoints}
               onChangeText={setEctsPoints}
@@ -356,8 +397,10 @@ function CalculatorScreen() {
               <Text style={styles.inputErrorFeed}>{ectsError}</Text>
             )}
 
-            <Text style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}>
-              Ocena
+            <Text
+              style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}
+            >
+              {t('gradeName')}
             </Text>
             <TextInput
               ref={gradeInput}
@@ -383,13 +426,13 @@ function CalculatorScreen() {
             )}
 
             <TouchableOpacity style={styles.confirmButton} onPress={addSubject}>
-              <Text style={styles.buttonText}>Potwierdź</Text>
+              <Text style={styles.buttonText}>{t('confirmButton')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={handleCancel}
             >
-              <Text style={styles.buttonText}>Anuluj</Text>
+              <Text style={styles.buttonText}>{t('cancelButton')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -402,7 +445,7 @@ function CalculatorScreen() {
             <View style={styles.removeButtonContents}>
               <MaterialIcons name="delete" size={24} color="#fff" />
               <Text style={styles.removeCourseMenuBtnText}>
-                Usuń zaznaczone
+                {t('removeCourseMenuBtnText')}
               </Text>
             </View>
           </TouchableOpacity>
