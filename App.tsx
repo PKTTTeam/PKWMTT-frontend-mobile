@@ -27,18 +27,16 @@ const App = () => {
 
   useEffect(() => {
     i18n.init();
-  }, []);
 
-  useEffect(() => {
     const checkVersion = async () => {
       try {
         const current = getAppVersion();
         const latest = await getLatestVersion();
 
-        setCurrentVersion(current);
+        setCurrentVersion(getAppVersion());
         setLatestVersion(latest);
 
-        if (compareVersions(currentVersion, latestVersion) < 0) {
+        if (compareVersions(current, latest) < 0) {
           setUpdateModalVisible(true);
         }
       } catch (err) {
@@ -47,7 +45,6 @@ const App = () => {
     };
 
     checkVersion();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
