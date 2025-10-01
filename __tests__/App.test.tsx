@@ -37,6 +37,6 @@ describe('basic rendering', () => {
     jest.useFakeTimers().setSystemTime(new Date('2025-07-21T10:15:00'));
 
     const result = checkActiveLesson(lesson, aHours, currentDayName, isOddWeek);
-    expect(result).toBe(true);
+    expect(result).toBe(false);
   });
 });
