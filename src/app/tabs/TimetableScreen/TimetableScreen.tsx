@@ -342,7 +342,7 @@ const TimetableScreen = () => {
         <TouchableOpacity
           style={styles.weekIndicator}
           onPress={() => setIsOddWeek(prev => !prev)}
-          hitSlop={{ top: 10, left: 5, right: 5 }}
+          hitSlop={15}
         >
           <Icon name={'sync-alt'} size={15} color={'white'} />
           <Text style={styles.weekText}>{getWeekTypeText()}</Text>

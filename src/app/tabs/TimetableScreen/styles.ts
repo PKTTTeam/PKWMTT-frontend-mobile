@@ -16,6 +16,10 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     columnGap: 5,
+    alignSelf: 'center',
+    padding: 5,
+    backgroundColor: '#2A2A2A',
+    borderRadius: 8,
   },
   weekText: {
     color: 'white',

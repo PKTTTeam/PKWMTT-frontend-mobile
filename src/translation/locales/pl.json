@@ -106,5 +106,18 @@
   "compLab": "Laboratorium Komputerowe",
   "project": "Projekt",
   "seminar": "Seminarium",
-  "other": "Inne"
+  "other": "Inne",
+  "subjectName": "Przedmiot",
+  "gradeName": "Ocena",
+  "noItemsAddedInfoText": "Brak dodanych przedmiotów",
+  "noItemsInfoText": "Kliknij przycisk +, aby dodać przedmiot",
+  "gradeAverage": "Średnia ocen",
+  "ectsSum": "Suma punktów ECTS",
+  "weightedAverage": "Średnia ważona",
+  "addSubject": "Dodaj przedmiot",
+  "addSubjectText": "Wprowadź nazwę przedmiotu, wartość ECTS i ocenę",
+  "placeholderCalc": "np. Mechanika",
+  "placeholderCalc2": "np. 2",
+  "ECTSVal": "Wartość ECTS",
+  "removeCourseMenuBtnText": "Usuń wybrany przedmiot"
 }
