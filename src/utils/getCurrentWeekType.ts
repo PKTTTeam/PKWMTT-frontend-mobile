@@ -21,6 +21,5 @@ export default function getCurrentWeekType(): boolean {
     (currentWeekStart.getTime() - referenceWeekStart.getTime()) / ONE_WEEK_MS,
   );
 
-  // true = even, false = odd
-  return weeksDiff % 2 !== 0;
+  return weeksDiff % 2 === 0;
 }
