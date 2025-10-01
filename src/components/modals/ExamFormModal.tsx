@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -17,6 +18,8 @@ import {
 import { useSettingsStore } from '../../store/settingsStore';
 import type { Event } from './CalendarEventsModal';
 import { useTranslation } from 'react-i18next';
+import { useAuthStore } from '../../store/authStore';
+import { API_URL, API_KEY } from '@env';
 
 interface CreateExamModalProps {
   visible: boolean;
@@ -41,11 +44,12 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
   const [id, setId] = useState(0);
   const [description, setDescription] = useState('');
   const [examType, setExamType] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [generalGroups, setGeneralGroups] = useState<string[]>([]);
   const [subgroups, setSubgroups] = useState<string[]>([]);
+  const [availableSubgroups, setAvailableSubgroups] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [loadingSubgroups, setLoadingSubgroups] = useState(false);
 
   useEffect(() => {
     if (updateForm && exam) {
@@ -58,11 +62,10 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateForm, exam]);
 
-  const savedGroup = useSettingsStore(state => state.groups.dean);
-  // const allGroups = useSettingsStore(state => state.options.dean);
-  const kGroups = useSettingsStore(state => state.options.comp);
-  const lGroups = useSettingsStore(state => state.options.lab);
-  const pGroups = useSettingsStore(state => state.options.proj);
+  // const savedGroup = useSettingsStore(state => state.groups.dean);
+  const allGroups = useSettingsStore(state => state.options.dean);
+
+  const repGroup = useAuthStore(state => state.repGroup);
 
   const { t } = useTranslation();
 
@@ -87,6 +90,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     setExamType('');
     setGeneralGroups([]);
     setSubgroups([]);
+    setAvailableSubgroups([]);
     setSelectedTime(new Date());
     onClose();
   };
@@ -110,8 +114,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
           description: description,
           date: backendDateTime,
           examType: examType,
-          // generalGroups: generalGroups,
-          generalGroups: [savedGroup ?? ''],
+          generalGroups: generalGroups,
           subgroups: subgroups,
           examId: id,
         })
@@ -120,14 +123,13 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
           description: description,
           date: backendDateTime,
           examType: examType,
-          // generalGroups: generalGroups,
-          generalGroups: [savedGroup ?? ''],
+          generalGroups: generalGroups,
           subgroups: subgroups,
         });
     onCreated?.();
 
     console.log(
-      `${title}, ${description}, examType = ${examType}, genGr = ${savedGroup}, subGrp= ${subgroups}, data= ${backendDateTime}`,
+      `${title}, ${description}, examType = ${examType}, genGr = ${generalGroups}, subGrp= ${subgroups}, data= ${backendDateTime}`,
     );
 
     // Reset form
@@ -136,6 +138,7 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     setExamType('');
     setGeneralGroups([]);
     setSubgroups([]);
+    setAvailableSubgroups([]);
     setSelectedTime(new Date());
     onClose();
   };
@@ -152,17 +155,62 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
     }
   };
 
-  // Get relevant groups based on saved group
-  // const slicedGroup = savedGroup && savedGroup.slice(0, -1);
-  // const relevantGroups = slicedGroup
-  //   ? allGroups.filter(item => item.includes(slicedGroup))
-  //   : [];
+  const toggleGeneralGroup = async (group: string) => {
+    let updatedGeneralGroups: string[];
 
-  const allSubgroups = [
-    ...(kGroups || []),
-    ...(lGroups || []),
-    ...(pGroups || []),
-  ];
+    if (generalGroups.includes(group)) {
+      // deselect
+      updatedGeneralGroups = generalGroups.filter(g => g !== group);
+      setGeneralGroups(updatedGeneralGroups);
+    } else {
+      updatedGeneralGroups = [...generalGroups, group];
+      setGeneralGroups(updatedGeneralGroups);
+    }
+
+    if (updatedGeneralGroups.length === 0) {
+      setAvailableSubgroups([]);
+      setSubgroups([]);
+      return;
+    }
+
+    setLoadingSubgroups(true);
+    try {
+      const allFetched: string[][] = await Promise.all(
+        updatedGeneralGroups.map(async g => {
+          const res = await fetch(
+            `${API_URL}timetables/groups/${encodeURIComponent(g)}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'X-API-KEY': API_KEY,
+              },
+            },
+          );
+          const data: string[] = await res.json();
+          return [
+            ...data.filter(s => s.startsWith('K')),
+            ...data.filter(s => s.startsWith('L')),
+            ...data.filter(s => s.startsWith('P')),
+          ];
+        }),
+      );
+
+      const merged = Array.from(new Set(allFetched.flat()));
+      setAvailableSubgroups(merged);
+
+      // keep only valid subgroups
+      setSubgroups(prev => prev.filter(s => merged.includes(s)));
+    } catch (e) {
+      console.error('Failed to fetch dependent groups:', e);
+    } finally {
+      setLoadingSubgroups(false);
+    }
+  };
+
+  const slicedGroup = repGroup;
+  const relevantGroups = slicedGroup
+    ? allGroups.filter(item => item.includes(slicedGroup))
+    : [];
 
   return (
     <Modal
@@ -250,8 +298,8 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                 <Text style={{ color: 'white' }}>{type}</Text>
               </TouchableOpacity>
             ))}
-            {/* //todo: */}
-            {/* <Text style={styles.label}>{t('generalGroups')}</Text>
+
+            <Text style={styles.label}>{t('generalGroups')}</Text>
             {relevantGroups.map(group => (
               <TouchableOpacity
                 key={group}
@@ -259,28 +307,33 @@ const CreateExamModal: React.FC<CreateExamModalProps> = ({
                   styles.option,
                   generalGroups.includes(group) && styles.optionSelected,
                 ]}
-                onPress={() =>
-                  toggleGroup(group, generalGroups, setGeneralGroups)
-                  
-                }
-              >
-                <Text style={{ color: 'white' }}>{group}</Text>
-              </TouchableOpacity>
-            ))} */}
-
-            <Text style={styles.label}>{t('subGroups')}</Text>
-            {allSubgroups.map(group => (
-              <TouchableOpacity
-                key={group + '-sub'}
-                style={[
-                  styles.option,
-                  subgroups.includes(group) && styles.optionSelected,
-                ]}
-                onPress={() => toggleGroup(group, subgroups, setSubgroups)}
+                onPress={() => toggleGeneralGroup(group)}
               >
                 <Text style={{ color: 'white' }}>{group}</Text>
               </TouchableOpacity>
             ))}
+
+            {loadingSubgroups && (
+              <ActivityIndicator size="small" color="#8d95fe" />
+            )}
+
+            {availableSubgroups.length > 0 && (
+              <>
+                <Text style={styles.label}>{t('subGroups')}</Text>
+                {availableSubgroups.map(group => (
+                  <TouchableOpacity
+                    key={group + '-sub'}
+                    style={[
+                      styles.option,
+                      subgroups.includes(group) && styles.optionSelected,
+                    ]}
+                    onPress={() => toggleGroup(group, subgroups, setSubgroups)}
+                  >
+                    <Text style={{ color: 'white' }}>{group}</Text>
+                  </TouchableOpacity>
+                ))}
+              </>
+            )}
 
             <View style={styles.buttonContainer}>
               <TouchableOpacity
