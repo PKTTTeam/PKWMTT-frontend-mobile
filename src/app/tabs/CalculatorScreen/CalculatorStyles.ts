@@ -1,62 +1,46 @@
 import { StyleSheet } from 'react-native';
+import basePalette from '../../../styles/globalTheme/stylesDefinitions/basePalette';
 
 export const colors = {
-  // =========================
   // Background colors
-  // =========================
-  backgroundPrimary: '#191919', // główne tło aplikacji
-  backgroundSecondary: '#232323', // tło inputów i standardowych przycisków
-  backgroundSelectItem: 'white', 
-  backgroundItem: '#313131', // tło elementów listy
-  backgroundPopup: '#191919', // tło popupów/modalów
-  backgroundHeader: '#161415', // tło headera
-  overlay: 'rgba(0, 0, 0, 0.5)', // tło overlay
+  backgroundPrimary: basePalette.black,
+  backgroundSecondary: basePalette.darkGray,
+  backgroundSelectItem: basePalette.white,
+  backgroundItem: basePalette.lightGray,
+  backgroundPopup: basePalette.black,
+  backgroundHeader: basePalette.darkGray2,
+  overlay: 'rgba(0, 0, 0, 0.5)',
 
-  // =========================
   // Border colors
-  // =========================
-  borderDefault: '#3b3b3b', // standardowa obwódka
-  borderLight: '#c2c2c2', // jasna obwódka np. przy przyciskach
-  borderError: '#ff6467', // kolor błędu
-  borderGray: '#6b6b6b', // szara obwódka np. summary
-  cancelButtonBorder: '#3b3b3b', // border cancel button
+  borderDefault: basePalette.gray,
+  borderLight: basePalette.white,
+  borderError: basePalette.brightRed,
+  borderGray: basePalette.lightGray,
+  cancelButtonBorder: basePalette.gray,
 
-  // =========================
   // Accent colors
-  // =========================
-  accentBlue: '#727dff', // przycisk dodawania kursu
-  accentRed: '#a44648', // przycisk dodawania kursu
-  accentRedTransparent: '#a44648ea', // przycisk dodawania kursu
-  accentBlueTransparent: '#727effb6', // przycisk dodawania kursu
+  accentBlue: basePalette.lightPurple,
+  accentRed: basePalette.red,
+  accentRedTransparent: basePalette.red + 'ea',
+  accentBlueTransparent: basePalette.lightPurple + 'b6',
 
-  // =========================
   // Text colors
-  // =========================
-  textPrimary: 'white', // główny kolor tekstu
-  textSecondary: '#a1a1a1', // szary tekst np. liczniki
-  textContrast: '#000000ff', // szary tekst np. liczniki
-  textError: '#ff6467', // czerwony tekst błędu
+  textPrimary: basePalette.white,
+  textSecondary: '#a1a1a1',
+  textContrast: basePalette.black,
+  textError: basePalette.brightRed,
 
-  // =========================
   // Button backgrounds
-  // =========================
-  confirmButtonBg: '#2e2e2e',
-  cancelButtonBg: '#232323',
+  confirmButtonBg: basePalette.gray,
+  cancelButtonBg: basePalette.darkGray,
 };
 
 const calculatorStyles = StyleSheet.create({
-  // =========================
-  // Container
-  // =========================
   container: {
     display: 'flex',
     height: '100%',
     backgroundColor: colors.backgroundPrimary,
   },
-
-  // =========================
-  // Labels & Text
-  // =========================
   overlayLabel: {
     color: colors.textPrimary,
     fontSize: 16,
@@ -105,10 +89,6 @@ const calculatorStyles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 15,
   },
-
-  // =========================
-  // Item containers
-  // =========================
   itemContainer: {
     flexDirection: 'row',
     width: '90%',
@@ -123,7 +103,7 @@ const calculatorStyles = StyleSheet.create({
     backgroundColor: colors.backgroundItem,
     paddingLeft: 10,
     borderRadius: 8,
-    height:'auto',
+    height: 'auto',
     display: 'flex',
     flexDirection: 'row',
     gap: 5,
@@ -135,9 +115,7 @@ const calculatorStyles = StyleSheet.create({
     backgroundColor: colors.backgroundHeader,
     paddingLeft: 10,
     borderRadius: 8,
-
     height: 40,
-
     display: 'flex',
     flexDirection: 'row',
     gap: 5,
@@ -169,10 +147,6 @@ const calculatorStyles = StyleSheet.create({
     marginBottom: 20,
   },
   summarySpacer: { display: 'flex', flexDirection: 'row' },
-
-  // =========================
-  // Buttons
-  // =========================
   button: {
     alignSelf: 'center',
     marginBottom: '2%',
@@ -233,15 +207,11 @@ const calculatorStyles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-removeButtonContents: {
-  display: 'flex',
-  flexDirection: 'row',
-  gap: 10,
-
-},
-  // =========================
-  // Inputs
-  // =========================
+  removeButtonContents: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+  },
   userInput: {
     backgroundColor: colors.backgroundSecondary,
     color: colors.textPrimary,
@@ -261,7 +231,6 @@ removeButtonContents: {
     width: '90%',
     borderWidth: 1,
     borderColor: colors.borderDefault,
-
     outlineColor: colors.borderGray,
     outlineWidth: 4,
   },
@@ -274,7 +243,6 @@ removeButtonContents: {
     width: '90%',
     borderWidth: 1,
     borderColor: colors.borderDefault,
-
     outlineColor: colors.accentRedTransparent,
     outlineWidth: 4,
   },
@@ -288,10 +256,6 @@ removeButtonContents: {
     borderWidth: 1,
     borderColor: colors.borderError,
   },
-
-  // =========================
-  // Overlays & Popups
-  // =========================
   overlayContainer: {
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
@@ -311,17 +275,12 @@ removeButtonContents: {
     height: 'auto',
     borderRadius: 8,
   },
-
-  // =========================
-  // Delete Button
-  // =========================
   deleteButton: {
     backgroundColor: colors.backgroundSelectItem,
     borderWidth: 1.2,
     borderColor: colors.borderLight,
     width: 15,
     height: 15,
-
     textAlignVertical: 'center',
     alignContent: 'center',
     display: 'flex',
@@ -336,10 +295,6 @@ removeButtonContents: {
     textAlign: 'center',
     lineHeight: 10,
   },
-
-  // =========================
-  // No items info
-  // =========================
   noItemsInfo: {
     flex: 1,
     justifyContent: 'center',

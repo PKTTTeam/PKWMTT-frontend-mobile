@@ -1,5 +1,8 @@
 import { createTheme } from '@shopify/restyle';
-// import colors from './stylesDefinitions/colors';
+import palette from "./stylesDefinitions/basePalette"
+import objects from "./stylesDefinitions/objects"
+import spacing from "./stylesDefinitions/spacing"
+
 const activityLegend = {
   lecture: '#e35c22',
   excercise: '#82d32e',
@@ -10,25 +13,19 @@ const activityLegend = {
   other: '#6e6e6e',
 };
 
-const palette = {
-
-};
-
 export const theme = createTheme({
+  spacing,
+  objects,
+  palette,
   colors: {
-    ...palette,
+    mainForeground: palette.black,
+    mainBackground: palette.darkGray,
   },
-  spacing: {
-    xs: 4,
-    s: 8,
-    m: 16,
-    l: 24,
-    xl: 32,
-  },
-  textVariants: {
-  },
+  textVariants: {},
   activityLegend: { ...activityLegend },
+
   breakpoints: {},
 });
+
 
 export type Theme = typeof theme;
