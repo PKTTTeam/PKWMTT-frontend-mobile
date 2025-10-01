@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#555',
   },
   confirmButtonText: {
-    color: '#fff',
+    color: '#ffffffce',
     fontWeight: '600',
     fontSize: 16,
     textAlign: 'center',
