@@ -1,7 +1,7 @@
 import { createTheme } from '@shopify/restyle';
+import spacing from "./stylesDefinitions/spacing"
 import palette from "./stylesDefinitions/basePalette"
 import objects from "./stylesDefinitions/objects"
-import spacing from "./stylesDefinitions/spacing"
 
 const activityLegend = {
   lecture: '#e35c22',
@@ -14,16 +14,25 @@ const activityLegend = {
 };
 
 export const theme = createTheme({
-  spacing,
   objects,
+  spacing,
   palette,
+  activityLegend,
+  borderRads: {
+    s: 4,
+    m: 8,
+    l: 16,
+  },
   colors: {
     mainForeground: palette.black,
     mainBackground: palette.darkGray,
+    textPrimary: palette.white,
+    textSecondary: palette.brightGray,
+    error: palette.brightRed,
+    border: palette.darkGray2,
+    confirmAccent: palette.lightPurple,
+    cancelAccent: palette.red
   },
-  textVariants: {},
-  activityLegend: { ...activityLegend },
-
   breakpoints: {},
 });
 
