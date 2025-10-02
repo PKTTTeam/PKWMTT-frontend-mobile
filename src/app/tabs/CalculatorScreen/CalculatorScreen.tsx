@@ -6,7 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import styles from './CalculatorStyles';
+import { createCalculatorStyles } from './CalculatorStyles';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../../styles/globalTheme/theme';
 import uuid from 'react-native-uuid';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +26,10 @@ type CalcItem = {
  */
 function CalculatorScreen() {
   const { t } = useTranslation();
+
+  // style initialization
+  const theme = useTheme<Theme>();
+  const styles = createCalculatorStyles(theme);
 
   // State for subject list and input fields
   const [subjectList, setSubjectList] = useState<CalcItem[]>([]);

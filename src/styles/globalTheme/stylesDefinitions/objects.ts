@@ -1,7 +1,7 @@
 import palette from "./basePalette";
 
 const objects = {
-  // text definitions
+  // text definitions - work in porgress
   textVariants: {
     regularText: {
       fontSize: 16,
@@ -13,7 +13,7 @@ const objects = {
       color: palette.white,
     },
   },
-  // button definitions
+  // button definitions - work in porgress
   buttons: {
     primaryButton: {
       backgroundColor: palette.lightPurple,

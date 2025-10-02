@@ -11,7 +11,7 @@ import { getLatestVersion } from './src/services/versionService';
 import { getAppVersion } from './src/utils/getAppVersion';
 import UpdateAlertModal from './src/components/modals/UpdateAlertModal';
 import { ThemeProvider } from '@shopify/restyle';
-import { theme } from './src/styles/globalTheme/theme';
+import { darkTheme } from './src/styles/globalTheme/theme';
 
 import { vexo } from 'vexo-analytics';
 import { VEXO_KEY } from '@env';
@@ -52,7 +52,7 @@ const App = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <SafeAreaProvider>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={darkTheme}>
         <NavigationContainer>
           {!isSetupComplete ? (
             <FirstTimeSetupScreen onDone={handleSetupDone} />

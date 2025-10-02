@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import palette from '../../../styles/globalTheme/stylesDefinitions/basePalette';
 import CalendarEventsModal, {
   Event,
 } from '../../../components/modals/CalendarEventsModal';
@@ -90,16 +91,17 @@ export default function CalendarScreen() {
           // eslint-disable-next-line react-native/no-inline-styles
           style={{ borderRadius: 12 }}
           theme={{
-            backgroundColor: '#1e1f1f',
+            // backgroundColor: theme.colors.mainBackground, //'#1e1f1f'
+            backgroundColor: '#1e1f1fce', 
             calendarBackground: '#1e1f1f',
             textSectionTitleColor: '#A9A9A9',
-            selectedDayBackgroundColor: '#7B79FF',
-            selectedDayTextColor: '#ffffff',
-            todayTextColor: '#7B79FF',
-            dayTextColor: '#FFFFFF',
+            selectedDayBackgroundColor: palette.purple,
+            selectedDayTextColor: palette.white,
+            todayTextColor: palette.purple,
+            dayTextColor: palette.white,
             textDisabledColor: '#555555',
-            arrowColor: '#7B79FF',
-            monthTextColor: '#FFFFFF',
+            arrowColor: palette.purple,
+            monthTextColor: palette.white,
             textDayFontWeight: '400',
             textMonthFontWeight: '600',
             textDayHeaderFontWeight: '600',
