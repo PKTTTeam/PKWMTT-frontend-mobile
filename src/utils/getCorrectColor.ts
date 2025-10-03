@@ -2,25 +2,25 @@ export function getCorrectColor(color: string): string {
   let newColor: string;
   switch (color) {
     case 'W':
-      newColor = '#e35c22';
+      newColor = '#c45f0d';
       break;
     case 'L':
-      newColor = '#3bbee5';
+      newColor = '#1d7693';
       break;
     case 'Ć':
-      newColor = '#82d32f';
+      newColor = '#4a9211';
       break;
     case 'P':
-      newColor = '#d22e2f';
+      newColor = '#8f1722';
       break;
     case 'K':
-      newColor = '#cf2fee';
+      newColor = '#8a6b00';
       break;
     case 'S':
-      newColor = '#aaaa15';
+      newColor = '#8a1fbf';
       break;
     case 'I':
-      newColor = '#6e6e6e';
+      newColor = '#3a49a3';
       break;
     default:
       newColor = '';
