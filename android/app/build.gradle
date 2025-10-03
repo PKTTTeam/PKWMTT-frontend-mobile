@@ -98,16 +98,28 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            def keystorePath = System.getenv("UPLOAD_KEYSTORE_PATH")
+            storeFile file(keystorePath)
+            storePassword System.getenv("UPLOAD_STORE_PASSWORD")
+            keyAlias System.getenv("UPLOAD_KEY_ALIAS")
+            keyPassword System.getenv("UPLOAD_KEY_PASSWORD")
+        }
     }
-     applicationVariants.all { variant ->
+      applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def appName = "PKWMApp"
             def versionName = variant.versionName
             def buildType = variant.buildType.name
-
-            outputFileName = "${appName}-${versionName}-${buildType}.apk"
+            def versionCode = variant.versionCode
+            
+            // For APK files
+            if (output.outputFile.name.endsWith(".apk")) {
+                output.outputFileName = "${appName}-${versionName}-${buildType}.apk"
+            }
         }
     }
+     
 
     buildTypes {
         debug {
@@ -116,12 +128,32 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
     
+}
+
+afterEvaluate {
+    tasks.each { task ->
+        if (task.name.startsWith('bundle') && task.name.endsWith('Release')) {
+            task.doLast {
+                def appName = "PKWMApp"
+                def versionName = android.defaultConfig.versionName
+                
+                def bundleDir = file("${project.buildDir}/outputs/bundle/release/")
+                def originalFile = file("${bundleDir}/app-release.aab")
+                def newFile = file("${bundleDir}/${appName}-${versionName}-release.aab")
+                
+                if (originalFile.exists()) {
+                    originalFile.renameTo(newFile)
+                    println "Renamed AAB file to: ${newFile.name}"
+                }
+            }
+        }
+    }
 }
 
 dependencies {
