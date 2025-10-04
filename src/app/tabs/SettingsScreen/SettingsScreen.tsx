@@ -53,7 +53,6 @@ function SettingsScreen() {
     new Set(),
   );
   const [wasValid, setWasValid] = useState(false);
-  const { t } = useTranslation();
 
   // Check if LPK groups are present
   const hasLPKGroups =

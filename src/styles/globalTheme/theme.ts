@@ -18,6 +18,7 @@ const baseConfig = {
   spacing,
   activityLegendColors,
   borderRads: {
+    xs: 2,
     s: 4,
     m: 8,
     l: 16,
@@ -29,16 +30,24 @@ const baseConfig = {
 export const darkTheme = createTheme({
   ...baseConfig,
   colors: {
-    mainForeground: palette.darkColors.white,
+    mainForeground: palette.darkColors.lightGray,
     mainBackground: palette.darkColors.darkGray,
     textPrimary: palette.darkColors.white,
     textContrast: palette.darkColors.black,
+    themeOpposite: palette.darkColors.white,
     textSecondary: palette.darkColors.brightGray,
     error: palette.accentColors.brightRed,
-    border: palette.darkColors.darkGray2,
-    border2: palette.darkColors.darkGray2,
+    border: palette.darkColors.gray,
+    border2: palette.darkColors.gray,
+
     confirmAccent: palette.accentColors.lightPurple,
     cancelAccent: palette.accentColors.red,
+    confirmAccent2: palette.darkColors.lightGray2,
+    cancelAccent2: palette.darkColors.darkGray2,
+
+    userInput: palette.darkColors.darkGray2,
+    selectedItemBackground: palette.darkColors.white,
+
   },
 });
 
@@ -50,21 +59,20 @@ export const lightTheme = createTheme({
     mainBackground: palette.lightColors.white,
     textPrimary: palette.lightColors.black,
     textContrast: palette.lightColors.black,
+    themeOpposite: palette.darkColors.black,
     textSecondary: palette.darkColors.brightGray,
-    error: palette.accentColors.red,
-    border: palette.lightColors.mutedTeal,
-    border2: palette.lightColors.lightTeal,
+    error: palette.accentColors.brightRed,
+    border: palette.lightColors.lightTeal,
+    border2: palette.lightColors.mutedTeal,
+
     confirmAccent: palette.accentColors.purple,
     cancelAccent: palette.accentColors.red,
-    // mainForeground: palette.darkColors.black,
-    // mainBackground: palette.darkColors.white,
-    // textPrimary: palette.darkColors.black,
-    // textContrast: palette.darkColors.black,
-    // textSecondary: palette.darkColors.darkGray,
-    // error: palette.darkColors.brightRed,
-    // border: palette.darkColors.lightGray,
-    // confirmAccent: palette.darkColors.lightPurple,
-    // cancelAccent: palette.accentColors.red,
+    confirmAccent2: palette.lightColors.lightTeal2,
+    cancelAccent2: palette.lightColors.white,
+
+    userInput: palette.lightColors.white,
+    selectItemBackground: palette.lightColors.white,
+
   },
 });
 

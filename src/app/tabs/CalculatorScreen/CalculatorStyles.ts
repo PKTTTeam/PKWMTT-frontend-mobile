@@ -5,8 +5,8 @@ export const createCalculatorStyles = (theme: Theme) => {
   const colors = {
     // Background colors
     backgroundPrimary: theme.colors.mainBackground,
-    backgroundSecondary: theme.colors.border,
-    backgroundSelectItem: theme.colors.mainForeground,
+    backgroundSecondary: theme.colors.userInput,
+    backgroundSelectItem: theme.colors.selectedItemBackground,
     backgroundItem: theme.colors.border,
     backgroundPopup: theme.colors.mainBackground,
     backgroundHeader: theme.colors.border2,
@@ -14,7 +14,7 @@ export const createCalculatorStyles = (theme: Theme) => {
 
     // Border colors
     borderDefault: theme.colors.border,
-    borderLight: theme.colors.mainForeground,
+    borderLight: theme.colors.themeOpposite,
     borderError: theme.colors.error,
     borderGray: theme.colors.border,
     cancelButtonBorder: theme.colors.border,
@@ -32,8 +32,8 @@ export const createCalculatorStyles = (theme: Theme) => {
     textError: theme.colors.error,
 
     // Button backgrounds
-    confirmButtonBg: theme.colors.border,
-    cancelButtonBg: theme.colors.cancelAccent,
+    confirmButtonBg: theme.colors.confirmAccent2,
+    cancelButtonBg: theme.colors.cancelAccent2,
   };
 
 
@@ -75,11 +75,11 @@ export const createCalculatorStyles = (theme: Theme) => {
     },
     addCourseMenuBtnText: {
       fontSize: 35,
-      color: colors.textPrimary,
+      color: '#fff',
     },
     removeCourseMenuBtnText: {
       fontSize: 20,
-      color: colors.textPrimary,
+      color: "#fff",
     },
     buttonText: {
       color: colors.textPrimary,
@@ -280,8 +280,9 @@ export const createCalculatorStyles = (theme: Theme) => {
     },
     deleteButtonBase: {
       backgroundColor: colors.backgroundPrimary,
-      borderWidth: 1.2,
+      borderWidth: .75,
       borderColor: colors.borderLight,
+      borderRadius: theme.borderRads.xs,
       width: 15,
       height: 15,
       textAlignVertical: 'center',
@@ -292,8 +293,9 @@ export const createCalculatorStyles = (theme: Theme) => {
     },
     deleteButtonSelected:{
       backgroundColor: colors.backgroundSelectItem,
-      borderWidth: 1.2,
+      borderWidth: .75,
       borderColor: colors.borderLight,
+      borderRadius: theme.borderRads.xs,
       width: 15,
       height: 15,
       textAlignVertical: 'center',
@@ -303,7 +305,7 @@ export const createCalculatorStyles = (theme: Theme) => {
       justifyContent: 'center',
     },
     deleteButtonText: {
-      color: theme.colors.mainBackground,
+      color: "#000",
       fontSize: 10,
       alignItems: 'center',
       justifyContent: 'center',
