@@ -11,6 +11,7 @@ import { useAuthStore } from '../../../store/authStore.ts';
 import { useTranslation } from 'react-i18next';
 
 import LanguageCard from '../../../components/LanguageCard.tsx';
+import { t } from 'i18next';
 
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
@@ -34,7 +35,7 @@ const ToggleTheme = () => {
 
   return (
     <Switch
-      label="toggleTheme"
+      label={t('toggleThemeText')}
       value={currentTheme === 'dark'}
       onChange={toggleTheme}
     />

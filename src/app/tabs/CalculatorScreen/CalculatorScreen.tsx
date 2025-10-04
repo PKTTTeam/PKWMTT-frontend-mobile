@@ -219,7 +219,7 @@ function CalculatorScreen() {
     return (
       <View style={styles.rootItemContainer}>
         <TouchableOpacity
-          style={styles.deleteButton}
+          style={isSelected ? styles.deleteButtonSelected : styles.deleteButtonBase}
           onPress={() => selectItem(item.key)}
         >
           <Text style={styles.deleteButtonText}>
@@ -249,7 +249,10 @@ function CalculatorScreen() {
     <View style={styles.container}>
       {/* Header row with select all */}
       <View style={styles.headerRootItemContainer}>
-        <TouchableOpacity style={styles.deleteButton} onPress={selectAllItems}>
+        <TouchableOpacity
+          style={selectedItems.length > 0 ? styles.deleteButtonSelected : styles.deleteButtonBase}
+          onPress={selectAllItems}
+        >
           <Text style={styles.deleteButtonText}>
             {changeSelectedItemsIcon()}
           </Text>
