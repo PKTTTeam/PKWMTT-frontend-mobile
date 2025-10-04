@@ -2,12 +2,15 @@ import { API_URL, API_KEY } from '@env';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { lightTheme, darkTheme, Theme } from '../styles/globalTheme/theme';
 
 import type { SettingsState } from './settingsStoreTypes';
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set, get) => ({
+      theme: lightTheme as Theme,
+      themeMode: 'light' as 'light' | 'dark',
       groups: {
         dean: undefined,
         lab: undefined,
@@ -159,6 +162,21 @@ export const useSettingsStore = create<SettingsState>()(
         },
         setSetupComplete(value: boolean) {
           set({ setupComplete: value });
+        },
+        // --- TTheme actions ---
+        setMode: (mode: 'light' | 'dark') => {
+          set({
+            themeMode: mode,
+            theme: mode === 'light' ? lightTheme : darkTheme,
+          });
+        },
+        toggleMode: () => {
+          const currentMode = get().themeMode;
+          const newMode = currentMode === 'light' ? 'dark' : 'light';
+          set({
+            themeMode: newMode,
+            theme: newMode === 'light' ? lightTheme : darkTheme,
+          });
         },
       },
     }),

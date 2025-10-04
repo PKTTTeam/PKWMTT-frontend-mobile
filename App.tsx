@@ -11,13 +11,13 @@ import { getLatestVersion } from './src/services/versionService';
 import { getAppVersion } from './src/utils/getAppVersion';
 import UpdateAlertModal from './src/components/modals/UpdateAlertModal';
 import { ThemeProvider } from '@shopify/restyle';
-import { darkTheme } from './src/styles/globalTheme/theme';
 
 import { vexo } from 'vexo-analytics';
 import { VEXO_KEY } from '@env';
 
 const App = () => {
   const isSetupComplete = useSettingsStore(state => state.setupComplete);
+  const currentAppTheme = useSettingsStore(state => state.theme);
   vexo(VEXO_KEY);
   const handleSetupDone = () => {
     useSettingsStore.getState().setupComplete = true;
@@ -52,7 +52,7 @@ const App = () => {
   return (
     <I18nextProvider i18n={i18n}>
       <SafeAreaProvider>
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={currentAppTheme}>
         <NavigationContainer>
           {!isSetupComplete ? (
             <FirstTimeSetupScreen onDone={handleSetupDone} />

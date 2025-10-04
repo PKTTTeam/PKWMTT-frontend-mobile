@@ -28,6 +28,19 @@ const ShowEmptySlotsToggle = () => {
   );
 };
 
+const ToggleTheme = () => {
+  const currentTheme = useSettingsStore(state => state.themeMode);
+  const toggleTheme = useSettingsStore(state => state.actions.toggleMode);
+
+  return (
+    <Switch
+      label="toggleTheme"
+      value={currentTheme === 'dark'}
+      onChange={toggleTheme}
+    />
+  );
+};
+
 function SettingsScreen() {
   const options = useSettingsStore(state => state.options);
   const groups = useSettingsStore(state => state.groups);
@@ -166,6 +179,9 @@ function SettingsScreen() {
             {/* Toggle and language dropdown */}
             <View style={SettingsStyles.elementsSpacing}>
               <ShowEmptySlotsToggle />
+            </View>
+            <View style={SettingsStyles.elementsSpacing}>
+              <ToggleTheme />
             </View>
             <View style={SettingsStyles.elementsSpacing}>
               <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
