@@ -4,11 +4,11 @@ import { Theme } from '../../../styles/globalTheme/theme';
 export const createCalculatorStyles = (theme: Theme) => {
   const colors = {
     // Background colors
-    backgroundPrimary: theme.colors.mainBackground,
+    backgroundPrimary: theme.colors.Foreground,
     backgroundSecondary: theme.colors.userInput,
     backgroundSelectItem: theme.colors.selectedItemBackground,
     backgroundItem: theme.colors.border,
-    backgroundPopup: theme.colors.mainBackground,
+    backgroundPopup: theme.colors.Foreground,
     backgroundHeader: theme.colors.border2,
     overlay: 'rgba(0, 0, 0, 0.5)',
 
@@ -28,7 +28,7 @@ export const createCalculatorStyles = (theme: Theme) => {
     // Text colors
     textPrimary: theme.colors.textPrimary,
     textSecondary: theme.colors.textSecondary,
-    textContrast: theme.colors.mainForeground,
+    textContrast: theme.colors.Foreground,
     textError: theme.colors.error,
 
     // Button backgrounds
@@ -279,7 +279,7 @@ export const createCalculatorStyles = (theme: Theme) => {
       
     },
     deleteButtonBase: {
-      backgroundColor: colors.backgroundPrimary,
+      backgroundColor: colors.backgroundItem,
       borderWidth: .75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,

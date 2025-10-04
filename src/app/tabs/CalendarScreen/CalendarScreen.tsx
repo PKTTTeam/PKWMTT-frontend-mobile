@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import palette from '../../../styles/globalTheme/stylesDefinitions/basePalette';
 import CalendarEventsModal, {
   Event,
 } from '../../../components/modals/CalendarEventsModal';
@@ -15,6 +14,9 @@ import { useSettingsStore } from '../../../store/settingsStore';
 import { getExamColor } from '../../../utils/getExamColor';
 import { setCalendarLocale } from '../../../utils/setCalendarLocale';
 import i18n from '../../../../i18n';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../../styles/globalTheme/theme';
+import createCalendarStyles from './CalendarStyles';
 
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -29,6 +31,10 @@ export default function CalendarScreen() {
   const kgroup = useSettingsStore(state => state.groups?.comp);
   const lgroup = useSettingsStore(state => state.groups?.lab);
   const pgroup = useSettingsStore(state => state.groups?.proj);
+
+  // style initialization
+  const theme = useTheme<Theme>();
+  const styles = createCalendarStyles(theme);
 
   useEffect(() => {
     // apply calendar locale on language change
@@ -91,17 +97,17 @@ export default function CalendarScreen() {
           // eslint-disable-next-line react-native/no-inline-styles
           style={{ borderRadius: 12 }}
           theme={{
-            // backgroundColor: theme.colors.mainBackground, //'#1e1f1f'
-            backgroundColor: '#1e1f1fce', 
-            calendarBackground: '#1e1f1f',
-            textSectionTitleColor: '#A9A9A9',
-            selectedDayBackgroundColor: palette.purple,
-            selectedDayTextColor: palette.white,
-            todayTextColor: palette.purple,
-            dayTextColor: palette.white,
-            textDisabledColor: '#555555',
-            arrowColor: palette.purple,
-            monthTextColor: palette.white,
+            // must be inline – Calendar theme prop incompatible with custom Theme type
+            backgroundColor: theme.colors.Foreground,
+            calendarBackground: theme.colors.Foreground,
+            textSectionTitleColor: theme.colors.textSecondary,
+            selectedDayBackgroundColor: theme.colors.selectedAccent,
+            selectedDayTextColor: theme.colors.themeOpposite,
+            todayTextColor: theme.colors.selectedAccent,
+            dayTextColor: theme.colors.textPrimary,
+            textDisabledColor: theme.colors.textDisabled,
+            arrowColor: theme.colors.selectedAccent,
+            monthTextColor: theme.colors.textPrimary,
             textDayFontWeight: '400',
             textMonthFontWeight: '600',
             textDayHeaderFontWeight: '600',
@@ -176,15 +182,3 @@ export default function CalendarScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#181818',
-    padding: 8,
-  },
-  calendarWrapper: {
-    justifyContent: 'center',
-    flex: 1,
-  },
-});

@@ -13,6 +13,8 @@ const activityLegendColors = {
   other: '#6e6e6e',
 };
 
+
+
 const baseConfig = {
   objects,
   spacing,
@@ -26,12 +28,15 @@ const baseConfig = {
   breakpoints: {},
 };
 
+
+
 // DARK THEME
 export const darkTheme = createTheme({
   ...baseConfig,
   colors: {
-    mainForeground: palette.darkColors.lightGray,
-    mainBackground: palette.darkColors.darkGray,
+    Background: palette.darkColors.black,
+    secondaryForeground: palette.darkColors.lightGray,
+    Foreground: palette.darkColors.darkGray,
     textPrimary: palette.darkColors.white,
     textContrast: palette.darkColors.black,
     themeOpposite: palette.darkColors.white,
@@ -40,6 +45,7 @@ export const darkTheme = createTheme({
     border: palette.darkColors.gray,
     border2: palette.darkColors.gray,
 
+    selectedAccent: palette.accentColors.tonedBlue,
     confirmAccent: palette.accentColors.lightPurple,
     cancelAccent: palette.accentColors.red,
     confirmAccent2: palette.darkColors.lightGray2,
@@ -47,7 +53,7 @@ export const darkTheme = createTheme({
 
     userInput: palette.darkColors.darkGray2,
     selectedItemBackground: palette.darkColors.white,
-
+    textDisabled: palette.calendarThemeColors.textDisabledDark,
   },
 });
 
@@ -55,8 +61,9 @@ export const darkTheme = createTheme({
 export const lightTheme = createTheme({
   ...baseConfig,
   colors: {
-    mainForeground: palette.lightColors.white,
-    mainBackground: palette.lightColors.white,
+    Background: palette.darkColors.white,
+    secondaryForeground: palette.lightColors.white,
+    Foreground: palette.lightColors.white,
     textPrimary: palette.lightColors.black,
     textContrast: palette.lightColors.black,
     themeOpposite: palette.darkColors.black,
@@ -65,14 +72,15 @@ export const lightTheme = createTheme({
     border: palette.lightColors.lightTeal,
     border2: palette.lightColors.mutedTeal,
 
-    confirmAccent: palette.accentColors.purple,
+    selectedAccent: palette.accentColors.tonedBlue,
+    confirmAccent: palette.accentColors.tonedBlue,
     cancelAccent: palette.accentColors.red,
     confirmAccent2: palette.lightColors.lightTeal2,
     cancelAccent2: palette.lightColors.white,
 
     userInput: palette.lightColors.white,
-    selectItemBackground: palette.lightColors.white,
-
+    selectedItemBackground: palette.lightColors.white,
+    textDisabled: palette.calendarThemeColors.textDisabledLight,
   },
 });
 
