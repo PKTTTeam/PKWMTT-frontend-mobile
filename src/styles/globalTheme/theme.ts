@@ -61,7 +61,7 @@ export const darkTheme = createTheme({
 export const lightTheme = createTheme({
   ...baseConfig,
   colors: {
-    Background: palette.darkColors.white,
+    Background: palette.lightColors.mutedTeal,
     secondaryForeground: palette.lightColors.white,
     Foreground: palette.lightColors.white,
     textPrimary: palette.lightColors.black,
