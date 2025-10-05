@@ -28,6 +28,11 @@ const basePalette = {
     textDisabledLight: '#9d9d9d',
     textDisabledDark: '#777877',
   },
+  timetableThemeCOlors:{
+    separatorLight: '#e8eaed',
+    separatorDark: '#3A3A3A',
+    scheduleBackgroundColor: '#f5f5f5',
+  },
 };
 
 export default basePalette;

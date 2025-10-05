@@ -18,7 +18,9 @@ import getCorrectLetter from '../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../services/timetable/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { styles } from './styles.ts';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../../styles/globalTheme/theme';
+import { createTimetableStyles } from './timetableStyles.ts';
 import {
   useSettingsStore,
   useSettingsActions,
@@ -27,10 +29,6 @@ import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
 import { useTranslation } from 'react-i18next';
-
-const LessonSeparator = () => {
-  return <View style={styles.separator} />;
-};
 
 const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-back-ios" color={color} size={size} />
@@ -152,6 +150,13 @@ const TimetableScreen = () => {
     initialiseData();
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups.dean, groups.comp, groups.lab, groups.proj]);
+
+  const theme = useTheme<Theme>();
+  const styles = createTimetableStyles(theme);
+
+  const lessonSeparator = () => {
+    return <View style={styles.separator} />;
+  };
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -359,7 +364,7 @@ const TimetableScreen = () => {
             }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}
-            ItemSeparatorComponent={LessonSeparator}
+            ItemSeparatorComponent={lessonSeparator}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }

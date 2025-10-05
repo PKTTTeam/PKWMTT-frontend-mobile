@@ -1,12 +1,25 @@
 import { StyleSheet } from 'react-native';
-export const styles = StyleSheet.create({
+import { Theme } from '../../../styles/globalTheme/theme';
+
+export const createTimetableStyles = (theme: Theme) => {
+
+  const colors = {
+    bgColor: theme.colors.Background,
+    bgColor2: theme.colors.Foreground, //'#1e1f1f',
+    textColor: theme.colors.textPrimary,
+    separatorColor: theme.colors.separator,//'#3A3A3A', //light #e8eaed
+    btnBg: '#2A2A2A',
+    loadingAccent: '#666',
+  };
+
+ return  StyleSheet.create({
   bgContainer: {
     flex: 1,
-    backgroundColor: '#181818',
+    backgroundColor: colors.bgColor,
   },
   container: {
     flex: 1,
-    backgroundColor: '#1e1f1f',
+    backgroundColor: colors.bgColor2,
     padding: 16,
     marginLeft: 6,
     marginRight: 6,
@@ -18,7 +31,7 @@ export const styles = StyleSheet.create({
     columnGap: 5,
     alignSelf: 'center',
     padding: 5,
-    backgroundColor: '#2A2A2A',
+    backgroundColor: colors.btnBg,
     borderRadius: 8,
   },
   weekText: {
@@ -33,7 +46,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   navButton: {
-    backgroundColor: '#2A2A2A',
+    backgroundColor: colors.btnBg,
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -41,7 +54,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navButtonText: {
-    color: 'white',
+    color: colors.textColor,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -57,7 +70,7 @@ export const styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: '#3A3A3A', // subtle dark gray line
+    backgroundColor: colors.separatorColor, // subtle dark gray line
     marginVertical: 0,
     opacity: 0.8,
   },
@@ -68,7 +81,7 @@ export const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#666',
+    color: colors.loadingAccent,
     textAlign: 'center',
   },
 
@@ -114,3 +127,4 @@ export const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
 });
+}

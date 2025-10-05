@@ -54,6 +54,10 @@ export const darkTheme = createTheme({
     userInput: palette.darkColors.darkGray2,
     selectedItemBackground: palette.darkColors.white,
     textDisabled: palette.calendarThemeColors.textDisabledDark,
+
+    separator: palette.timetableThemeCOlors.separatorDark,
+    nonEmptyScheduleItem: palette.timetableThemeCOlors.scheduleBackgroundColor,
+    EmptyScheduleItem: palette.lightColors.white,
   },
 });
 
@@ -81,6 +85,10 @@ export const lightTheme = createTheme({
     userInput: palette.lightColors.white,
     selectedItemBackground: palette.lightColors.white,
     textDisabled: palette.calendarThemeColors.textDisabledLight,
+
+    separator: palette.timetableThemeCOlors.separatorLight,
+        nonEmptyScheduleItem: palette.timetableThemeCOlors.scheduleBackgroundColor,
+    EmptyScheduleItem: palette.lightColors.white,
   },
 });
 

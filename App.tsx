@@ -14,12 +14,10 @@ import { ThemeProvider } from '@shopify/restyle';
 import { vexo } from 'vexo-analytics';
 import { VEXO_KEY } from '@env';
 
-// 🔹 typ dla tras
 type RootStackParamList = {
   Settings: undefined;
   Home: undefined;
   Tabs: undefined;
-  // dodaj inne ekrany, które masz w TabNavigator
 };
 
 const App = () => {
@@ -39,7 +37,6 @@ const App = () => {
     useSettingsStore.getState().setupComplete = true;
   };
 
-  // 🔹 przechodzenie do Settings po zmianie motywu
   useEffect(() => {
     if (navigationRef.isReady()) {
       navigationRef.navigate('Settings');
@@ -47,7 +44,6 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [themeMode]);
 
-  // 🔹 sprawdzanie wersji aplikacji
   useEffect(() => {
     i18n.init();
 
