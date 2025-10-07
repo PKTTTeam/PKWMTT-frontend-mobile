@@ -109,12 +109,8 @@ jobs:
       - name: Verify APK exists
         run: |
           APK_DIR="android/app/build/outputs/apk/release"
-          APK_FILE=$(find $APK_DIR -name "PKWMApp-*-release.apk" | head -1)
-          echo "APK file: $APK_FILE"
-          if [ -z "$APK_FILE" ]; then
-            echo "No APK found!"
-            exit 1
-          fi
+          APK_FILE=$(find "$APK_DIR" -name "PKWMApp-*-release.apk" | head -1)
+          echo "APK_FILE=$APK_FILE" >> $GITHUB_ENV   
 
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v1
@@ -127,7 +123,7 @@ jobs:
         run: |
           curl -v -X POST \
             -H "X-ADMIN-KEY: ${{ secrets.ADMIN_KEY }}" \
-            -F "file=@$APK_FILE" \
+            -F "file=@${{ env.APK_FILE }}" \
             -w "HTTP Status: %{http_code}\n" \
             ${{ secrets.UPLOAD_URL }}
           if [ $? -eq 0 ]; then
@@ -139,20 +135,21 @@ jobs:
 
       - name: Verify AAB exists
         run: |
-          BUNDLE_DIR="android/app/build/outputs/bundle/release"
-          AAB_FILE=$(find $BUNDLE_DIR -name "PKWMApp-*-release.aab" | head -1)
-          echo "AAB file: $AAB_FILE"
-          if [ -z "$AAB_FILE" ]; then
-            echo "No AAB found!"
-            exit 1
-          fi
+            BUNDLE_DIR="android/app/build/outputs/bundle/release"
+            AAB_FILE=$(find "$BUNDLE_DIR" -name 'PKWMApp-*-release.aab' | head -1)
+            echo "AAB_FILE=$AAB_FILE" >> $GITHUB_ENV
+            echo "AAB file: $AAB_FILE"
+            if [ -z "$AAB_FILE" ]; then
+              echo "No AAB found!"
+              exit 1
+            fi
 
       - name: Upload AAB to Google Play
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJson: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.pkwmapp
-          releaseFile: android/app/build/outputs/bundle/release/PKWMApp-*-release.aab
+          releaseFile: ${{ env.AAB_FILE }} 
           releaseName: ${{ github.ref_name }}
           # whatsNewDirectory: android/app/release-notes
           track: internal
