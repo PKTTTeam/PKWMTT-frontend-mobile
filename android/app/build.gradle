@@ -99,8 +99,7 @@ android {
             keyPassword 'android'
         }
         release {
-            def keystorePath = System.getenv("UPLOAD_KEYSTORE_PATH")
-            storeFile file(keystorePath)
+            storeFile file("$projectDir/keystore.jks")
             storePassword System.getenv("UPLOAD_STORE_PASSWORD")
             keyAlias System.getenv("UPLOAD_KEY_ALIAS")
             keyPassword System.getenv("UPLOAD_KEY_PASSWORD")
