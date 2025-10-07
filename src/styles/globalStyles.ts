@@ -15,6 +15,7 @@ const globalStyles = StyleSheet.create({
   },
   text: {
     color: '#e5e5ff',
+    fontSize: 14,
   },
   timeAndSubject: {
     flex: 1,
@@ -23,13 +24,13 @@ const globalStyles = StyleSheet.create({
   },
   subject: {
     color: '#e5e5ff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '400',
     marginTop: 10,
   },
   time: {
     color: '#e5e5ff',
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 4,
   },
   icon: {
