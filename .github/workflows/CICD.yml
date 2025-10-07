@@ -134,22 +134,22 @@ jobs:
           fi
 
       - name: Verify AAB exists
+        id: verify_aab
         run: |
-            BUNDLE_DIR="android/app/build/outputs/bundle/release"
-            AAB_FILE=$(find "$BUNDLE_DIR" -name 'PKWMApp-*-release.aab' | head -1)
-            echo "AAB_FILE=$AAB_FILE" >> $GITHUB_ENV
-            echo "AAB file: $AAB_FILE"
-            if [ -z "$AAB_FILE" ]; then
-              echo "No AAB found!"
-              exit 1
-            fi
+          BUNDLE_DIR="android/app/build/outputs/bundle/release"
+          AAB_FILE=$(find "$BUNDLE_DIR" -name "PKWMApp-*-release.aab" | head -1)
+          echo "AAB file: $AAB_FILE"
+          if [ -z "$AAB_FILE" ]; then
+            echo "No AAB found!"
+            exit 1
+          fi
+          echo "aab_path=$AAB_FILE" >> $GITHUB_OUTPUT
 
       - name: Upload AAB to Google Play
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.pkwmapp
-          releaseFile: ${{ env.AAB_FILE }} 
+          releaseFiles: android/app/build/outputs/bundle/release/PKWMApp-*-release.aab
           releaseName: ${{ github.ref_name }}
-          # whatsNewDirectory: android/app/release-notes
           track: internal
