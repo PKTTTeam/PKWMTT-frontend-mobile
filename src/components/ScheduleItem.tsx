@@ -27,8 +27,10 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
       </View>
       {room && (
         <View style={globalStyles.rightInfo}>
-          <LetterIcon bgColor={bgColor} letter={type} />
-          <RoomInfo room={room} />
+          <View style={globalStyles.iconTextWrapper}>
+            <LetterIcon bgColor={bgColor} letter={type} />
+            <RoomInfo room={room} />
+          </View>
         </View>
       )}
     </View>

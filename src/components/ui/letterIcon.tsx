@@ -24,7 +24,7 @@ const iconMap: Record<string, ReactElement> = {
 
 const LetterIcon: React.FC<LetterIconProps> = ({ bgColor, letter }) => {
   return (
-    <View style={[globalStyles.icon, { backgroundColor: bgColor }]}>
+    <View style={[globalStyles.iconFixed, { backgroundColor: bgColor }]}>
       {iconMap[letter]}
     </View>
   );

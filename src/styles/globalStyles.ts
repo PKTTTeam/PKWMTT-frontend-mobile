@@ -4,14 +4,12 @@ import { ICON_SIZE, ICON_RADIUS } from '../constants/constants';
 const globalStyles = StyleSheet.create({
   ScreenContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     backgroundColor: '#1e1f1f',
     padding: 16,
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginBottom: 0,
-    marginLeft: 4,
-    marginRight: 4,
+    marginHorizontal: 4,
   },
   text: {
     color: '#e5e5ff',
@@ -39,15 +37,32 @@ const globalStyles = StyleSheet.create({
     borderRadius: ICON_RADIUS,
     justifyContent: 'center',
     alignItems: 'center',
+    flexShrink: 0,
   },
   rightInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'flex-end',
+    gap: 10,
   },
   textIcon: {
     fontWeight: 'bold',
     fontSize: ICON_SIZE * 0.5,
+  },
+  iconFixed: {
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+    borderRadius: ICON_RADIUS,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
+  },
+  iconTextWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 80,
+    justifyContent: 'space-between',
+    gap: 10,
   },
 });
 
