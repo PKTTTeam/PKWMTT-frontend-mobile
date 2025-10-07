@@ -57,6 +57,16 @@ jobs:
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
           echo "VEXO_KEY=${{ secrets.VEXO_KEY }}" >> .env
 
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.PKWMAPP_UPLOAD_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
+
+      - name: Export signing variables      
+        run: |
+          echo "UPLOAD_KEY_ALIAS=${{ secrets.UPLOAD_KEY_ALIAS }}"     >> $GITHUB_ENV
+          echo "UPLOAD_KEY_PASSWORD=${{ secrets.UPLOAD_KEY_PASSWORD }}" >> $GITHUB_ENV
+          echo "UPLOAD_STORE_PASSWORD=${{ secrets.UPLOAD_STORE_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -91,19 +101,10 @@ jobs:
           cd android
           ./gradlew :app:preBuild
 
-      - name: Decode keystore
-        run: |
-          echo "${{ secrets.PKWMAPP_UPLOAD_KEYSTORE_BASE64 }}" | base64 --decode > android/app/keystore.jks
-
       - name: Build release APK and AAB
         run: |
           cd android
           ./gradlew assembleRelease bundleRelease
-        env:
-          UPLOAD_KEYSTORE_PATH: android/app/keystore.jks
-          UPLOAD_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
-          UPLOAD_KEY_PASSWORD: ${{ secrets.UPLOAD_KEY_PASSWORD }}
-          UPLOAD_STORE_PASSWORD: ${{ secrets.UPLOAD_STORE_PASSWORD }}
 
       - name: Verify APK exists
         run: |
