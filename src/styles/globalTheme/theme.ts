@@ -13,8 +13,6 @@ const activityLegendColors = {
   other: '#6e6e6e',
 };
 
-
-
 const baseConfig = {
   objects,
   spacing,
@@ -27,8 +25,6 @@ const baseConfig = {
   },
   breakpoints: {},
 };
-
-
 
 // DARK THEME
 export const darkTheme = createTheme({
@@ -55,9 +51,11 @@ export const darkTheme = createTheme({
     selectedItemBackground: palette.darkColors.white,
     textDisabled: palette.calendarThemeColors.textDisabledDark,
 
-    separator: palette.timetableThemeCOlors.separatorDark,
-    nonEmptyScheduleItem: palette.timetableThemeCOlors.scheduleBackgroundColor,
-    EmptyScheduleItem: palette.lightColors.white,
+    separator: palette.timetableThemeColors.separatorDark,
+    dayTitle: palette.timetableThemeColors.dayTitleLight,
+
+    navButton: palette.darkColors.gray,
+    navButtonIcon: palette.timetableThemeColors.arrowLight,
   },
 });
 
@@ -86,9 +84,11 @@ export const lightTheme = createTheme({
     selectedItemBackground: palette.lightColors.white,
     textDisabled: palette.calendarThemeColors.textDisabledLight,
 
-    separator: palette.timetableThemeCOlors.separatorLight,
-        nonEmptyScheduleItem: palette.timetableThemeCOlors.scheduleBackgroundColor,
-    EmptyScheduleItem: palette.lightColors.white,
+    separator: palette.timetableThemeColors.separatorLight,
+    dayTitle: palette.timetableThemeColors.dayTitleDark,
+
+    navButton: palette.lightColors.lightTeal,
+    navButtonIcon: palette.timetableThemeColors.arrowDark,
   },
 });
 

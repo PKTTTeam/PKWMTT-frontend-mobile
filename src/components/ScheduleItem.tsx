@@ -20,10 +20,13 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
   letterColor,
   isActive,
 }) => {
-    const theme = useTheme<Theme>();
+  const theme = useTheme<Theme>();
   const styles = createScheduleItemStyles(theme);
+
   return (
-    <View style={isActive ? styles.ScreenContainer : styles.EmptyScreenContainer}>
+    <View
+      style={styles.ScreenContainer}
+    >
       <ActiveBar isActive={isActive} />
 
       <View style={styles.timeAndSubject}>

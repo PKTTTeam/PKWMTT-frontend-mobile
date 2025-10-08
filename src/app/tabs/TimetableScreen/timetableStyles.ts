@@ -7,9 +7,11 @@ export const createTimetableStyles = (theme: Theme) => {
     bgColor: theme.colors.Background,
     bgColor2: theme.colors.Foreground, //'#1e1f1f',
     textColor: theme.colors.textPrimary,
+    themeOpposite: theme.colors.themeOpposite,
     separatorColor: theme.colors.separator,//'#3A3A3A', //light #e8eaed
-    btnBg: '#2A2A2A',
+    btnBg: theme.colors.navButton,
     loadingAccent: '#666',
+    dayTitle: theme.colors.dayTitle,
   };
 
  return  StyleSheet.create({
@@ -35,7 +37,7 @@ export const createTimetableStyles = (theme: Theme) => {
     borderRadius: 8,
   },
   weekText: {
-    color: 'white',
+    color: colors.themeOpposite,
     fontSize: 12,
     fontWeight: '200',
   },
@@ -59,7 +61,7 @@ export const createTimetableStyles = (theme: Theme) => {
     fontWeight: 'bold',
   },
   dayTitle: {
-    color: '#e5e5ff',
+    color: colors.dayTitle,
     fontSize: 30,
     fontFamily: 'InterSemiBold',
     textAlign: 'center',

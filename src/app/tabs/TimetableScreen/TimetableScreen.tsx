@@ -324,7 +324,7 @@ const TimetableScreen = () => {
             style={styles.navButton}
             onPress={navigateToPrevDay}
           >
-            <RenderLeftArrow color="#aeaeaf" size={18} />
+            <RenderLeftArrow color={theme.colors.navButtonIcon} size={18} />
           </TouchableOpacity>
 
           <Text style={styles.dayTitle}>
@@ -339,7 +339,7 @@ const TimetableScreen = () => {
             style={styles.navButton}
             onPress={navigateToNextDay}
           >
-            <RenderRightArrow color="#aeaeaf" size={18} />
+            <RenderRightArrow color={theme.colors.navButtonIcon} size={18} />
           </TouchableOpacity>
         </View>
 
@@ -349,7 +349,11 @@ const TimetableScreen = () => {
           onPress={() => setIsOddWeek(prev => !prev)}
           hitSlop={15}
         >
-          <Icon name={'sync-alt'} size={15} color={'white'} />
+          <Icon
+            name={'sync-alt'}
+            size={15}
+            color={theme.colors.themeOpposite}
+          />
           <Text style={styles.weekText}>{getWeekTypeText()}</Text>
         </TouchableOpacity>
 

@@ -8,26 +8,17 @@ export const createScheduleItemStyles = (theme: Theme) => {
     textPrimary: theme.colors.textPrimary,
   };
 
+
   return StyleSheet.create({
     ScreenContainer: {
+
       flexDirection: 'row',
-      backgroundColor: theme.colors.nonEmptyScheduleItem,
+      backgroundColor: colors.background,
       padding: 16,
       borderRadius: 8,
       alignItems: 'center',
       justifyContent: 'flex-start',
       marginHorizontal: 4,
-      marginBottom: 0,
-    },
-    EmptyScreenContainer: {
-      flexDirection: 'row',
-      backgroundColor: 'blue',//theme.colors.EmptyScheduleItem,
-      padding: 16,
-      borderRadius: 8,
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      marginHorizontal: 4,
-      marginBottom: 0,
     },
     timeAndSubject: {
       flex: 1,

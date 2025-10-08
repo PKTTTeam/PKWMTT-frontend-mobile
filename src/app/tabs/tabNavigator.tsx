@@ -13,6 +13,9 @@ import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
 import { StyleSheet } from 'react-native';
 import { ActivityLegend } from '../../components/ActivityLegend';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../styles/globalTheme/theme';
+import { tabNavigatorStyles } from './tabNavigatorStyles';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +25,10 @@ const NavigationStyles = StyleSheet.create({
   },
 });
 
-const getScreenOptions = (insets: any) => ({
+const getScreenOptions = (
+  insets: any,
+  styles: ReturnType<typeof tabNavigatorStyles>,
+) => ({
   headerShown: true,
   headerTitle: () => (
     <HeaderLogo width={200} height={150} style={NavigationStyles.HeaderLogo} />
@@ -93,8 +99,12 @@ const TabNavigator: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
 
+  //style initialization
+  const theme = useTheme<Theme>();
+  const styles = tabNavigatorStyles(theme);
+
   return (
-    <Tab.Navigator screenOptions={getScreenOptions(insets)}>
+    <Tab.Navigator screenOptions={getScreenOptions(insets, styles)}>
       <Tab.Screen
         name="timetable"
         component={TimetableScreen}

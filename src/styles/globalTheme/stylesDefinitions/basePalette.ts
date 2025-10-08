@@ -28,10 +28,16 @@ const basePalette = {
     textDisabledLight: '#9d9d9d',
     textDisabledDark: '#777877',
   },
-  timetableThemeCOlors:{
+  timetableThemeColors:{
     separatorLight: '#e8eaed',
     separatorDark: '#3A3A3A',
     scheduleBackgroundColor: '#f5f5f5',
+
+    dayTitleLight: '#e5e5ff',
+    dayTitleDark: '#000',
+
+    arrowLight: "#aeaeaf",
+    arrowDark: "#6c7381",
   },
 };
 
