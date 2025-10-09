@@ -56,6 +56,10 @@ export const darkTheme = createTheme({
 
     navButton: palette.darkColors.gray,
     navButtonIcon: palette.timetableThemeColors.arrowLight,
+
+    headerBg: palette.darkColors.black,
+    tabBarInactiveTintColor: palette.darkColors.white,
+    tabBarActiveTintColor: palette.accentColors.lightPurple,
   },
 });
 
@@ -89,6 +93,10 @@ export const lightTheme = createTheme({
 
     navButton: palette.lightColors.lightTeal,
     navButtonIcon: palette.timetableThemeColors.arrowDark,
+
+    headerBg: palette.headerThemeColors.lightBackground,
+    tabBarInactiveTintColor: palette.darkColors.paleGray,
+    tabBarActiveTintColor: palette.accentColors.tonedBlue,
   },
 });
 

@@ -39,6 +39,10 @@ const basePalette = {
     arrowLight: "#aeaeaf",
     arrowDark: "#6c7381",
   },
+  headerThemeColors: {
+    lightBackground: "#f5f5f5",
+    
+  }
 };
 
 export default basePalette;
