@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import GroupSelectStyles from '../../styles/uiStyles/GroupSelectStyles';
 import {
   useSettingsStore,
   useSettingsActions,
 } from '../../store/settingsStore';
 import type { GroupKey, GroupName } from '../../store/settingsStoreTypes';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@shopify/restyle';
+import type { Theme } from '../../styles/globalTheme/theme';
 
 interface Props {
   groupTitle: string;
   groupName: GroupName;
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
-  hasError?: boolean; // Add this prop
+  hasError?: boolean;
 }
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
@@ -24,6 +25,44 @@ const groupKeyMap: Record<GroupName, GroupKey> = {
   P: 'proj',
 } as const;
 
+// 🔹 fabryka stylów – wykorzystuje theme.colors
+const createGroupSelectStyles = (theme: Theme, hasError: boolean) => {
+  const { colors } = theme;
+
+  return StyleSheet.create({
+    menuContainer: {
+      zIndex: 1000,
+    },
+    text: {
+      color: colors.textPrimary,
+      fontSize: 14,
+      marginBottom: 4,
+    },
+    dropDownContainer: {
+      backgroundColor: colors.Foreground,
+      borderColor: colors.border,
+    },
+    dropDown: {
+      backgroundColor: colors.Foreground,
+      borderColor: hasError ? colors.error : colors.border,
+      borderWidth: hasError ? 2 : 1,
+      zIndex: 1000,
+    },
+    container: {
+      width: 130,
+    },
+    textStyle: {
+      color: colors.textPrimary,
+    },
+    searchTextInput: {
+      color: colors.textPrimary,
+    },
+    searchContainer: {
+      backgroundColor: colors.Foreground,
+    },
+  });
+};
+
 const GroupSelectDropdown: React.FC<Props> = ({
   groupTitle,
   groupName,
@@ -31,6 +70,9 @@ const GroupSelectDropdown: React.FC<Props> = ({
   setActiveDropdown,
   hasError = false,
 }) => {
+  const theme = useTheme<Theme>();
+  const styles = createGroupSelectStyles(theme, hasError);
+
   const key = groupKeyMap[groupName];
   const { fetchInitialDeanGroups } = useSettingsActions();
   const groups = useSettingsStore(state => state.groups);
@@ -60,8 +102,8 @@ const GroupSelectDropdown: React.FC<Props> = ({
   const open = activeDropdown === key;
 
   return (
-    <View style={GroupSelectStyles.menuContainer}>
-      {groupTitle && <Text style={GroupSelectStyles.text}>{groupTitle}</Text>}
+    <View style={styles.menuContainer}>
+      {groupTitle && <Text style={styles.text}>{groupTitle}</Text>}
 
       <DropDownPicker
         open={open}
@@ -70,11 +112,7 @@ const GroupSelectDropdown: React.FC<Props> = ({
         setOpen={openValue => {
           const isOpen =
             typeof openValue === 'function' ? openValue(open) : openValue;
-          if (isOpen) {
-            setActiveDropdown(key);
-          } else {
-            setActiveDropdown(null);
-          }
+          setActiveDropdown(isOpen ? key : null);
         }}
         setValue={val => {
           const newValue = typeof val === 'function' ? val(value) : val;
@@ -85,20 +123,12 @@ const GroupSelectDropdown: React.FC<Props> = ({
         placeholder={t('groupSelectPlaceholder')}
         searchable
         searchPlaceholder={t('searchPlaceholder')}
-        dropDownContainerStyle={{
-          backgroundColor: '#222',
-          borderColor: '#666',
-        }}
-        containerStyle={{ width: 130 }}
-        style={{
-          backgroundColor: '#222',
-          borderColor: hasError ? '#ff6b6b' : '#666',
-          borderWidth: hasError ? 2 : 1,
-          zIndex: 1000,
-        }}
-        textStyle={{ color: 'white' }}
-        searchTextInputStyle={{ color: 'white' }}
-        searchContainerStyle={{ backgroundColor: '#222' }}
+        dropDownContainerStyle={styles.dropDownContainer}
+        containerStyle={styles.container}
+        style={styles.dropDown}
+        textStyle={styles.textStyle}
+        searchTextInputStyle={styles.searchTextInput}
+        searchContainerStyle={styles.searchContainer}
       />
     </View>
   );

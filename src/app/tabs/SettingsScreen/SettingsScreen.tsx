@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
-// import SettingsStyles from './SettingsStyles.ts';
-import {createSettingsStyle} from './SettingsStyles.ts';
+import { createSettingsStyle } from './SettingsStyles.ts';
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
 import Switch from '../../../components/ui/Switch.tsx';
@@ -187,6 +186,7 @@ function SettingsScreen() {
             <View style={SettingsStyles.elementsSpacing}>
               <ShowEmptySlotsToggle />
             </View>
+            {/* Theme toggle */}
             <View style={SettingsStyles.elementsSpacing}>
               <ToggleTheme />
             </View>

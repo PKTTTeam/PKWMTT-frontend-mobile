@@ -3,16 +3,76 @@ import { View, Text, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import i18next from 'i18next';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@shopify/restyle';
+import type { Theme } from '../styles/globalTheme/theme';
 
 interface Props {
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
 }
 
+const createLanguageCardStyles = (theme: Theme) => {
+  const { colors } = theme;
+
+  return StyleSheet.create({
+    card: {
+      width: 350,
+      padding: 20,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      backgroundColor: colors.Background,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    leftSection: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flex: 1,
+    },
+    label: {
+      color: colors.textPrimary,
+      fontSize: 16,
+      fontWeight: '500',
+    },
+    dropdownContainer: {
+      marginLeft: 'auto',
+    },
+    dropdown: {
+      backgroundColor: colors.Foreground,
+      borderColor: colors.border,
+      borderWidth: 1,
+      zIndex: 1000,
+    },
+    dropDownContainer: {
+      backgroundColor: colors.Foreground,
+      borderColor: colors.border,
+    },
+    container: {
+      width: 130,
+    },
+    textStyle: {
+      color: colors.textPrimary,
+    },
+    searchTextInput: {
+      color: colors.textPrimary,
+    },
+    searchContainer: {
+      backgroundColor: colors.Foreground,
+    },
+  });
+};
+
 const LanguageCard: React.FC<Props> = ({
   activeDropdown,
   setActiveDropdown,
 }) => {
+  const theme = useTheme<Theme>();
+  const styles = createLanguageCardStyles(theme);
+
   const key = 'language';
   const [value, setValue] = useState(i18next.language);
   const [items, setItems] = useState([
@@ -51,55 +111,16 @@ const LanguageCard: React.FC<Props> = ({
             setItems={setItems}
             placeholder={t('selectLanguage') || 'Select language'}
             dropDownContainerStyle={styles.dropDownContainer}
-            containerStyle={{ width: 130 }}
+            containerStyle={styles.container}
             style={styles.dropdown}
-            textStyle={{ color: 'white' }}
-            searchTextInputStyle={{ color: 'white' }}
-            searchContainerStyle={{ backgroundColor: '#222' }}
+            textStyle={styles.textStyle}
+            searchTextInputStyle={styles.searchTextInput}
+            searchContainerStyle={styles.searchContainer}
           />
         </View>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    width: 350,
-    padding: 20,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#2e2e2e',
-    backgroundColor: '#1f1f1f',
-  },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  label: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  dropdownContainer: {
-    marginLeft: 'auto',
-  },
-  dropdown: {
-    backgroundColor: '#222',
-    borderColor: '#666',
-    borderWidth: 1,
-    zIndex: 1000,
-  },
-  dropDownContainer: {
-    backgroundColor: '#222',
-    borderColor: '#666',
-  },
-});
 
 export default React.memo(LanguageCard);
