@@ -1,13 +1,23 @@
 import { StyleSheet } from 'react-native';
+import { Theme } from '../../../styles/globalTheme/theme';
 
-const settingsStyles = StyleSheet.create({
+export const createSettingsStyle = (theme: Theme) => {
+
+  const colors = {
+    mainBg: theme.colors.Background,
+    text: theme.colors.textPrimary,
+    settingsBg: theme.colors.settingsBackground,
+  }
+
+return StyleSheet.create({
   bgContainer: {
     flex: 1,
-    backgroundColor: '#181818',
+    backgroundColor: colors.mainBg,
   },
   container: {
     flex: 1,
-    backgroundColor: '#1e1f1f',
+    // backgroundColor: '#1f1f1eff',
+    backgroundColor: colors.settingsBg,
     padding: 16,
     marginLeft: 6,
     marginRight: 6,
@@ -24,7 +34,8 @@ const settingsStyles = StyleSheet.create({
   },
   labelText: {
     alignSelf: 'center',
-    color: 'white',
+    // color: 'white',
+    color: colors.text,
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -54,5 +65,6 @@ const settingsStyles = StyleSheet.create({
     flexGrow: 1,
   },
 });
+}
 
-export default settingsStyles;
+export default createSettingsStyle;

@@ -42,6 +42,10 @@ const basePalette = {
   headerThemeColors: {
     lightBackground: "#f5f5f5",
     
+  },
+  SettingsScreenColors:{
+    elementsBackgroundDark:'#1f1f1eff',
+    elementsBackgroundLight:'#fff',
   }
 };
 

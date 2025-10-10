@@ -60,6 +60,8 @@ export const darkTheme = createTheme({
     headerBg: palette.darkColors.black,
     tabBarInactiveTintColor: palette.darkColors.white,
     tabBarActiveTintColor: palette.accentColors.lightPurple,
+
+    settingsBackground: palette.SettingsScreenColors.elementsBackgroundDark,
   },
 });
 
@@ -97,6 +99,8 @@ export const lightTheme = createTheme({
     headerBg: palette.headerThemeColors.lightBackground,
     tabBarInactiveTintColor: palette.darkColors.paleGray,
     tabBarActiveTintColor: palette.accentColors.tonedBlue,
+
+    settingsBackground: palette.SettingsScreenColors.elementsBackgroundLight,
   },
 });
 
