@@ -26,7 +26,6 @@ const baseConfig = {
   breakpoints: {},
 };
 
-// DARK THEME
 export const darkTheme = createTheme({
   ...baseConfig,
   colors: {
@@ -63,10 +62,12 @@ export const darkTheme = createTheme({
 
     settingsBackground: palette.SettingsScreenColors.elementsBackgroundDark,
     switchOnBg: palette.darkColors.gray,
+
+    otpBg: palette.darkColors.gray,
+    otpFilledBg: palette.darkColors.gray,
   },
 });
 
-// LIGHT THEME UNFINISHED
 export const lightTheme = createTheme({
   ...baseConfig,
   colors: {
@@ -102,7 +103,10 @@ export const lightTheme = createTheme({
     tabBarActiveTintColor: palette.accentColors.tonedBlue,
 
     settingsBackground: palette.SettingsScreenColors.elementsBackgroundLight,
-    switchOnBg: '#7b79ff4b',
+    switchOnBg: palette.accentColors.mutedPurple,
+
+    otpBg: palette.lightColors.lightTeal,
+    otpFilledBg: palette.accentColors.mutedPurple,
   },
 });
 

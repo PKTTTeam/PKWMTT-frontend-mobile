@@ -2,6 +2,7 @@ const basePalette = {
   accentColors: {
     tonedBlue: '#7B79FF',
     lightPurple: '#8d95fe',
+    mutedPurple: '#7b79ff4b',
     red: '#e7000b', //'#a44648',
     brightRed: '#ff6467',
 
