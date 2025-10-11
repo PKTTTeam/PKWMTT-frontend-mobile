@@ -4,6 +4,8 @@ const basePalette = {
     lightPurple: '#8d95fe',
     red: '#e7000b', //'#a44648',
     brightRed: '#ff6467',
+
+    green: "#4CAF50",
   },
   darkColors: {
     black: '#191919',

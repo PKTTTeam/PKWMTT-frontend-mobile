@@ -11,12 +11,12 @@ interface Props extends SwitchTypes {
   hasError?: boolean;
 }
 
-// 🔹 Fabryka stylów z integracją Restyle Theme
 const createSwitchStyles = (theme: Theme) => {
   const { colors } = theme;
 
   return StyleSheet.create({
     contentContainer: {
+      display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -27,17 +27,18 @@ const createSwitchStyles = (theme: Theme) => {
       borderColor: colors.border,
       backgroundColor: colors.Background,
     },
-    switchContainer: {
-      width: 50,
+    containerStyle: {
+      marginTop: 16,
+      width: 106 / 2,
       height: 30,
       borderRadius: 25,
-      padding: 3,
-      justifyContent: 'center',
+      padding: 5,
+      paddingLeft: 1,
     },
-    switchCircle: {
-      width: 24,
-      height: 24,
-      borderRadius: 12,
+    circleStyle: {
+      width: 40 / 2,
+      height: 40 / 2,
+      borderRadius: 20 / 2,
     },
     label: {
       color: colors.textPrimary,
@@ -58,12 +59,12 @@ const Switch: React.FC<Props> = ({ label, value, onChange }) => {
       <SwitchToggle
         switchOn={value}
         onPress={() => onChange(!value)}
-        containerStyle={styles.switchContainer}
-        circleStyle={styles.switchCircle}
-        circleColorOff={colors.textSecondary} // zamiast #b5b6c9
-        circleColorOn={colors.confirmAccent} // zamiast #8c95ff
-        backgroundColorOn={colors.Foreground} // zamiast #303247
-        backgroundColorOff={colors.border} // zamiast #3c3c3c
+        circleColorOff={colors.textSecondary}
+        circleColorOn={colors.confirmAccent}
+        backgroundColorOn={colors.switchOnBg}
+        backgroundColorOff={colors.border}
+        containerStyle={styles.containerStyle}
+        circleStyle={styles.circleStyle}
       />
       <Text style={styles.label}>{label ?? 'name'}</Text>
     </View>
