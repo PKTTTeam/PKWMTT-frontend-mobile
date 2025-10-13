@@ -143,19 +143,19 @@ function CalculatorScreen() {
     setGradeError(null);
 
     if (!subjectName.trim()) {
-      setSubjectError('Wybierz przedmiot');
+      setSubjectError(t('addSubjectErrorText'));
       hasError = true;
     }
 
     const ectsInt = parseInt(ectsPoints, 10);
     if (isNaN(ectsInt) || ectsInt <= 0) {
-      setEctsError('Podaj poprawną wartość ECTS');
+      setEctsError(t('addECTSErrorText'));
       hasError = true;
     }
 
     const gradeRegex = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
     if (!gradeRegex.test(grade)) {
-      setGradeError('Podaj poprawną ocenę');
+      setGradeError(t('addGradeErrorText'));
       hasError = true;
     }
 
@@ -233,19 +233,19 @@ function CalculatorScreen() {
     setGradeError(null);
 
     if (!subjectName.trim()) {
-      setSubjectError('Wybierz przedmiot');
+      setSubjectError(t('addSubjectErrorText'));
       hasError = true;
     }
 
     const ectsInt = parseInt(ectsPoints, 10);
     if (isNaN(ectsInt) || ectsInt <= 0) {
-      setEctsError('Podaj poprawną wartość ECTS');
+      setEctsError(t('addECTSErrorText'));
       hasError = true;
     }
 
     const gradeRegex = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
     if (!gradeRegex.test(grade)) {
-      setGradeError('Podaj poprawną ocenę');
+      setGradeError(t('addGradeErrorText'));
       hasError = true;
     }
 
@@ -368,17 +368,17 @@ function CalculatorScreen() {
           <Text
             style={[styles.countersText, styles.singleItem, styles.centerText]}
           >
-            {t('gradeAverage')}
+            {t('gradeAverage').replace(' ', '\n')}
           </Text>
           <Text
             style={[styles.countersText, styles.singleItem, styles.centerText]}
           >
-            {t('ectsSum')}
+            {t('ectsSum').replace(' ', '\n')}
           </Text>
           <Text
             style={[styles.countersText, styles.singleItem, styles.centerText]}
           >
-            {t('weightedAverage')}
+            {t('weightedAverage').replace(' ', '\n')}
           </Text>
         </View>
         <View style={styles.summarySpacer}>
@@ -625,7 +625,7 @@ function CalculatorScreen() {
               style={styles.confirmButton}
               onPress={handleEditConfirm}
             >
-              <Text style={styles.buttonText}>{t('saveChanges')}</Text>
+              <Text style={styles.buttonText}>{t('confirmButton')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cancelButton}

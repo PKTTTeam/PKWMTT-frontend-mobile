@@ -119,5 +119,12 @@
   "placeholderCalc": "eg. Mechanika",
   "placeholderCalc2": "eg. 2",
   "ECTSVal": "ECTS Value",
-  "removeCourseMenuBtnText": "Remove selected"
+  "removeCourseMenuBtnText": "Remove selected",
+  "editSubject": "Edit subject",
+  "editSubjectText": "Input name of subject, value of ECTS and grade",
+
+  "addSubjectErrorText": "Select a subject",
+  "addECTSErrorText": "Enter correct ECTS value",
+  "addGradeErrorText": "Enter correct grade"
+
 }
