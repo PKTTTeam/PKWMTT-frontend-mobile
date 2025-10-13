@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { getSubjectList } from '../../../services/calculator/CalculatorService';
 import { useSettingsStore } from '../../../store/settingsStore';
 import DropdownMenu from '../../../components/ui/DropdownMenu';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type CalcItem = {
   key: string;
@@ -85,6 +86,41 @@ function CalculatorScreen() {
     fetchSubjects();
   }, [deanGroup, fetchSubjectList]);
 
+  const STORAGE_KEY = '@calculator_subject_list';
+  /**
+   * Saves the subject list to local storage (AsyncStorage).
+   * @param {CalcItem[]} list - The subject list to save.
+   */
+  const saveSubjectList = async (list: CalcItem[]) => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    } catch (error) {
+      console.error('Błąd zapisu listy przedmiotów:', error);
+    }
+  };
+
+  /**
+   * Loads the subject list from local storage (AsyncStorage) and sets it to state.
+   */
+  const loadSubjectList = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
+      if (jsonValue != null) {
+        setSubjectList(JSON.parse(jsonValue));
+      }
+    } catch (error) {
+      console.error('Błąd odczytu listy przedmiotów:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadSubjectList();
+  }, []);
+
+  useEffect(() => {
+    saveSubjectList(subjectList);
+  }, [subjectList]);
+
   /**
    * Calculates the average grade for all subjects.
    * @returns {string} Average grade as string with 2 decimals.
@@ -147,6 +183,7 @@ function CalculatorScreen() {
     setGradeError(null);
 
     if (!subjectName.trim()) {
+      // TODO: add translations for error messages
       setSubjectError('Wybierz przedmiot');
       hasError = true;
     }
