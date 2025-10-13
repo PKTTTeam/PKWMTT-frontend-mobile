@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import styles from './CalculatorStyles';
 import uuid from 'react-native-uuid';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
+import { getSubjectList } from '../../../services/calculator/CalculatorService';
+import { useSettingsStore } from '../../../store/settingsStore';
 
 type CalcItem = {
   key: string;
@@ -55,6 +57,33 @@ function CalculatorScreen() {
   // Unicode icons for selection
   const iconCheck = '\u2713';
   const iconSquare = '\u25A0';
+
+  // Get dean group from settings store
+  const deanGroup = useSettingsStore(state => state.groups.dean);
+  const [allSubjects, setAllSubjects] = useState<string[]>([]);
+
+  const subjectListFromApi = React.useCallback(async () => {
+    if (!deanGroup) {
+      console.warn('Dean group was not choosed.');
+      return;
+    }
+    try {
+      const response = await getSubjectList(deanGroup.toString());
+      return response;
+    } catch (error) {
+      console.error('Error fetching subject list:', error);
+    }
+  }, [deanGroup]);
+
+    useEffect(() => {
+    const fetchSubjects = async () => {
+      const response = await subjectListFromApi();
+      if (response) {
+        setAllSubjects(response);
+      }
+    };
+    fetchSubjects();
+  }, [deanGroup, subjectListFromApi]);
 
   /**
    * Calculates the average grade for all subjects.
@@ -284,6 +313,7 @@ function CalculatorScreen() {
         <View style={styles.noItemsInfo}>
           <Text style={styles.noItemsInfoText}>
             {t('noItemsAddedInfoText')}
+            {allSubjects}
           </Text>
           <Text style={styles.noItemsInfoText}>{t('noItemsInfoText')}</Text>
         </View>
