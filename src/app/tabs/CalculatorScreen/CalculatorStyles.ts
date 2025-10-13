@@ -264,7 +264,7 @@ const calculatorStyles = StyleSheet.create({
   subjectSelect: {
     width: 132,
     height: 42,
-    backgroundColor: '#000000',
+    backgroundColor: '#0000',
     borderRadius: 8,
     justifyContent: 'center',
     display: 'flex',

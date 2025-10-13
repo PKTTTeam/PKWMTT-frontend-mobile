@@ -22,43 +22,29 @@ type CalcItem = {
   grade: string;
 };
 
-/**
- * Main calculator screen for managing subjects, ECTS points, and grades.
- * Allows adding, removing, and listing subjects, and calculates weighted average.
- */
 function CalculatorScreen() {
   const { t } = useTranslation();
 
-  // State for subject list and input fields
   const [subjectList, setSubjectList] = useState<CalcItem[]>([]);
   const [subjectName, setSubjectName] = useState('');
   const [ectsPoints, setEctsPoints] = useState('');
   const [grade, setGrade] = useState('');
 
-  // Refs for input fields
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
-  // Error states for validation
   const [subjectError, setSubjectError] = useState<string | null>(null);
   const [ectsError, setEctsError] = useState<string | null>(null);
   const [gradeError, setGradeError] = useState<string | null>(null);
 
-  // Popup menu visibility
   const [popUpMenuVisible, setPopUpMenuVisible] = useState(false);
-
-  // Focus states for input styling
   const [ectsFocused, setEctsFocused] = useState(false);
   const [gradeFocused, setGradeFocused] = useState(false);
-
-  // Selection for batch delete
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  // Unicode icons for selection
   const iconCheck = '\u2713';
   const iconSquare = '\u25A0';
 
-  // Get dean group from settings store
   const [subjectDropdownOpen, setSubjectDropdownOpen] = useState(false);
   const deanGroup = useSettingsStore(state => state.groups.dean);
   const [allSubjects, setAllSubjects] = useState<string[]>([]);
@@ -87,10 +73,6 @@ function CalculatorScreen() {
   }, [deanGroup, fetchSubjectList]);
 
   const STORAGE_KEY = '@calculator_subject_list';
-  /**
-   * Saves the subject list to local storage (AsyncStorage).
-   * @param {CalcItem[]} list - The subject list to save.
-   */
   const saveSubjectList = async (list: CalcItem[]) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(list));
@@ -99,9 +81,6 @@ function CalculatorScreen() {
     }
   };
 
-  /**
-   * Loads the subject list from local storage (AsyncStorage) and sets it to state.
-   */
   const loadSubjectList = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
@@ -121,10 +100,6 @@ function CalculatorScreen() {
     saveSubjectList(subjectList);
   }, [subjectList]);
 
-  /**
-   * Calculates the average grade for all subjects.
-   * @returns {string} Average grade as string with 2 decimals.
-   */
   const averageGrade = () => {
     if (subjectList.length === 0) return '0.00';
     const total = subjectList.reduce(
@@ -134,19 +109,11 @@ function CalculatorScreen() {
     return (total / subjectList.length).toFixed(2);
   };
 
-  /**
-   * Calculates the total ECTS points for all subjects.
-   * @returns {number} Total ECTS points.
-   */
   const totalEcts = () => {
     if (subjectList.length === 0) return 0;
     return subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
   };
 
-  /**
-   * Calculates the weighted average grade based on ECTS points.
-   * @returns {string} Weighted average as string with 2 decimals.
-   */
   const weightedAverage = () => {
     if (subjectList.length === 0) return '0.00';
     const totalWeightedGrades = subjectList.reduce(
@@ -157,9 +124,6 @@ function CalculatorScreen() {
     return (totalWeightedGrades / totalEctsPoints).toFixed(2);
   };
 
-  /**
-   * Resets input fields and closes the popup menu.
-   */
   const handleCancel = () => {
     setSubjectError(null);
     setEctsError(null);
@@ -172,10 +136,6 @@ function CalculatorScreen() {
     setGradeFocused(false);
   };
 
-  /**
-   * Validates and adds a new subject to the list.
-   * @returns {void}
-   */
   const addSubject = () => {
     let hasError = false;
     setSubjectError(null);
@@ -183,7 +143,6 @@ function CalculatorScreen() {
     setGradeError(null);
 
     if (!subjectName.trim()) {
-      // TODO: add translations for error messages
       setSubjectError('Wybierz przedmiot');
       hasError = true;
     }
@@ -215,10 +174,6 @@ function CalculatorScreen() {
     setPopUpMenuVisible(false);
   };
 
-  /**
-   * Selects/deselects an item for batch actions.
-   * @param {string} key - Subject key to select/deselect
-   */
   const selectItem = (key: string) => {
     setSelectedItems(
       selectedItems.includes(key)
@@ -227,9 +182,6 @@ function CalculatorScreen() {
     );
   };
 
-  /**
-   * Selects/deselects all items.
-   */
   const selectAllItems = () => {
     setSelectedItems(
       selectedItems.length === subjectList.length
@@ -238,9 +190,6 @@ function CalculatorScreen() {
     );
   };
 
-  /**
-   * Deletes all selected items.
-   */
   const deleteSelectedItems = () => {
     setSelectedItems([]);
     setSubjectList(
@@ -248,10 +197,6 @@ function CalculatorScreen() {
     );
   };
 
-  /**
-   * Returns icon for selection state.
-   * @returns {string} Icon character
-   */
   const changeSelectedItemsIcon = () => {
     if (
       selectedItems.length === subjectList.length &&
@@ -268,39 +213,98 @@ function CalculatorScreen() {
     }
   };
 
-  /**
-   * Renders a single subject item.
-   * @param {{ item: CalcItem }} param0 - Subject item to render
-   * @returns {JSX.Element}
-   */
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [itemBeingEdited, setItemBeingEdited] = useState<CalcItem | null>(null);
+
+  const openEditMenu = (item: CalcItem) => {
+    setItemBeingEdited(item);
+    setSubjectName(item.subjectName);
+    setEctsPoints(item.ects);
+    setGrade(item.grade);
+    setEditModalVisible(true);
+  };
+
+  const handleEditConfirm = () => {
+    if (!itemBeingEdited) return;
+
+    let hasError = false;
+    setSubjectError(null);
+    setEctsError(null);
+    setGradeError(null);
+
+    if (!subjectName.trim()) {
+      setSubjectError('Wybierz przedmiot');
+      hasError = true;
+    }
+
+    const ectsInt = parseInt(ectsPoints, 10);
+    if (isNaN(ectsInt) || ectsInt <= 0) {
+      setEctsError('Podaj poprawną wartość ECTS');
+      hasError = true;
+    }
+
+    const gradeRegex = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
+    if (!gradeRegex.test(grade)) {
+      setGradeError('Podaj poprawną ocenę');
+      hasError = true;
+    }
+
+    if (hasError) return;
+
+    const updatedList = subjectList.map(subj =>
+      subj.key === itemBeingEdited.key
+        ? { ...subj, subjectName, ects: ectsPoints, grade }
+        : subj,
+    );
+    setSubjectList(updatedList);
+
+    setEditModalVisible(false);
+    setItemBeingEdited(null);
+    setSubjectName('');
+    setEctsPoints('');
+    setGrade('');
+  };
+
+  const handleEditCancel = () => {
+    setEditModalVisible(false);
+    setItemBeingEdited(null);
+    setSubjectName('');
+    setEctsPoints('');
+    setGrade('');
+  };
+
   const renderItem = ({ item }: { item: CalcItem }) => {
     const isSelected = selectedItems.includes(item.key);
     return (
-      <View style={styles.rootItemContainer}>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => selectItem(item.key)}
-        >
-          <Text style={styles.deleteButtonText}>
-            {isSelected ? iconCheck : ''}
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.itemContainer}>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>
-            {item.subjectName}
-          </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+      <TouchableOpacity onPress={() => openEditMenu(item)}>
+        <View style={styles.rootItemContainer}>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => selectItem(item.key)}
           >
-            {item.ects}
-          </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.rightText]}
-          >
-            {item.grade}
-          </Text>
+            <Text style={styles.deleteButtonText}>
+              {isSelected ? iconCheck : ''}
+            </Text>
+          </TouchableOpacity>
+          <View style={styles.itemContainer}>
+            <Text
+              style={[styles.bottomMenu, styles.singleItem, styles.leftText]}
+            >
+              {item.subjectName}
+            </Text>
+            <Text
+              style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+            >
+              {item.ects}
+            </Text>
+            <Text
+              style={[styles.bottomMenu, styles.singleItem, styles.rightText]}
+            >
+              {item.grade}
+            </Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -344,7 +348,6 @@ function CalculatorScreen() {
         </View>
       </View>
 
-      {/* Empty list info */}
       {subjectList.length === 0 && (
         <View style={styles.noItemsInfo}>
           <Text style={styles.noItemsInfoText}>
@@ -354,14 +357,12 @@ function CalculatorScreen() {
         </View>
       )}
 
-      {/* Subject list */}
       <FlatList
         data={subjectList}
         renderItem={renderItem}
         keyExtractor={item => item.key}
       />
 
-      {/* Summary row */}
       <View style={styles.summaryContainer}>
         <View style={styles.summarySpacer}>
           <Text
@@ -405,6 +406,7 @@ function CalculatorScreen() {
           <View style={styles.popUpMenu}>
             <Text style={styles.overlayLabel}>{t('addSubject')}</Text>
             <Text style={styles.Label}>{t('addSubjectText')}</Text>
+
             <Text
               style={
                 subjectError ? styles.overlayLabelErr : styles.overlayLabel
@@ -412,7 +414,6 @@ function CalculatorScreen() {
             >
               {t('subjectName')}
             </Text>
-
             <View style={styles.Label}>
               <View
                 style={
@@ -432,7 +433,6 @@ function CalculatorScreen() {
                 />
               </View>
             </View>
-
             {subjectError && (
               <Text style={styles.inputErrorFeed}>{subjectError}</Text>
             )}
@@ -506,7 +506,7 @@ function CalculatorScreen() {
         </View>
       )}
 
-      {/* Batch delete or add button */}
+      {/* Batch delete / Add button */}
       {selectedItems.length > 0 ? (
         <View style={styles.removeCourseMenuBtn}>
           <TouchableOpacity onPress={deleteSelectedItems}>
@@ -525,6 +525,115 @@ function CalculatorScreen() {
           >
             <Text style={styles.addCourseMenuBtnText}>+</Text>
           </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Popup for editing subject */}
+      {editModalVisible && (
+        <View style={styles.overlayContainer}>
+          <View style={styles.popUpMenu}>
+            <Text style={styles.overlayLabel}>{t('editSubject')}</Text>
+            <Text style={styles.Label}>{t('editSubjectText')}</Text>
+
+            <Text
+              style={
+                subjectError ? styles.overlayLabelErr : styles.overlayLabel
+              }
+            >
+              {t('subjectName')}
+            </Text>
+            <View style={styles.Label}>
+              <View
+                style={
+                  subjectError
+                    ? styles.subjectSelectError
+                    : styles.subjectSelect
+                }
+              >
+                <DropdownMenu
+                  items={allSubjects}
+                  selectedValue={subjectName}
+                  onSelect={setSubjectName}
+                  isOpen={subjectDropdownOpen}
+                  onOpen={() => setSubjectDropdownOpen(true)}
+                  onClose={() => setSubjectDropdownOpen(false)}
+                  placeholder={t('placeholderCalc')}
+                />
+              </View>
+            </View>
+            {subjectError && (
+              <Text style={styles.inputErrorFeed}>{subjectError}</Text>
+            )}
+
+            <Text
+              style={ectsError ? styles.overlayLabelErr : styles.overlayLabel}
+            >
+              {t('ECTSVal')}
+            </Text>
+            <TextInput
+              ref={ectsInput}
+              style={
+                ectsError && ectsFocused
+                  ? styles.userInputFocusedError
+                  : ectsError
+                  ? styles.invalidUserInput
+                  : ectsFocused
+                  ? styles.userInputFocused
+                  : styles.userInput
+              }
+              placeholder={t('placeholderCalc2')}
+              placeholderTextColor={'#a1a1a1'}
+              value={ectsPoints}
+              onChangeText={setEctsPoints}
+              keyboardType="numeric"
+              onFocus={() => setEctsFocused(true)}
+              onBlur={() => setEctsFocused(false)}
+            />
+            {ectsError && (
+              <Text style={styles.inputErrorFeed}>{ectsError}</Text>
+            )}
+
+            <Text
+              style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}
+            >
+              {t('gradeName')}
+            </Text>
+            <TextInput
+              ref={gradeInput}
+              style={
+                gradeError && gradeFocused
+                  ? styles.userInputFocusedError
+                  : gradeError
+                  ? styles.invalidUserInput
+                  : gradeFocused
+                  ? styles.userInputFocused
+                  : styles.userInput
+              }
+              placeholder="np. 4"
+              placeholderTextColor={'#a1a1a1'}
+              value={grade}
+              onChangeText={setGrade}
+              keyboardType="numeric"
+              onFocus={() => setGradeFocused(true)}
+              onBlur={() => setGradeFocused(false)}
+            />
+            {gradeError && (
+              <Text style={styles.inputErrorFeed}>{gradeError}</Text>
+            )}
+
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={handleEditConfirm}
+            >
+              <Text style={styles.buttonText}>{t('saveChanges')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={handleEditCancel}
+            >
+              <Text style={styles.buttonText}>{t('cancelButton')}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </View>
