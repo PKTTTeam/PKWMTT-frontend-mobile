@@ -1,5 +1,4 @@
 import apiFetch from '../api';
-import { TimetableResponse } from '../../types/global';
 
 export async function getSubjectList(
   generalGroupName: string,

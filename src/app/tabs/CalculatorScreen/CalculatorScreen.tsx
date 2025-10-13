@@ -12,6 +12,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
 import { getSubjectList } from '../../../services/calculator/CalculatorService';
 import { useSettingsStore } from '../../../store/settingsStore';
+import DropdownMenu from '../../../components/ui/DropdownMenu';
 
 type CalcItem = {
   key: string;
@@ -34,7 +35,6 @@ function CalculatorScreen() {
   const [grade, setGrade] = useState('');
 
   // Refs for input fields
-  const subjectInput = useRef<TextInput>(null);
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
@@ -47,7 +47,6 @@ function CalculatorScreen() {
   const [popUpMenuVisible, setPopUpMenuVisible] = useState(false);
 
   // Focus states for input styling
-  const [SubjectFocused, setSubjectFocused] = useState(false);
   const [ectsFocused, setEctsFocused] = useState(false);
   const [gradeFocused, setGradeFocused] = useState(false);
 
@@ -59,10 +58,11 @@ function CalculatorScreen() {
   const iconSquare = '\u25A0';
 
   // Get dean group from settings store
+  const [subjectDropdownOpen, setSubjectDropdownOpen] = useState(false);
   const deanGroup = useSettingsStore(state => state.groups.dean);
   const [allSubjects, setAllSubjects] = useState<string[]>([]);
 
-  const subjectListFromApi = React.useCallback(async () => {
+  const fetchSubjectList = React.useCallback(async () => {
     if (!deanGroup) {
       console.warn('Dean group was not choosed.');
       return;
@@ -75,15 +75,15 @@ function CalculatorScreen() {
     }
   }, [deanGroup]);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchSubjects = async () => {
-      const response = await subjectListFromApi();
+      const response = await fetchSubjectList();
       if (response) {
         setAllSubjects(response);
       }
     };
     fetchSubjects();
-  }, [deanGroup, subjectListFromApi]);
+  }, [deanGroup, fetchSubjectList]);
 
   /**
    * Calculates the average grade for all subjects.
@@ -132,7 +132,6 @@ function CalculatorScreen() {
     setSubjectName('');
     setEctsPoints('');
     setGrade('');
-    setSubjectFocused(false);
     setEctsFocused(false);
     setGradeFocused(false);
   };
@@ -148,7 +147,7 @@ function CalculatorScreen() {
     setGradeError(null);
 
     if (!subjectName.trim()) {
-      setSubjectError('Podaj nazwę przedmiotu');
+      setSubjectError('Wybierz przedmiot');
       hasError = true;
     }
 
@@ -313,7 +312,6 @@ function CalculatorScreen() {
         <View style={styles.noItemsInfo}>
           <Text style={styles.noItemsInfoText}>
             {t('noItemsAddedInfoText')}
-            {allSubjects}
           </Text>
           <Text style={styles.noItemsInfoText}>{t('noItemsInfoText')}</Text>
         </View>
@@ -369,7 +367,7 @@ function CalculatorScreen() {
         <View style={styles.overlayContainer}>
           <View style={styles.popUpMenu}>
             <Text style={styles.overlayLabel}>{t('addSubject')}</Text>
-            <Text style={styles.grayLabel}>{t('addSubjectText')}</Text>
+            <Text style={styles.Label}>{t('addSubjectText')}</Text>
             <Text
               style={
                 subjectError ? styles.overlayLabelErr : styles.overlayLabel
@@ -377,24 +375,27 @@ function CalculatorScreen() {
             >
               {t('subjectName')}
             </Text>
-            <TextInput
-              ref={subjectInput}
-              style={
-                subjectError && SubjectFocused
-                  ? styles.userInputFocusedError
-                  : subjectError
-                  ? styles.invalidUserInput
-                  : SubjectFocused
-                  ? styles.userInputFocused
-                  : styles.userInput
-              }
-              placeholder={t('placeholderCalc')}
-              placeholderTextColor={'#a1a1a1'}
-              value={subjectName}
-              onChangeText={setSubjectName}
-              onFocus={() => setSubjectFocused(true)}
-              onBlur={() => setSubjectFocused(false)}
-            />
+
+            <View style={styles.Label}>
+              <View
+                style={
+                  subjectError
+                    ? styles.subjectSelectError
+                    : styles.subjectSelect
+                }
+              >
+                <DropdownMenu
+                  items={allSubjects}
+                  selectedValue={subjectName}
+                  onSelect={setSubjectName}
+                  isOpen={subjectDropdownOpen}
+                  onOpen={() => setSubjectDropdownOpen(true)}
+                  onClose={() => setSubjectDropdownOpen(false)}
+                  placeholder={t('placeholderCalc')}
+                />
+              </View>
+            </View>
+
             {subjectError && (
               <Text style={styles.inputErrorFeed}>{subjectError}</Text>
             )}

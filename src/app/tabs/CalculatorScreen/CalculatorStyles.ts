@@ -6,7 +6,7 @@ export const colors = {
   // =========================
   backgroundPrimary: '#191919', // główne tło aplikacji
   backgroundSecondary: '#232323', // tło inputów i standardowych przycisków
-  backgroundSelectItem: 'white', 
+  backgroundSelectItem: 'white',
   backgroundItem: '#313131', // tło elementów listy
   backgroundPopup: '#191919', // tło popupów/modalów
   backgroundHeader: '#161415', // tło headera
@@ -77,7 +77,7 @@ const calculatorStyles = StyleSheet.create({
     fontSize: 16,
     color: colors.textPrimary,
   },
-  grayLabel: {
+  Label: {
     color: colors.textSecondary,
     fontSize: 16,
     paddingLeft: 15,
@@ -123,7 +123,7 @@ const calculatorStyles = StyleSheet.create({
     backgroundColor: colors.backgroundItem,
     paddingLeft: 10,
     borderRadius: 8,
-    height:'auto',
+    height: 'auto',
     display: 'flex',
     flexDirection: 'row',
     gap: 5,
@@ -233,12 +233,11 @@ const calculatorStyles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-removeButtonContents: {
-  display: 'flex',
-  flexDirection: 'row',
-  gap: 10,
-
-},
+  removeButtonContents: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+  },
   // =========================
   // Inputs
   // =========================
@@ -251,6 +250,26 @@ removeButtonContents: {
     width: '90%',
     borderWidth: 1,
     borderColor: colors.borderDefault,
+  },
+  subjectSelectError: {
+    width: 132,
+    height: 42,
+    backgroundColor: colors.borderError,
+    borderRadius: 8,
+    justifyContent: 'center',
+    display: 'flex',
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  subjectSelect: {
+    width: 132,
+    height: 42,
+    backgroundColor: '#000000',
+    borderRadius: 8,
+    justifyContent: 'center',
+    display: 'flex',
+    alignContent: 'center',
+    alignItems: 'center',
   },
   userInputFocused: {
     backgroundColor: colors.backgroundSecondary,
