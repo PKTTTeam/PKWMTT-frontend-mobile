@@ -56,6 +56,7 @@ jobs:
           echo "API_URL=${{ secrets.API_URL }}" > .env
           echo "API_KEY=${{ secrets.API_KEY }}" >> .env
           echo "VEXO_KEY=${{ secrets.VEXO_KEY }}" >> .env
+          echo "POSTHOG_KEY=${{ secrets.POSTHOG_KEY }}" >> .env
 
       - name: Decode keystore
         run: |
