@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   listContainer: {
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   separator: {
     height: 1,
