@@ -24,19 +24,13 @@ const SwitchStyles = StyleSheet.create({
   switchContainer: {
     width: 60,
     height: 30,
-    borderRadius: 25,
+    borderRadius: 15,
     padding: 3,
-    justifyContent: 'center',
   },
   switchCircle: {
-    width: 25,
-    height: 25,
-    borderRadius: 25,
-    shadowColor: '#000',
-    shadowOpacity: 0.4,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
-    elevation: 4,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
   },
 });
 
