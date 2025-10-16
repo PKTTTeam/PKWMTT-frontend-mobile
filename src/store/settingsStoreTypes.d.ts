@@ -1,4 +1,4 @@
-import { Theme } from "../styles/globalTheme/theme";
+import { Theme } from '../styles/globalTheme/theme';
 
 export type GroupKey = 'dean' | 'lab' | 'proj' | 'comp';
 //GG - general group
@@ -11,6 +11,7 @@ export interface SettingsState {
   lastFetchedDean: string | null;
   activeDropdown: GroupKey | null;
   showEmptySlots: boolean;
+  hideLectures: boolean;
   error: string | null;
   setupComplete: boolean;
   theme: Theme;
@@ -26,7 +27,8 @@ export interface SettingsState {
     setError: (value: string) => void;
     clearError: () => void;
     setSetupComplete: (value: boolean) => void;
-        setMode: (mode: 'light' | 'dark') => void;
+    setMode: (mode: 'light' | 'dark') => void;
     toggleMode: () => void;
+    setHideLectures: (value: boolean) => void;
   };
 }

@@ -11,7 +11,9 @@ const RoomInfo: React.FC<RoomInfoProps> = ({ room }) => {
       // eslint-disable-next-line react-native/no-inline-styles
       style={ThemeMode === 'dark' ? { color: 'white' } : { color: 'black' }}
     >
-      {t('classroom')}:{room}
+      {t('classroom')}
+      {'\n'}
+      {room}
     </Text>
   );
 };

@@ -120,5 +120,6 @@
   "placeholderCalc": "eg. Mechanika",
   "placeholderCalc2": "eg. 2",
   "ECTSVal": "ECTS Value",
-  "removeCourseMenuBtnText": "Remove selected"
+  "removeCourseMenuBtnText": "Remove selected",
+  "showLectures": "Hide lectures"
 }

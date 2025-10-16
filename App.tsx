@@ -1,4 +1,7 @@
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import TabNavigator from './src/app/tabs/tabNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useSettingsStore } from './src/store/settingsStore';
@@ -12,7 +15,9 @@ import { getAppVersion } from './src/utils/getAppVersion';
 import UpdateAlertModal from './src/components/modals/UpdateAlertModal';
 import { ThemeProvider } from '@shopify/restyle';
 import { vexo } from 'vexo-analytics';
-import { VEXO_KEY } from '@env';
+import { VEXO_KEY, POSTHOG_KEY } from '@env';
+
+import { PostHogProvider } from 'posthog-react-native';
 
 type RootStackParamList = {
   Settings: undefined;
@@ -67,15 +72,24 @@ const App = () => {
   }, []);
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={currentAppTheme}>
           <NavigationContainer ref={navigationRef}>
-            {!isSetupComplete ? (
-              <FirstTimeSetupScreen onDone={handleSetupDone} />
-            ) : (
-              <TabNavigator />
-            )}
+            <PostHogProvider
+              apiKey={POSTHOG_KEY}
+              options={{ host: 'https://us.i.posthog.com' }}
+              autocapture={{
+                captureTouches: true,
+                captureScreens: false,
+              }}
+            >
+              {!isSetupComplete ? (
+                <FirstTimeSetupScreen onDone={handleSetupDone} />
+              ) : (
+                <TabNavigator />
+              )}
+            </PostHogProvider>
           </NavigationContainer>
 
           <UpdateAlertModal
@@ -85,8 +99,8 @@ const App = () => {
             onClose={() => setUpdateModalVisible(false)}
           />
         </ThemeProvider>
-      </SafeAreaProvider>
-    </I18nextProvider>
+      </I18nextProvider>
+    </SafeAreaProvider>
   );
 };
 

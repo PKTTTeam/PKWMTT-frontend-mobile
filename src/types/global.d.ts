@@ -14,7 +14,6 @@ export type SubjectNameProps = {
 export type LetterIconProps = {
   bgColor: string;
   letter: string;
-  letterColor: string;
 };
 
 export interface ScheduleItemProps {

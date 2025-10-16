@@ -68,7 +68,7 @@ export const createTimetableStyles = (theme: Theme) => {
     flex: 1,
   },
   listContainer: {
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   separator: {
     height: 1,

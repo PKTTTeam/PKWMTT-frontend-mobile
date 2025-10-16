@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
+
 import { useTheme } from '@shopify/restyle';
 import type { Theme } from '../../styles/globalTheme/theme';
 import type { SwitchTypes } from '../../types/uiTypes/SwitchTypes';

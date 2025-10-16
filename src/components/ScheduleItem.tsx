@@ -17,16 +17,13 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
   room,
   type,
   bgColor,
-  letterColor,
   isActive,
 }) => {
   const theme = useTheme<Theme>();
   const styles = createScheduleItemStyles(theme);
 
   return (
-    <View
-      style={styles.ScreenContainer}
-    >
+    <View style={styles.ScreenContainer}>
       <ActiveBar isActive={isActive} />
 
       <View style={styles.timeAndSubject}>
@@ -35,11 +32,7 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
       </View>
       {room && (
         <View style={styles.rightInfo}>
-          <LetterIcon
-            bgColor={bgColor}
-            letter={type}
-            letterColor={letterColor}
-          />
+          <LetterIcon bgColor={bgColor} letter={type} />
           <RoomInfo room={room} />
         </View>
       )}

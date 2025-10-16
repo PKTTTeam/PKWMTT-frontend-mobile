@@ -14,7 +14,7 @@
   "language": "Język",
   "groupSelectPlaceholder": "Wybierz grupe",
   "searchPlaceholder": "Szukaj...",
-  "classroom": "sala",
+  "classroom": "Sala",
   "activityLegend": "Legenda\nAktywności",
   "timetable": "Rozkład zajęć",
   "calendar": "Kalendarz",
@@ -120,5 +120,6 @@
   "placeholderCalc": "np. Mechanika",
   "placeholderCalc2": "np. 2",
   "ECTSVal": "Wartość ECTS",
-  "removeCourseMenuBtnText": "Usuń wybrany przedmiot"
+  "removeCourseMenuBtnText": "Usuń wybrany przedmiot",
+  "showLectures": "Ukryj wykłady"
 }

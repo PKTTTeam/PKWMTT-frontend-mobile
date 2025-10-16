@@ -4,6 +4,8 @@
 
 .env
 
+.vscode/
+
 # Xcode
 #
 build/
@@ -75,3 +77,4 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+.vscode/settings.json

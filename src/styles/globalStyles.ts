@@ -4,17 +4,16 @@ import { ICON_SIZE, ICON_RADIUS } from '../constants/constants';
 const globalStyles = StyleSheet.create({
   ScreenContainer: {
     flexDirection: 'row',
-    backgroundColor: '#1e1f1f',
-    padding: 16,
-    borderRadius: 8,
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginBottom: 0,
-    marginLeft: 4,
-    marginRight: 4,
+    backgroundColor: '#1e1f1f',
+    padding: 14,
+    borderRadius: 8,
+    marginHorizontal: 4,
   },
   text: {
     color: '#e5e5ff',
+    fontSize: 14,
   },
   timeAndSubject: {
     flex: 1,
@@ -23,13 +22,13 @@ const globalStyles = StyleSheet.create({
   },
   subject: {
     color: '#e5e5ff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '400',
     marginTop: 10,
   },
   time: {
     color: '#e5e5ff',
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 4,
   },
   icon: {
@@ -38,15 +37,32 @@ const globalStyles = StyleSheet.create({
     borderRadius: ICON_RADIUS,
     justifyContent: 'center',
     alignItems: 'center',
+    flexShrink: 0,
   },
   rightInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'flex-end',
+    gap: 10,
   },
   textIcon: {
     fontWeight: 'bold',
     fontSize: ICON_SIZE * 0.5,
+  },
+  iconFixed: {
+    width: ICON_SIZE,
+    height: ICON_SIZE,
+    borderRadius: ICON_RADIUS,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
+  },
+  iconTextWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 80,
+    justifyContent: 'space-between',
+    gap: 10,
   },
 });
 
