@@ -193,6 +193,7 @@ export const useSettingsStore = create<SettingsState>()(
         options: state.options,
         setupComplete: state.setupComplete,
         hideLectures: state.hideLectures,
+        themeMode: state.themeMode,
       }),
     },
   ),
