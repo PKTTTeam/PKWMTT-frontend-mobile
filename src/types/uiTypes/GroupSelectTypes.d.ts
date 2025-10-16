@@ -5,4 +5,5 @@ export type GroupSelectTypes = {
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
   hasError?: boolean;
+  isOffline: boolean;
 };

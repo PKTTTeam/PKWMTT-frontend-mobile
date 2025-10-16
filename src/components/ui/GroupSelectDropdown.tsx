@@ -15,6 +15,7 @@ interface Props {
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
   hasError?: boolean; // Add this prop
+  isOffline: boolean;
 }
 
 const groupKeyMap: Record<GroupName, GroupKey> = {
@@ -30,6 +31,7 @@ const GroupSelectDropdown: React.FC<Props> = ({
   activeDropdown,
   setActiveDropdown,
   hasError = false,
+  isOffline,
 }) => {
   const key = groupKeyMap[groupName];
   const { fetchInitialDeanGroups } = useSettingsActions();
@@ -64,6 +66,7 @@ const GroupSelectDropdown: React.FC<Props> = ({
       {groupTitle && <Text style={GroupSelectStyles.text}>{groupTitle}</Text>}
 
       <DropDownPicker
+        disabled={isOffline}
         open={open}
         value={value}
         items={items}
