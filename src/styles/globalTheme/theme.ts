@@ -1,7 +1,6 @@
 import { createTheme } from '@shopify/restyle';
 import spacing from './stylesDefinitions/spacing';
 import palette from './stylesDefinitions/basePalette';
-import objects from './stylesDefinitions/objects';
 
 const activityLegendColors = {
   lecture: '#e35c22',
@@ -14,7 +13,6 @@ const activityLegendColors = {
 };
 
 const baseConfig = {
-  objects,
   spacing,
   activityLegendColors,
   borderRads: {

@@ -2,15 +2,15 @@ import { API_URL, API_KEY } from '@env';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { lightTheme, darkTheme, Theme } from '../styles/globalTheme/theme';
+import { lightTheme, darkTheme } from '../styles/globalTheme/theme';
 
 import type { SettingsState } from './settingsStoreTypes';
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set, get) => ({
-      theme: lightTheme as Theme,
-      themeMode: 'light' as 'light' | 'dark',
+      theme: lightTheme,
+      themeMode: 'light',
       groups: {
         dean: undefined,
         lab: undefined,

@@ -4,7 +4,7 @@ import { ICON_SIZE, ICON_RADIUS } from '../constants/constants';
 
 export const createScheduleItemStyles = (theme: Theme) => {
   const colors = {
-    background: theme.colors.Foreground,
+    foreground: theme.colors.Foreground,
     textPrimary: theme.colors.textPrimary,
   };
 
@@ -13,7 +13,7 @@ export const createScheduleItemStyles = (theme: Theme) => {
     ScreenContainer: {
 
       flexDirection: 'row',
-      backgroundColor: colors.background,
+      backgroundColor: colors.foreground,
       padding: 16,
       borderRadius: 8,
       alignItems: 'center',
