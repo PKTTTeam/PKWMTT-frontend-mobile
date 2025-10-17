@@ -1,5 +1,7 @@
 # 🚀 PKWM App
 
+A mobile application for managing and viewing PKWM timetables, developed in React Native with TypeScript. It allows users to access schedules, view calendar events, and interact with key features such as activity legends and alerts.
+
 ---
 
 ## 📦 Tech Stack
@@ -7,13 +9,16 @@
 - **Mobile Framework:** [React Native](https://reactnative.dev/)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Navigation:** [React Navigation](https://reactnavigation.org/)
-- **State Management:** React Hooks
+- **State Management:** [Zustand](https://github.com/pmndrs/zustand)
 - **Styling:** [React Native StyleSheet](https://reactnative.dev/docs/stylesheet)
 - **Testing:** [Jest](https://jestjs.io/) & [React Native Testing Library](https://callstack.github.io/react-native-testing-library/)
-- **Containerization:** [Docker](https://www.docker.com/) 
 - **CI:** [GitHub Actions](https://github.com/features/actions)
 
 ---
+
+## 🗺️ Application Architecture (as of 17.10.2025)
+- The diagram below illustrates the high-level structure and component interactions in the mobile application as of 17 October 2025.
+<img width="5820" height="2576" alt="diagram" src="https://github.com/user-attachments/assets/d40ae2d2-b243-4790-ad23-ce2b397d7ac5" />
 
 ---
 
@@ -110,6 +115,9 @@ For questions, suggestions, or collaboration:
 
 - **GitHub Issues:** [Submit here](https://github.com/PKTTTeam/PKWMTT-frontend-mobile/issues)
 - **Team:** [@PKTTTeam](https://github.com/PKTTTeam)
+- **Developers**
+  1. [Kacper Mirocha](https://github.com/Ereffe)
+  2. [Patryk Stoncel](https://github.com/SharpP03)
 
 ---
 
