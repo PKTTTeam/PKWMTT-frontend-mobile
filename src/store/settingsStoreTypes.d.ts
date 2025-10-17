@@ -9,6 +9,7 @@ export interface SettingsState {
   lastFetchedDean: string | null;
   activeDropdown: GroupKey | null;
   showEmptySlots: boolean;
+  hideLectures: boolean;
   error: string | null;
   setupComplete: boolean;
 
@@ -22,5 +23,6 @@ export interface SettingsState {
     setError: (value: string) => void;
     clearError: () => void;
     setSetupComplete: (value: boolean) => void;
+    setHideLectures: (value: boolean) => void;
   };
 }

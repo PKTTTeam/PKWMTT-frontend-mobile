@@ -7,7 +7,9 @@ const RoomInfo: React.FC<RoomInfoProps> = ({ room }) => {
   const { t } = useTranslation();
   return (
     <Text style={globalStyles.text}>
-      {t('classroom')}:{room}
+      {t('classroom')}
+      {'\n'}
+      {room}
     </Text>
   );
 };

@@ -12,7 +12,9 @@ import { getAppVersion } from './src/utils/getAppVersion';
 import UpdateAlertModal from './src/components/modals/UpdateAlertModal';
 
 import { vexo } from 'vexo-analytics';
-import { VEXO_KEY } from '@env';
+import { VEXO_KEY, POSTHOG_KEY } from '@env';
+
+import { PostHogProvider } from 'posthog-react-native';
 
 const App = () => {
   const isSetupComplete = useSettingsStore(state => state.setupComplete);
@@ -48,14 +50,23 @@ const App = () => {
   }, []);
 
   return (
-    <I18nextProvider i18n={i18n}>
-      <SafeAreaProvider>
+    <SafeAreaProvider>
+      <I18nextProvider i18n={i18n}>
         <NavigationContainer>
-          {!isSetupComplete ? (
-            <FirstTimeSetupScreen onDone={handleSetupDone} />
-          ) : (
-            <TabNavigator />
-          )}
+          <PostHogProvider
+            apiKey={POSTHOG_KEY}
+            options={{ host: 'https://us.i.posthog.com' }}
+            autocapture={{
+              captureTouches: true,
+              captureScreens: false,
+            }}
+          >
+            {!isSetupComplete ? (
+              <FirstTimeSetupScreen onDone={handleSetupDone} />
+            ) : (
+              <TabNavigator />
+            )}
+          </PostHogProvider>
         </NavigationContainer>
 
         <UpdateAlertModal
@@ -64,8 +75,8 @@ const App = () => {
           latestVersion={latestVersion}
           onClose={() => setUpdateModalVisible(false)}
         />
-      </SafeAreaProvider>
-    </I18nextProvider>
+      </I18nextProvider>
+    </SafeAreaProvider>
   );
 };
 

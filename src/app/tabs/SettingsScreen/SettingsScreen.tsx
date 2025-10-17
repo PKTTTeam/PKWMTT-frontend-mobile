@@ -28,6 +28,22 @@ const ShowEmptySlotsToggle = () => {
   );
 };
 
+const ShowLectures = () => {
+  const hideLectures = useSettingsStore(state => state.hideLectures);
+  const setHideLectures = useSettingsStore(
+    state => state.actions.setHideLectures,
+  );
+  const { t } = useTranslation();
+
+  return (
+    <Switch
+      label={t('showLectures')}
+      value={hideLectures}
+      onChange={setHideLectures}
+    />
+  );
+};
+
 function SettingsScreen() {
   const options = useSettingsStore(state => state.options);
   const groups = useSettingsStore(state => state.groups);
@@ -166,6 +182,7 @@ function SettingsScreen() {
             {/* Toggle and language dropdown */}
             <View style={SettingsStyles.elementsSpacing}>
               <ShowEmptySlotsToggle />
+              <ShowLectures />
             </View>
             <View style={SettingsStyles.elementsSpacing}>
               <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>

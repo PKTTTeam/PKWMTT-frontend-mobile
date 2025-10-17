@@ -68,6 +68,7 @@ const TimetableScreen = () => {
   const groups = useSettingsStore(state => state.groups);
   const loading = useSettingsStore(state => state.loading);
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
+  const hideLectures = useSettingsStore(state => state.hideLectures);
 
   const { fetchInitialDeanGroups } = useSettingsActions();
 
@@ -287,7 +288,11 @@ const TimetableScreen = () => {
   const getCurrentDayData = () => {
     const currentDay = timetable[currentDayIndex];
     if (!currentDay) return [];
-    const lessons = isOddWeek ? currentDay.odd : currentDay.even;
+    let lessons = isOddWeek ? currentDay.odd : currentDay.even;
+
+    if (hideLectures) {
+      lessons = lessons.filter(item => item.type !== 'LECTURE');
+    }
     if (!showEmptySlots) return lessons;
 
     return getFullSchedule(aHours, lessons);
