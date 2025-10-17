@@ -1,6 +1,8 @@
 import { View } from 'react-native';
 import React from 'react';
-import globalStyles from '../styles/globalStyles';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../src/styles/globalTheme/theme';
+import { createScheduleItemStyles } from '../styles/ScheduleItemStyles';
 import SubjectName from './ui/SubjectName';
 import RoomInfo from './ui/RoomInfo';
 import TimeRange from './ui/TimeRange';
@@ -17,20 +19,21 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({
   bgColor,
   isActive,
 }) => {
+  const theme = useTheme<Theme>();
+  const styles = createScheduleItemStyles(theme);
+
   return (
-    <View style={globalStyles.ScreenContainer}>
+    <View style={styles.ScreenContainer}>
       <ActiveBar isActive={isActive} />
 
-      <View style={globalStyles.timeAndSubject}>
+      <View style={styles.timeAndSubject}>
         <TimeRange timeStart={startTime} timeEnd={endTime} />
         <SubjectName subject={subject} />
       </View>
       {room && (
-        <View style={globalStyles.rightInfo}>
-          <View style={globalStyles.iconTextWrapper}>
-            <LetterIcon bgColor={bgColor} letter={type} />
-            <RoomInfo room={room} />
-          </View>
+        <View style={styles.rightInfo}>
+          <LetterIcon bgColor={bgColor} letter={type} />
+          <RoomInfo room={room} />
         </View>
       )}
     </View>

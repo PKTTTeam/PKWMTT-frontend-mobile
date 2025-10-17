@@ -5,12 +5,16 @@ import LetterIcon from '../ui/letterIcon';
 import { getCorrectColor } from '../../utils/getCorrectColor';
 import { ActivityLegendModalProps } from '../../types/global';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../styles/globalTheme/theme';
 
 const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
   visible,
   onClose,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme<Theme>();
+  const styles = createStyles(theme);
 
   const activityTypes = [
     { letter: 'W', label: t('lecture') },
@@ -21,6 +25,7 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
     { letter: 'S', label: t('seminar') },
     { letter: 'I', label: t('other') },
   ];
+
   return (
     <Modal
       animationType="fade"
@@ -38,14 +43,12 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
           activeOpacity={1}
           onPress={e => e.stopPropagation()}
         >
-          <TouchableOpacity
-            style={styles.closeBtn}
-            onPress={onClose}
-            hitSlop={20}
-          >
-            <Icon name="close" color="white" size={12} />
+          <TouchableOpacity style={styles.closeBtn} onPress={onClose} hitSlop={20}>
+            <Icon name="close" size={12} style={styles.icon} />
           </TouchableOpacity>
+
           <Text style={styles.title}>{t('activityLegendText')}</Text>
+
           <View style={styles.items}>
             {activityTypes.map(({ letter, label }) => (
               <View key={letter} style={styles.itemRow}>
@@ -64,50 +67,50 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    width: '80%',
-    backgroundColor: '#1e1f1f',
-    borderRadius: 8,
-    padding: 20,
-    alignItems: 'center',
-    color: 'white',
-  },
-  title: {
-    fontSize: 15,
-    marginBottom: 12,
-    color: 'white',
-  },
-  closeBtn: {
-    alignSelf: 'flex-end',
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  items: {
-    width: '100%',
-    marginTop: 10,
-    marginLeft: '50%',
-  },
+const createStyles = (theme: Theme) => {
+  const { colors } = theme;
 
-  itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-
-  itemText: {
-    color: 'white',
-    marginLeft: 10,
-    fontSize: 14,
-  },
-});
+  return StyleSheet.create({
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalContent: {
+      width: '80%',
+      backgroundColor: colors.settingsBackground,
+      borderRadius: 8,
+      padding: 20,
+      alignItems: 'center',
+    },
+    closeBtn: {
+      alignSelf: 'flex-end',
+    },
+    icon: {
+      color: colors.textPrimary,
+    },
+    title: {
+      fontSize: 15,
+      marginBottom: 12,
+      color: colors.textPrimary,
+    },
+    items: {
+      width: '100%',
+      marginTop: 10,
+      marginLeft: '50%',
+    },
+    itemRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    itemText: {
+      marginLeft: 10,
+      fontSize: 14,
+      color: colors.textPrimary,
+    },
+  });
+};
 
 export default ActivityLegendModal;

@@ -1,18 +1,24 @@
 import { View, StyleSheet } from 'react-native';
 import { BAR_WIDTH, BAR_HEIGHT } from '../../constants/constants';
+import { useSettingsStore } from '../../store/settingsStore';
 
 interface ActiveBarProps {
   isActive: boolean;
 }
 
 const ActiveBar: React.FC<ActiveBarProps> = ({ isActive }) => {
+const ThemeMode = useSettingsStore((state) => state.themeMode);
+
   return (
     // eslint-disable-next-line react/self-closing-comp
     <View
-      style={[
+      style={ThemeMode==="dark" ? [
         ActiveBarStyles.bar,
-        // eslint-disable-next-line react-native/no-inline-styles
         { backgroundColor: isActive ? '#8d95fe' : 'white' },
+      ]
+      : [
+        ActiveBarStyles.bar,
+        { backgroundColor: isActive ? '#8d95fe' : '#d1d5db' },
       ]}
     ></View>
   );

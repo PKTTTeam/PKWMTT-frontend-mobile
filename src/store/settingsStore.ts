@@ -2,12 +2,15 @@ import { API_URL, API_KEY } from '@env';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { lightTheme, darkTheme } from '../styles/globalTheme/theme';
 
 import type { SettingsState } from './settingsStoreTypes';
 
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set, get) => ({
+      theme: lightTheme,
+      themeMode: 'light',
       groups: {
         dean: undefined,
         lab: undefined,
@@ -165,6 +168,21 @@ export const useSettingsStore = create<SettingsState>()(
         setHideLectures(value: boolean) {
           set({ hideLectures: value });
         },
+        // --- Theme actions ---
+        setMode(mode: 'light' | 'dark') {
+          set({
+            themeMode: mode,
+            theme: mode === 'light' ? lightTheme : darkTheme,
+          });
+        },
+        toggleMode() {
+          const currentMode = get().themeMode;
+          const newMode = currentMode === 'light' ? 'dark' : 'light';
+          set({
+            themeMode: newMode,
+            theme: newMode === 'light' ? lightTheme : darkTheme,
+          });
+        },
       },
     }),
     {
@@ -175,6 +193,7 @@ export const useSettingsStore = create<SettingsState>()(
         options: state.options,
         setupComplete: state.setupComplete,
         hideLectures: state.hideLectures,
+        themeMode: state.themeMode,
       }),
     },
   ),

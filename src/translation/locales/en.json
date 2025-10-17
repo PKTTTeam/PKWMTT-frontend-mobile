@@ -1,4 +1,5 @@
 {
+  "toggleThemeText": "Dark mode",
   "confirmRepStatus": "Enter representative's code",
   "repOfGroup": "Representative of {{group}}",
   "selectRequiredGroups": "Please select all necessary groups",

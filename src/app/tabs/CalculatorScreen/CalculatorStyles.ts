@@ -1,350 +1,323 @@
 import { StyleSheet } from 'react-native';
+import { Theme } from '../../../styles/globalTheme/theme';
 
-export const colors = {
-  // =========================
-  // Background colors
-  // =========================
-  backgroundPrimary: '#191919', // główne tło aplikacji
-  backgroundSecondary: '#232323', // tło inputów i standardowych przycisków
-  backgroundSelectItem: 'white', 
-  backgroundItem: '#313131', // tło elementów listy
-  backgroundPopup: '#191919', // tło popupów/modalów
-  backgroundHeader: '#161415', // tło headera
-  overlay: 'rgba(0, 0, 0, 0.5)', // tło overlay
+export const createCalculatorStyles = (theme: Theme) => {
+  const colors = {
+    // Background colors
+    backgroundPrimary: theme.colors.Foreground,
+    backgroundSecondary: theme.colors.userInput,
+    backgroundSelectItem: theme.colors.selectedItemBackground,
+    backgroundItem: theme.colors.border,
+    backgroundPopup: theme.colors.Foreground,
+    backgroundHeader: theme.colors.border2,
+    overlay: 'rgba(0, 0, 0, 0.5)',
 
-  // =========================
-  // Border colors
-  // =========================
-  borderDefault: '#3b3b3b', // standardowa obwódka
-  borderLight: '#c2c2c2', // jasna obwódka np. przy przyciskach
-  borderError: '#ff6467', // kolor błędu
-  borderGray: '#6b6b6b', // szara obwódka np. summary
-  cancelButtonBorder: '#3b3b3b', // border cancel button
+    // Border colors
+    borderDefault: theme.colors.border,
+    borderLight: theme.colors.themeOpposite,
+    borderError: theme.colors.error,
+    borderGray: theme.colors.border,
+    cancelButtonBorder: theme.colors.border,
 
-  // =========================
-  // Accent colors
-  // =========================
-  accentBlue: '#727dff', // przycisk dodawania kursu
-  accentRed: '#a44648', // przycisk dodawania kursu
-  accentRedTransparent: '#a44648ea', // przycisk dodawania kursu
-  accentBlueTransparent: '#727effb6', // przycisk dodawania kursu
+    // Accent colors
+    accentBlue: theme.colors.confirmAccent,
+    accentRed: theme.colors.cancelAccent,
+    accentRedTransparent: theme.colors.cancelAccent + 'ea',
+    accentBlueTransparent: theme.colors.confirmAccent + 'b6',
 
-  // =========================
-  // Text colors
-  // =========================
-  textPrimary: 'white', // główny kolor tekstu
-  textSecondary: '#a1a1a1', // szary tekst np. liczniki
-  textContrast: '#000000ff', // szary tekst np. liczniki
-  textError: '#ff6467', // czerwony tekst błędu
+    // Text colors
+    textPrimary: theme.colors.textPrimary,
+    textSecondary: theme.colors.textSecondary,
+    textContrast: theme.colors.Foreground,
+    textError: theme.colors.error,
 
-  // =========================
-  // Button backgrounds
-  // =========================
-  confirmButtonBg: '#2e2e2e',
-  cancelButtonBg: '#232323',
+    // Button backgrounds
+    confirmButtonBg: theme.colors.confirmAccent2,
+    cancelButtonBg: theme.colors.cancelAccent2,
+  };
+
+
+  return StyleSheet.create({
+    container: {
+      display: 'flex',
+      height: '100%',
+      backgroundColor: colors.backgroundPrimary,
+    },
+    overlayLabel: {
+      color: colors.textPrimary,
+      fontSize: 16,
+      paddingLeft: 15,
+      paddingBottom: 5,
+    },
+    overlayLabelErr: {
+      color: colors.textError,
+      fontSize: 16,
+      paddingLeft: 15,
+      paddingBottom: 5,
+    },
+    countersText: {
+      fontSize: 16,
+      color: colors.textSecondary,
+    },
+    bottomMenu: {
+      fontSize: 16,
+      color: colors.textPrimary,
+    },
+    grayLabel: {
+      color: colors.textSecondary,
+      fontSize: 16,
+      paddingLeft: 15,
+    },
+    noItemsInfoText: {
+      fontSize: 18,
+      fontStyle: 'italic',
+      color: colors.textSecondary,
+    },
+    addCourseMenuBtnText: {
+      fontSize: 35,
+      color: '#fff',
+    },
+    removeCourseMenuBtnText: {
+      fontSize: 20,
+      color: "#fff",
+    },
+    buttonText: {
+      color: colors.textPrimary,
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    inputErrorFeed: {
+      color: colors.borderError,
+      fontSize: 14,
+      paddingLeft: 15,
+    },
+    itemContainer: {
+      flexDirection: 'row',
+      width: '90%',
+      height: '100%',
+      paddingHorizontal: 15,
+    },
+    singleItem: { width: '33.33%' },
+    leftText: { textAlign: 'left', textAlignVertical: 'center' },
+    centerText: { textAlign: 'center', textAlignVertical: 'center' },
+    rightText: { textAlign: 'right', textAlignVertical: 'center' },
+    rootItemContainer: {
+      backgroundColor: colors.backgroundItem,
+      paddingLeft: 10,
+      borderRadius: theme.borderRads.m,
+      height: 'auto',
+      display: 'flex',
+      flexDirection: 'row',
+      gap: 5,
+      marginTop: 5,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    headerRootItemContainer: {
+      backgroundColor: colors.backgroundHeader,
+      paddingLeft: 10,
+      borderRadius: theme.borderRads.m,
+      height: 40,
+      display: 'flex',
+      flexDirection: 'row',
+      gap: 5,
+      marginTop: 5,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    headerContainer: {
+      flexDirection: 'row',
+      width: '90%',
+      height: '100%',
+      paddingHorizontal: 10,
+    },
+    singleItemHeader: {
+      width: '33.33%',
+    },
+    summaryContainer: {
+      marginTop: 5,
+      paddingLeft: 15,
+      paddingRight: 15,
+      borderWidth: 1,
+      borderColor: colors.borderGray,
+      width: '95%',
+      paddingVertical: 7,
+      borderRadius: theme.borderRads.m,
+      alignSelf: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      marginBottom: 20,
+    },
+    summarySpacer: { display: 'flex', flexDirection: 'row' },
+    button: {
+      alignSelf: 'center',
+      marginBottom: '2%',
+      marginTop: '2%',
+      width: '80%',
+      height: 50,
+      backgroundColor: colors.backgroundSecondary,
+      borderRadius: theme.borderRads.m,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.borderLight,
+    },
+    cancelButton: {
+      alignSelf: 'center',
+      marginBottom: '2%',
+      marginTop: '2%',
+      width: '80%',
+      height: 50,
+      backgroundColor: colors.cancelButtonBg,
+      borderRadius: theme.borderRads.m,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.cancelButtonBorder,
+    },
+    confirmButton: {
+      alignSelf: 'center',
+      marginBottom: '2%',
+      marginTop: '2%',
+      width: '80%',
+      height: 50,
+      backgroundColor: colors.confirmButtonBg,
+      borderRadius: theme.borderRads.m,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    addCourseMenuBtn: {
+      width: 50,
+      height: 50,
+      borderRadius: 50,
+      backgroundColor: colors.accentBlue,
+      display: 'flex',
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 20,
+    },
+    removeCourseMenuBtn: {
+      width: 250,
+      height: 45,
+      marginTop: 5,
+      borderRadius: 50,
+      backgroundColor: colors.accentRed,
+      display: 'flex',
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 20,
+    },
+    removeButtonContents: {
+      display: 'flex',
+      flexDirection: 'row',
+      gap: 10,
+    },
+    userInput: {
+      backgroundColor: colors.backgroundSecondary,
+      color: colors.textPrimary,
+      paddingLeft: 10,
+      alignSelf: 'center',
+      borderRadius: theme.borderRads.m,
+      width: '90%',
+      borderWidth: 1,
+      borderColor: colors.borderDefault,
+    },
+    userInputFocused: {
+      backgroundColor: colors.backgroundSecondary,
+      color: colors.textPrimary,
+      paddingLeft: 10,
+      alignSelf: 'center',
+      borderRadius: theme.borderRads.m,
+      width: '90%',
+      borderWidth: 1,
+      borderColor: colors.borderDefault,
+      outlineColor: colors.borderGray,
+      outlineWidth: 4,
+    },
+    userInputFocusedError: {
+      backgroundColor: colors.backgroundSecondary,
+      color: colors.textPrimary,
+      paddingLeft: 10,
+      alignSelf: 'center',
+      borderRadius: theme.borderRads.m,
+      width: '90%',
+      borderWidth: 1,
+      borderColor: colors.borderDefault,
+      outlineColor: colors.accentRedTransparent,
+      outlineWidth: 4,
+    },
+    invalidUserInput: {
+      backgroundColor: colors.backgroundSecondary,
+      color: colors.textPrimary,
+      paddingLeft: 10,
+      alignSelf: 'center',
+      borderRadius: theme.borderRads.m,
+      width: '90%',
+      borderWidth: 1,
+      borderColor: colors.borderError,
+    },
+    overlayContainer: {
+      ...StyleSheet.absoluteFillObject,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.overlay,
+      zIndex: 1,
+    },
+    popUpMenu: {
+      gap: 5,
+      paddingVertical: 20,
+      borderWidth: 1,
+      borderColor: colors.borderDefault,
+      backgroundColor: colors.backgroundPopup,
+      position: 'absolute',
+      justifyContent: 'center',
+      width: '80%',
+      height: 'auto',
+      borderRadius: theme.borderRads.m,
+      
+    },
+    deleteButtonBase: {
+      backgroundColor: colors.backgroundItem,
+      borderWidth: .75,
+      borderColor: colors.borderLight,
+      borderRadius: theme.borderRads.xs,
+      width: 15,
+      height: 15,
+      textAlignVertical: 'center',
+      alignContent: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    deleteButtonSelected:{
+      backgroundColor: colors.backgroundSelectItem,
+      borderWidth: .75,
+      borderColor: colors.borderLight,
+      borderRadius: theme.borderRads.xs,
+      width: 15,
+      height: 15,
+      textAlignVertical: 'center',
+      alignContent: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    deleteButtonText: {
+      color: "#000",
+      fontSize: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      lineHeight: 10,
+    },
+    noItemsInfo: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  });
 };
 
-const calculatorStyles = StyleSheet.create({
-  // =========================
-  // Container
-  // =========================
-  container: {
-    display: 'flex',
-    height: '100%',
-    backgroundColor: colors.backgroundPrimary,
-  },
-
-  // =========================
-  // Labels & Text
-  // =========================
-  overlayLabel: {
-    color: colors.textPrimary,
-    fontSize: 16,
-    paddingLeft: 15,
-    paddingBottom: 5,
-  },
-  overlayLabelErr: {
-    color: colors.textError,
-    fontSize: 16,
-    paddingLeft: 15,
-    paddingBottom: 5,
-  },
-  countersText: {
-    fontSize: 16,
-    color: colors.textSecondary,
-  },
-  bottomMenu: {
-    fontSize: 16,
-    color: colors.textPrimary,
-  },
-  grayLabel: {
-    color: colors.textSecondary,
-    fontSize: 16,
-    paddingLeft: 15,
-  },
-  noItemsInfoText: {
-    fontSize: 18,
-    fontStyle: 'italic',
-    color: colors.textSecondary,
-  },
-  addCourseMenuBtnText: {
-    fontSize: 35,
-    color: colors.textPrimary,
-  },
-  removeCourseMenuBtnText: {
-    fontSize: 20,
-    color: colors.textPrimary,
-  },
-  buttonText: {
-    color: colors.textPrimary,
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  inputErrorFeed: {
-    color: colors.borderError,
-    fontSize: 14,
-    paddingLeft: 15,
-  },
-
-  // =========================
-  // Item containers
-  // =========================
-  itemContainer: {
-    flexDirection: 'row',
-    width: '90%',
-    height: '100%',
-    paddingHorizontal: 15,
-  },
-  singleItem: { width: '33.33%' },
-  leftText: { textAlign: 'left', textAlignVertical: 'center' },
-  centerText: { textAlign: 'center', textAlignVertical: 'center' },
-  rightText: { textAlign: 'right', textAlignVertical: 'center' },
-  rootItemContainer: {
-    backgroundColor: colors.backgroundItem,
-    paddingLeft: 10,
-    borderRadius: 8,
-    height:'auto',
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 5,
-    marginTop: 5,
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  headerRootItemContainer: {
-    backgroundColor: colors.backgroundHeader,
-    paddingLeft: 10,
-    borderRadius: 8,
-
-    height: 40,
-
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 5,
-    marginTop: 5,
-    alignSelf: 'center',
-    alignItems: 'center',
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    width: '90%',
-    height: '100%',
-    paddingHorizontal: 10,
-  },
-  singleItemHeader: {
-    width: '33.33%',
-  },
-  summaryContainer: {
-    marginTop: 5,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderWidth: 1,
-    borderColor: colors.borderGray,
-    width: '95%',
-    paddingVertical: 7,
-    borderRadius: 8,
-    alignSelf: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: 20,
-  },
-  summarySpacer: { display: 'flex', flexDirection: 'row' },
-
-  // =========================
-  // Buttons
-  // =========================
-  button: {
-    alignSelf: 'center',
-    marginBottom: '2%',
-    marginTop: '2%',
-    width: '80%',
-    height: 50,
-    backgroundColor: colors.backgroundSecondary,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.borderLight,
-  },
-  cancelButton: {
-    alignSelf: 'center',
-    marginBottom: '2%',
-    marginTop: '2%',
-    width: '80%',
-    height: 50,
-    backgroundColor: colors.cancelButtonBg,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: colors.cancelButtonBorder,
-  },
-  confirmButton: {
-    alignSelf: 'center',
-    marginBottom: '2%',
-    marginTop: '2%',
-    width: '80%',
-    height: 50,
-    backgroundColor: colors.confirmButtonBg,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addCourseMenuBtn: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    backgroundColor: colors.accentBlue,
-    display: 'flex',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  removeCourseMenuBtn: {
-    width: 250,
-    height: 45,
-    marginTop: 5,
-    borderRadius: 50,
-    backgroundColor: colors.accentRed,
-    display: 'flex',
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-removeButtonContents: {
-  display: 'flex',
-  flexDirection: 'row',
-  gap: 10,
-
-},
-  // =========================
-  // Inputs
-  // =========================
-  userInput: {
-    backgroundColor: colors.backgroundSecondary,
-    color: colors.textPrimary,
-    paddingLeft: 10,
-    alignSelf: 'center',
-    borderRadius: 8,
-    width: '90%',
-    borderWidth: 1,
-    borderColor: colors.borderDefault,
-  },
-  userInputFocused: {
-    backgroundColor: colors.backgroundSecondary,
-    color: colors.textPrimary,
-    paddingLeft: 10,
-    alignSelf: 'center',
-    borderRadius: 8,
-    width: '90%',
-    borderWidth: 1,
-    borderColor: colors.borderDefault,
-
-    outlineColor: colors.borderGray,
-    outlineWidth: 4,
-  },
-  userInputFocusedError: {
-    backgroundColor: colors.backgroundSecondary,
-    color: colors.textPrimary,
-    paddingLeft: 10,
-    alignSelf: 'center',
-    borderRadius: 8,
-    width: '90%',
-    borderWidth: 1,
-    borderColor: colors.borderDefault,
-
-    outlineColor: colors.accentRedTransparent,
-    outlineWidth: 4,
-  },
-  invalidUserInput: {
-    backgroundColor: colors.backgroundSecondary,
-    color: colors.textPrimary,
-    paddingLeft: 10,
-    alignSelf: 'center',
-    borderRadius: 8,
-    width: '90%',
-    borderWidth: 1,
-    borderColor: colors.borderError,
-  },
-
-  // =========================
-  // Overlays & Popups
-  // =========================
-  overlayContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.overlay,
-    zIndex: 1,
-  },
-  popUpMenu: {
-    gap: 5,
-    paddingVertical: 20,
-    borderWidth: 1,
-    borderColor: colors.borderDefault,
-    backgroundColor: colors.backgroundPopup,
-    position: 'absolute',
-    justifyContent: 'center',
-    width: '80%',
-    height: 'auto',
-    borderRadius: 8,
-  },
-
-  // =========================
-  // Delete Button
-  // =========================
-  deleteButton: {
-    backgroundColor: colors.backgroundSelectItem,
-    borderWidth: 1.2,
-    borderColor: colors.borderLight,
-    width: 15,
-    height: 15,
-
-    textAlignVertical: 'center',
-    alignContent: 'center',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  deleteButtonText: {
-    color: colors.textContrast,
-    fontSize: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    lineHeight: 10,
-  },
-
-  // =========================
-  // No items info
-  // =========================
-  noItemsInfo: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
-export default calculatorStyles;
+export default createCalculatorStyles;

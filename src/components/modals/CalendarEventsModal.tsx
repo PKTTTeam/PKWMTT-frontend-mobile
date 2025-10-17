@@ -11,6 +11,8 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useAuthStore } from '../../store/authStore';
 import { useSettingsStore } from '../../store/settingsStore';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../styles/globalTheme/theme';
 
 export type Event = {
   id: string;
@@ -31,6 +33,20 @@ interface CalendarEventsModalProps {
   onUpdate: (exam: Event) => void;
 }
 
+const createCalendarStyle = (theme: Theme) => {
+  return {
+    modalBg: {
+      backgroundColor: theme.colors.Background,
+    },
+    textPrimary: {
+      color: theme.colors.textPrimary,
+    },
+    textSecondary: {
+      color: theme.colors.textSecondary,
+    },
+  };
+};
+
 const CalendarEventsModal: React.FC<CalendarEventsModalProps> = ({
   visible,
   onClose,
@@ -45,6 +61,9 @@ const CalendarEventsModal: React.FC<CalendarEventsModalProps> = ({
   const role = useAuthStore(state => state.role);
   const group = useSettingsStore(state => state.groups.dean);
   const slicedGroup = group ? group.slice(0, -1) : [];
+
+  const theme = useTheme<Theme>();
+  const themeStyles = createCalendarStyle(theme);
 
   const parseDate = (dateString: string) => {
     if (!dateString) return '';
@@ -66,12 +85,16 @@ const CalendarEventsModal: React.FC<CalendarEventsModalProps> = ({
         onPress={onClose}
       >
         <TouchableOpacity
-          style={styles.modalContent}
+          style={[styles.modalContent, themeStyles.modalBg]}
           activeOpacity={1}
           onPress={e => e.stopPropagation()}
         >
           <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-            <MaterialIcon name="close" size={20} color="white" />
+            <MaterialIcon
+              name="close"
+              size={20}
+              color={themeStyles.textPrimary.color}
+            />
           </TouchableOpacity>
 
           <Text style={styles.dateText}>

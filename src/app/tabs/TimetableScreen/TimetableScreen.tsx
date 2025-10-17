@@ -18,7 +18,9 @@ import getCorrectLetter from '../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../services/timetable/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { styles } from './styles.ts';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../../styles/globalTheme/theme';
+import { createTimetableStyles } from './timetableStyles.ts';
 import {
   useSettingsStore,
   useSettingsActions,
@@ -27,10 +29,7 @@ import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
 import { useTranslation } from 'react-i18next';
-
-const LessonSeparator = () => {
-  return <View style={styles.separator} />;
-};
+import LessonSeparator from './LessonSeparator.tsx'
 
 const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-back-ios" color={color} size={size} />
@@ -153,6 +152,9 @@ const TimetableScreen = () => {
     initialiseData();
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups.dean, groups.comp, groups.lab, groups.proj]);
+
+  const theme = useTheme<Theme>();
+  const styles = createTimetableStyles(theme);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -324,7 +326,7 @@ const TimetableScreen = () => {
             style={styles.navButton}
             onPress={navigateToPrevDay}
           >
-            <RenderLeftArrow color="#aeaeaf" size={18} />
+            <RenderLeftArrow color={theme.colors.navButtonIcon} size={18} />
           </TouchableOpacity>
 
           <Text style={styles.dayTitle}>
@@ -339,7 +341,7 @@ const TimetableScreen = () => {
             style={styles.navButton}
             onPress={navigateToNextDay}
           >
-            <RenderRightArrow color="#aeaeaf" size={18} />
+            <RenderRightArrow color={theme.colors.navButtonIcon} size={18} />
           </TouchableOpacity>
         </View>
 
@@ -349,7 +351,11 @@ const TimetableScreen = () => {
           onPress={() => setIsOddWeek(prev => !prev)}
           hitSlop={15}
         >
-          <Icon name={'sync-alt'} size={15} color={'white'} />
+          <Icon
+            name={'sync-alt'}
+            size={15}
+            color={theme.colors.themeOpposite}
+          />
           <Text style={styles.weekText}>{getWeekTypeText()}</Text>
         </TouchableOpacity>
 
