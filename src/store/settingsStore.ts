@@ -168,7 +168,7 @@ export const useSettingsStore = create<SettingsState>()(
         setHideLectures(value: boolean) {
           set({ hideLectures: value });
         },
-        // --- TTheme actions ---
+        // --- Theme actions ---
         setMode(mode: 'light' | 'dark') {
           set({
             themeMode: mode,
