@@ -13,7 +13,6 @@ import { useAuthStore } from '../../../store/authStore.ts';
 import { useTranslation } from 'react-i18next';
 
 import LanguageCard from '../../../components/LanguageCard.tsx';
-import { t } from 'i18next';
 
 const ShowEmptySlotsToggle = () => {
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
@@ -34,6 +33,7 @@ const ShowEmptySlotsToggle = () => {
 const ToggleTheme = () => {
   const currentTheme = useSettingsStore(state => state.themeMode);
   const toggleTheme = useSettingsStore(state => state.actions.toggleMode);
+  const { t } = useTranslation();
 
   return (
     <Switch
@@ -71,6 +71,7 @@ function SettingsScreen() {
     new Set(),
   );
   const [wasValid, setWasValid] = useState(false);
+  const { t } = useTranslation();
 
   // theme initialization
   const theme = useTheme<Theme>();

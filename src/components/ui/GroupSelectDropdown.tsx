@@ -25,7 +25,6 @@ const groupKeyMap: Record<GroupName, GroupKey> = {
   P: 'proj',
 } as const;
 
-// 🔹 fabryka stylów – wykorzystuje theme.colors
 const createGroupSelectStyles = (theme: Theme, hasError: boolean) => {
   const { colors } = theme;
 
