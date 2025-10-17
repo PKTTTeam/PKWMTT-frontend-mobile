@@ -67,4 +67,4 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({
 };
 
 // Memoize to prevent unnecessary re-renders
-export default React.memo(DropdownMenu);
+  export default React.memo(DropdownMenu);
