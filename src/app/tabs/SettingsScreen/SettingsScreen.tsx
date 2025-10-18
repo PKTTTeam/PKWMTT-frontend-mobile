@@ -5,6 +5,7 @@ import SettingsStyles from './SettingsStyles.ts';
 import Switch from '../../../components/ui/Switch.tsx';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
+import ReportBugModal from '../../../components/modals/ReportBugModal.tsx';
 import GroupCard from '../../../components/GroupCard.tsx';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '../../../store/authStore.ts';
@@ -48,6 +49,7 @@ function SettingsScreen() {
   const options = useSettingsStore(state => state.options);
   const groups = useSettingsStore(state => state.groups);
   const [modalVisible, setModalVisible] = useState(false);
+  const [bugModalVisible, setBugModalVisible] = useState(false);
   const repGroup = useAuthStore(state => state.repGroup);
   const role = useAuthStore(state => state.role);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -123,12 +125,7 @@ function SettingsScreen() {
             </Text>
 
             {validationErrors.size > 0 && (
-              <Text
-                style={[
-                  SettingsStyles.labelText,
-                  { color: '#ff6b6b', fontSize: 14, marginBottom: 10 },
-                ]}
-              >
+              <Text style={[SettingsStyles.labelText, SettingsStyles.errorLabelText]}>
                 {t('selectRequiredGroups') ||
                   'Proszę wybrać wszystkie wymagane grupy'}
               </Text>
@@ -141,7 +138,7 @@ function SettingsScreen() {
                 SettingsStyles.elementsSpacing,
               ]}
             >
-              <View style={{ zIndex: 5000 }}>
+              <View style={SettingsStyles.zIndexTop}>
                 <GroupCard
                   groupTitle={t('deanGroup')}
                   groupName="GG"
@@ -198,27 +195,25 @@ function SettingsScreen() {
             <View style={SettingsStyles.elementsSpacing}>
               {!role && (
                 <TouchableOpacity
-                  style={{
-                    backgroundColor: '#8d95fe',
-                    paddingVertical: 12,
-                    borderRadius: 6,
-                    marginRight: 8,
-                    marginBottom: 5,
-                  }}
+                  style={SettingsStyles.primaryButton}
                   onPress={() => setModalVisible(true)}
                   disabled={!!repGroup}
                 >
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    }}
-                  >
+                  <Text style={SettingsStyles.primaryButtonText}>
                     {t('confirmRepStatus') || 'Potwierdź status starosty'}
                   </Text>
                 </TouchableOpacity>
               )}
+
+              {/* Report a bug button */}
+              <TouchableOpacity
+                style={SettingsStyles.secondaryButton}
+                onPress={() => setBugModalVisible(true)}
+              >
+                <Text style={SettingsStyles.secondaryButtonText}>
+                  {t('reportBug') || 'Report a bug'}
+                </Text>
+              </TouchableOpacity>
 
               {repGroup && role && (
                 <View style={SettingsStyles.elementsSpacing}>
@@ -233,6 +228,10 @@ function SettingsScreen() {
             <RepresentativeAuthModal
               visible={modalVisible}
               onClose={() => setModalVisible(false)}
+            />
+            <ReportBugModal
+              visible={bugModalVisible}
+              onClose={() => setBugModalVisible(false)}
             />
           </View>
         }
