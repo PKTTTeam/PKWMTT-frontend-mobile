@@ -29,11 +29,42 @@ const settingsStyles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
   },
+  errorLabelText: {
+    color: '#ff6b6b',
+    fontSize: 14,
+    marginBottom: 10,
+  },
   studentGroups: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     flexWrap: 'wrap',
+  },
+  zIndexTop: {
+    zIndex: 5000,
+  },
+  primaryButton: {
+    backgroundColor: '#8d95fe',
+    paddingVertical: 12,
+    borderRadius: 6,
+    marginRight: 8,
+    marginBottom: 5,
+  },
+  primaryButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  secondaryButton: {
+    backgroundColor: '#555555',
+    paddingVertical: 12,
+    borderRadius: 6,
+    marginBottom: 5,
+  },
+  secondaryButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   notifications: {
     flexDirection: 'row',
