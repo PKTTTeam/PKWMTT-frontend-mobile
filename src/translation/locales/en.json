@@ -121,4 +121,15 @@
   "ECTSVal": "ECTS Value",
   "removeCourseMenuBtnText": "Remove selected",
   "showLectures": "Hide lectures"
+  ,
+  "reportBug": "Report a bug",
+  "reportBugDescription": "Describe the problem you encountered.",
+  "enterBugDescription": "Please describe the issue.",
+  "bugReportSuccess": "Thanks! Your report was sent.",
+  "bugReportError": "Could not send the report.",
+  "bugPlaceholder": "What happened? Give as much detail as possible to help us fix the issue.",
+  "success": "Success",
+  "error": "Error",
+  "submit": "Submit",
+  "cancel": "Cancel"
 }

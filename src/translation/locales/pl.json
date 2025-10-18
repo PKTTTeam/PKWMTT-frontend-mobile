@@ -121,4 +121,15 @@
   "ECTSVal": "Wartość ECTS",
   "removeCourseMenuBtnText": "Usuń wybrany przedmiot",
   "showLectures": "Ukryj wykłady"
+  ,
+  "reportBug": "Zgłoś błąd",
+  "reportBugDescription": "Opisz napotkany problem.",
+  "enterBugDescription": "Proszę opisać problem.",
+  "bugReportSuccess": "Dziękujemy! Zgłoszenie zostało wysłane.",
+  "bugReportError": "Nie udało się wysłać zgłoszenia.",
+  "bugPlaceholder": "Co się stało? Podaj jak najwięcej szczegółów, abyśmy mogli szybko rozwiązać problem.",
+  "success": "Sukces",
+  "error": "Błąd",
+  "submit": "Wyślij",
+  "cancel": "Anuluj"
 }
