@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 
-import SettingsStyles from './SettingsStyles.ts';
+import { createSettingsStyle } from './SettingsStyles.ts';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../../styles/globalTheme/theme';
 import Switch from '../../../components/ui/Switch.tsx';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
@@ -26,6 +28,20 @@ const ShowEmptySlotsToggle = () => {
       label={t('freeHoursText')}
       value={showEmptySlots}
       onChange={setShowEmptySlots}
+    />
+  );
+};
+
+const ToggleTheme = () => {
+  const currentTheme = useSettingsStore(state => state.themeMode);
+  const toggleTheme = useSettingsStore(state => state.actions.toggleMode);
+  const { t } = useTranslation();
+
+  return (
+    <Switch
+      label={t('toggleThemeText')}
+      value={currentTheme === 'dark'}
+      onChange={toggleTheme}
     />
   );
 };
@@ -60,6 +76,9 @@ function SettingsScreen() {
   const { t } = useTranslation();
 
   const { isOffline } = useTimetableStore();
+  // theme initialization
+  const theme = useTheme<Theme>();
+  const SettingsStyles = createSettingsStyle(theme);
 
   // Check if LPK groups are present
   const hasLPKGroups =
@@ -191,6 +210,10 @@ function SettingsScreen() {
             <View style={SettingsStyles.elementsSpacing}>
               <ShowEmptySlotsToggle />
               <ShowLectures />
+            </View>
+            {/* Theme toggle */}
+            <View style={SettingsStyles.elementsSpacing}>
+              <ToggleTheme />
             </View>
             <View style={SettingsStyles.elementsSpacing}>
               <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
