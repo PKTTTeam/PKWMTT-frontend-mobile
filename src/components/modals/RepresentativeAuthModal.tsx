@@ -13,6 +13,8 @@ import Toast from 'react-native-toast-message';
 
 import { useAuthStore } from '../../store/authStore';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../styles/globalTheme/theme';
 
 interface RepresentativeAuthModalProps {
   visible: boolean;
@@ -36,6 +38,9 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
   const setToken = useAuthStore(state => state.setToken);
 
   const { t } = useTranslation();
+
+  const theme = useTheme<Theme>();
+  const styles = createRepresentativeAuthModalStyles(theme);
 
   // Reset state when modal opens
   useEffect(() => {
@@ -214,95 +219,133 @@ const RepresentativeAuthModal: React.FC<RepresentativeAuthModalProps> = ({
     </Modal>
   );
 };
+const createRepresentativeAuthModalStyles = (theme: Theme) => {
+  const colors = {
+    overlayBg: 'rgba(0,0,0,0.5)',
+    containerBg: theme.colors.Foreground,
+    border: theme.colors.border,
 
-const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    width: '85%',
-    maxWidth: 400,
-    backgroundColor: '#1e1f1f',
-    borderRadius: 16,
-    padding: 24,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#fff',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  errorText: {
-    color: '#ff4444',
-    fontSize: 14,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  otpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 32,
-    gap: 3,
-  },
-  otpBox: {
-    flex: 1, // boxes share available space equally
-    maxWidth: 50, // optional: prevent too wide boxes on big screens
-    minWidth: 40, // optional: prevent too small boxes
-    height: 55,
-    borderWidth: 2,
-    borderColor: '#444',
-    borderRadius: 8,
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#fff',
-    backgroundColor: '#1c1c1c',
-  },
-  otpBoxFilled: {
-    borderColor: '#8d95fe',
-    backgroundColor: '#252525',
-  },
-  otpBoxError: {
-    borderColor: '#ff4444',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 12,
-  },
-  confirmButton: {
-    flex: 1,
-    backgroundColor: '#8d95fe',
-    paddingVertical: 14,
-    borderRadius: 8,
-  },
-  disabledButton: {
-    backgroundColor: '#555',
-  },
-  confirmButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-    paddingVertical: 14,
-    borderRadius: 8,
-  },
-  cancelButtonText: {
-    color: '#222',
-    fontWeight: '600',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  disabledText: {
-    color: '#999',
-  },
-});
+    titleText: theme.colors.textPrimary,
+    errorText: theme.colors.error,
+
+    otpBorder: '#444',
+    otpFilledBorder: theme.colors.confirmAccent,
+    otpBg: theme.colors.otpBg,
+    otpFilledBg: theme.colors.otpFilledBg,
+    otpText: theme.colors.textPrimary,
+
+    // confirmButtonBg: theme.colors.confirmAccent2,
+    confirmButtonBg: theme.colors.selectedAccent,
+    confirmButtonText: 'white',
+
+    cancelButtonBg: theme.colors.cancelAccent2,
+    cancelButtonText: theme.colors.textPrimary,
+
+    disabledButtonBg: '#9e9e9eff',
+    disabledText: '#999',
+  };
+
+  return StyleSheet.create({
+    overlay: {
+      flex: 1,
+      backgroundColor: colors.overlayBg,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    container: {
+      width: '85%',
+      maxWidth: 400,
+      backgroundColor: colors.containerBg,
+      borderRadius: theme.borderRads.m,
+      padding: 24,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    title: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: colors.titleText,
+      textAlign: 'center',
+      marginBottom: 24,
+    },
+    errorText: {
+      color: colors.errorText,
+      fontSize: 14,
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    otpContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 32,
+      gap: 3,
+    },
+    otpBox: {
+      flex: 1,
+      maxWidth: 50,
+      minWidth: 40,
+      height: 55,
+      borderWidth: 2,
+      borderColor: colors.otpBorder,
+      borderRadius: theme.borderRads.s,
+      fontSize: 24,
+      fontWeight: '600',
+      color: colors.otpText,
+      backgroundColor: colors.otpBg,
+      textAlign: 'center',
+    },
+    otpBoxFilled: {
+      borderColor: colors.otpFilledBorder,
+      backgroundColor: colors.otpFilledBg,
+    },
+    otpBoxError: {
+      borderColor: colors.errorText,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      gap: 12,
+      marginTop: 10,
+    },
+    confirmButton: {
+      flex: 1,
+      backgroundColor: colors.confirmButtonBg,
+      paddingVertical: 14,
+      borderRadius: theme.borderRads.m,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    confirmButtonText: {
+      color: colors.confirmButtonText,
+      fontWeight: '600',
+      fontSize: 16,
+      textAlign: 'center',
+    },
+    cancelButton: {
+      flex: 1,
+      backgroundColor: colors.cancelButtonBg,
+      paddingVertical: 14,
+      borderRadius: theme.borderRads.m,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    cancelButtonText: {
+      color: colors.cancelButtonText,
+      fontWeight: '600',
+      fontSize: 16,
+      textAlign: 'center',
+    },
+    disabledButton: {
+      backgroundColor: colors.disabledButtonBg,
+    },
+    disabledText: {
+      color: colors.disabledText,
+    },
+  });
+};
 
 export default RepresentativeAuthModal;
