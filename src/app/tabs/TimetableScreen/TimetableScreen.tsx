@@ -7,7 +7,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import ScheduleItem from '../../../components/ScheduleItem';
-import { DaySchedule, TimetableItem } from '../../../types/global';
+import { TimetableItem } from '../../../types/global';
 import {
   getAcademicHours,
   getTimetableByGroup,
@@ -18,13 +18,17 @@ import getCorrectLetter from '../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../services/timetable/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
 import { createTimetableStyles } from './timetableStyles.ts';
+
 import {
   useSettingsStore,
   useSettingsActions,
 } from '../../../store/settingsStore';
+import { useTimetableStore } from '../../../store/timetableStore.ts';
+
 import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
@@ -50,8 +54,10 @@ const dayNameMap: Record<string, string> = {
 };
 
 const TimetableScreen = () => {
-  const [timetable, setTimetable] = useState<DaySchedule[]>([]);
-  const [aHours, setAHours] = useState<string[]>([]);
+  //cache results
+  const { timetable, academicHours, actions } = useTimetableStore();
+  const { setTimetable, setAcademicHours, markOffline } = actions;
+
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const [isOddWeek, setIsOddWeek] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -108,6 +114,7 @@ const TimetableScreen = () => {
       try {
         if (!groups.dean)
           throw new Error('General group name is required to fetch timetable');
+
         const [hours, timetableResponse] = await Promise.all([
           getAcademicHours(),
           getTimetableByGroup(
@@ -117,16 +124,16 @@ const TimetableScreen = () => {
             groups.proj || undefined,
           ),
         ]);
-
-        setAHours(hours);
+        setAcademicHours(hours);
         setTimetable(timetableResponse.data);
-
         setIsOddWeek(getCurrentWeekType());
         const today = new Date();
         const jsDay = today.getDay();
         const index = jsDay === 0 || jsDay === 6 ? 0 : jsDay - 1;
         setCurrentDayIndex(index);
+        markOffline(false);
       } catch (err: any) {
+        markOffline(true);
         if (err.response) {
           setError(err.message || 'Server error');
           // Server responded with a status outside 2xx
@@ -135,18 +142,7 @@ const TimetableScreen = () => {
             data: err.response.data,
             headers: err.response.headers,
           });
-        } else if (err.request) {
-          // Request was made but no response received
-          setError(err.message || 'No response from server');
-          console.error('No response received from server:', err.request);
-        } else {
-          // Something else went wrong
-          setError(err.message || 'Request error');
-          console.error('Error setting up request:', err.message);
         }
-        setError(err.message || 'Network error');
-        // Log full error for debugging
-        console.error('Full error object:', err);
       }
     }
     initialiseData();
@@ -174,14 +170,17 @@ const TimetableScreen = () => {
         ),
       ]);
 
-      setAHours(hours);
+      setAcademicHours(hours);
       setTimetable([...timetableResponse.data]);
+      markOffline(false);
     } catch (err: any) {
+      markOffline(true);
       console.error('Refresh failed', err);
       setError(err.message || 'Refresh error');
     } finally {
       setRefreshing(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups.comp, groups.dean, groups.lab, groups.proj, setError]);
 
   const navigateToNextDay = () => {
@@ -232,12 +231,12 @@ const TimetableScreen = () => {
       return null;
     }
 
-    if (!aHours || aHours.length === 0) {
+    if (!academicHours || academicHours.length === 0) {
       console.warn('aHours is not ready yet');
       return null;
     }
 
-    const hourString = aHours[item.rowId];
+    const hourString = academicHours[item.rowId];
     if (!hourString) {
       console.warn(`No hour found for rowId ${item.rowId}`);
     }
@@ -247,7 +246,7 @@ const TimetableScreen = () => {
 
     const isActive = checkActiveLesson(
       item,
-      aHours,
+      academicHours,
       timetable[currentDayIndex]?.name,
       isOddWeek,
     );
@@ -297,7 +296,7 @@ const TimetableScreen = () => {
     }
     if (!showEmptySlots) return lessons;
 
-    return getFullSchedule(aHours, lessons);
+    return getFullSchedule(academicHours, lessons);
   };
 
   const getWeekTypeText = () => {

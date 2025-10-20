@@ -68,6 +68,7 @@ const GroupCard: React.FC<GroupSelectTypes> = ({
   activeDropdown,
   setActiveDropdown,
   hasError,
+  isOffline,
 }) => {
   const theme = useTheme<Theme>();
   const styles = createGroupCardStyles(theme);
@@ -85,6 +86,7 @@ const GroupCard: React.FC<GroupSelectTypes> = ({
         </View>
         <View style={styles.dropdownContainer}>
           <GroupSelectDropdown
+            isOffline={isOffline}
             groupTitle={''}
             groupName={groupName}
             activeDropdown={activeDropdown}

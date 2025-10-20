@@ -15,6 +15,7 @@ interface Props {
   groupName: GroupName;
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
+  isOffline: boolean;
   hasError?: boolean;
 }
 
@@ -68,6 +69,7 @@ const GroupSelectDropdown: React.FC<Props> = ({
   activeDropdown,
   setActiveDropdown,
   hasError = false,
+  isOffline,
 }) => {
   const theme = useTheme<Theme>();
   const styles = createGroupSelectStyles(theme, hasError);
@@ -105,6 +107,7 @@ const GroupSelectDropdown: React.FC<Props> = ({
       {groupTitle && <Text style={styles.text}>{groupTitle}</Text>}
 
       <DropDownPicker
+        disabled={isOffline}
         open={open}
         value={value}
         items={items}

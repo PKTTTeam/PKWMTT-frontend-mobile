@@ -12,6 +12,8 @@ import Toast from 'react-native-toast-message';
 import { useAuthStore } from '../../../store/authStore.ts';
 import { useTranslation } from 'react-i18next';
 
+import { useTimetableStore } from '../../../store/timetableStore.ts';
+
 import LanguageCard from '../../../components/LanguageCard.tsx';
 
 const ShowEmptySlotsToggle = () => {
@@ -73,6 +75,7 @@ function SettingsScreen() {
   const [wasValid, setWasValid] = useState(false);
   const { t } = useTranslation();
 
+  const { isOffline } = useTimetableStore();
   // theme initialization
   const theme = useTheme<Theme>();
   const SettingsStyles = createSettingsStyle(theme);
@@ -163,6 +166,7 @@ function SettingsScreen() {
             >
               <View style={{ zIndex: 5000 }}>
                 <GroupCard
+                  isOffline={isOffline}
                   groupTitle={t('deanGroup')}
                   groupName="GG"
                   activeDropdown={activeDropdown}
@@ -172,6 +176,7 @@ function SettingsScreen() {
               </View>
               {options.lab.length !== 0 && (
                 <GroupCard
+                  isOffline={isOffline}
                   groupTitle={t('labGroup')}
                   groupName="L"
                   activeDropdown={activeDropdown}
@@ -181,6 +186,7 @@ function SettingsScreen() {
               )}
               {options.comp.length !== 0 && (
                 <GroupCard
+                  isOffline={isOffline}
                   groupTitle={t('compGroup')}
                   groupName="K"
                   activeDropdown={activeDropdown}
@@ -190,6 +196,7 @@ function SettingsScreen() {
               )}
               {options.proj.length !== 0 && (
                 <GroupCard
+                  isOffline={isOffline}
                   groupTitle={t('projGroup')}
                   groupName="P"
                   activeDropdown={activeDropdown}
