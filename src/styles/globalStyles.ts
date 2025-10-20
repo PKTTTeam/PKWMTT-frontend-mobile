@@ -7,7 +7,7 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#1e1f1f',
-    padding: 16,
+    padding: 14,
     borderRadius: 8,
     marginHorizontal: 4,
   },

@@ -1,4 +1,5 @@
 {
+  "toggleThemeText": "Dark mode",
   "confirmRepStatus": "Enter representative's code",
   "repOfGroup": "Representative of {{group}}",
   "selectRequiredGroups": "Please select all necessary groups",
@@ -120,6 +121,7 @@
   "placeholderCalc2": "eg. 2",
   "ECTSVal": "ECTS Value",
   "removeCourseMenuBtnText": "Remove selected",
+  "showLectures": "Hide lectures",
   "editSubject": "Edit subject",
   "editSubjectText": "Input name of subject, value of ECTS and grade",
 

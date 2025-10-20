@@ -1,6 +1,6 @@
 {
   "name": "PKWMApp",
-  "version": "0.4.5",
+  "version": "0.4.8",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -15,10 +15,11 @@
     "@react-native/new-app-screen": "0.80.1",
     "@react-navigation/bottom-tabs": "^7.4.2",
     "@react-navigation/native": "^7.1.17",
+    "@shopify/restyle": "^2.4.5",
     "i18next": "^25.5.2",
     "jwt-decode": "^4.0.0",
     "lucide-react-native": "^0.544.0",
-    "posthog-react-native": "^4.10.2",
+    "posthog-react-native": "^4.10.1",
     "react": "19.1.0",
     "react-i18next": "^15.7.3",
     "react-native": "0.80.1",

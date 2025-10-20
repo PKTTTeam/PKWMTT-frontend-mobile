@@ -218,7 +218,10 @@ function CalculatorScreen() {
     <View style={styles.container}>
       {/** Header */}
       <View style={styles.headerRootItemContainer}>
-        <TouchableOpacity style={styles.deleteButton} onPress={selectAllItems}>
+        <TouchableOpacity
+          style={selectedItems.length > 0 ? styles.deleteButtonSelected : styles.deleteButtonBase}
+          onPress={selectAllItems}
+        >
           <Text style={styles.deleteButtonText}>
             {changeSelectedItemsIcon()}
           </Text>

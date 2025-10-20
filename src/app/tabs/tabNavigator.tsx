@@ -9,10 +9,16 @@ import CalculatorScreen from './CalculatorScreen/CalculatorScreen';
 import SettingsScreen from './SettingsScreen/SettingsScreen';
 import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
 
-import HeaderLogo from '../../assets/svg/HeaderLogoWhite.svg';
+import HeaderLogoLight from '../../assets/svg/HeaderLogoWhite.svg';
+import HeaderLogoDark from '../../assets/svg/HeaderLogoBlack.svg';
 import { StyleSheet } from 'react-native';
 import { ActivityLegend } from '../../components/ActivityLegend';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../styles/globalTheme/theme';
+import { tabNavigatorStyles } from './tabNavigatorStyles';
+import { useSettingsStore } from '../../store/settingsStore';
+import type { SettingsState } from '../../store/settingsStoreTypes';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,18 +28,33 @@ const NavigationStyles = StyleSheet.create({
   },
 });
 
-const getScreenOptions = (insets: any) => ({
+const getScreenOptions = (
+  insets: any,
+  styles: ReturnType<typeof tabNavigatorStyles>,
+  themeMode: SettingsState['themeMode'],
+) => ({
   headerShown: true,
-  headerTitle: () => (
-    <HeaderLogo width={200} height={150} style={NavigationStyles.HeaderLogo} />
-  ),
-  tabBarActiveTintColor: '#8d95fe',
-  tabBarInactiveTintColor: 'white',
-  tabBarInactiveBackgroundColor: '#181818',
-  tabBarActiveBackgroundColor: '#181818',
+  headerTitle: () =>
+    themeMode === 'dark' ? (
+      <HeaderLogoLight
+        width={200}
+        height={150}
+        style={NavigationStyles.HeaderLogo}
+      />
+    ) : (
+      <HeaderLogoDark
+        width={200}
+        height={150}
+        style={NavigationStyles.HeaderLogo}
+      />
+    ),
+  tabBarActiveTintColor: styles.tabBarActiveTintColor,
+  tabBarInactiveTintColor: styles.tabBarInactiveTintColor,
+  tabBarInactiveBackgroundColor: styles.mainBg,
+  tabBarActiveBackgroundColor: styles.mainBg,
 
   headerStyle: {
-    backgroundColor: '#181818',
+    backgroundColor: styles.mainBg,
     height: HEADER_HEIGHT,
     paddingTop: insets.top,
   },
@@ -46,7 +67,7 @@ const getScreenOptions = (insets: any) => ({
     height: TAB_BAR_HEIGHT + insets.bottom,
     paddingBottom: insets.bottom > 0 ? 10 : 15,
     paddingTop: 10,
-    backgroundColor: '#181818',
+    backgroundColor: styles.mainBg,
     borderTopWidth: 0,
   },
 
@@ -93,8 +114,14 @@ const TabNavigator: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
 
+  //style initialization
+  const theme = useTheme<Theme>();
+  const styles = tabNavigatorStyles(theme);
+  const themeMode = useSettingsStore(state => state.themeMode);
+  // const currentLogo = themeMode === 'dark' ? HeaderLogoLight : HeaderLogoDark;
+
   return (
-    <Tab.Navigator screenOptions={getScreenOptions(insets)}>
+    <Tab.Navigator screenOptions={getScreenOptions(insets, styles, themeMode)}>
       <Tab.Screen
         name="timetable"
         component={TimetableScreen}

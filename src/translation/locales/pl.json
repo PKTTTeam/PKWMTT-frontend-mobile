@@ -1,4 +1,5 @@
 {
+  "toggleThemeText": "Tryb ciemny",
   "confirmRepStatus": "Wpisz kod starosty",
   "repOfGroup": "Starosta grupy {{group}}",
   "selectRequiredGroups": "Proszę wybrać wszystkie wymagane grupy",
@@ -125,6 +126,6 @@
 
   "addSubjectErrorText": "Wybierz przedmiot",
   "addECTSErrorText": "Wprowadź poprawną wartość ECTS",
-  "addGradeErrorText": "Wprowadź poprawną ocenę"
-
+  "addGradeErrorText": "Wprowadź poprawną ocenę",
+  "showLectures": "Ukryj wykłady"
 }
