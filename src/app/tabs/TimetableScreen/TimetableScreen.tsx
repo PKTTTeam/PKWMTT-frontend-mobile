@@ -124,7 +124,6 @@ const TimetableScreen = () => {
             groups.proj || undefined,
           ),
         ]);
-
         setAcademicHours(hours);
         setTimetable(timetableResponse.data);
         setIsOddWeek(getCurrentWeekType());
@@ -135,7 +134,6 @@ const TimetableScreen = () => {
         markOffline(false);
       } catch (err: any) {
         markOffline(true);
-        if (timetable) return;
         if (err.response) {
           setError(err.message || 'Server error');
           // Server responded with a status outside 2xx
@@ -174,7 +172,6 @@ const TimetableScreen = () => {
       markOffline(false);
     } catch (err: any) {
       markOffline(true);
-      if (timetable) return;
       console.error('Refresh failed', err);
       setError(err.message || 'Refresh error');
     } finally {

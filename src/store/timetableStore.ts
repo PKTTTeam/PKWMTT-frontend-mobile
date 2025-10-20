@@ -8,13 +8,12 @@ export const useTimetableStore = create<TimetableState>()(
     set => ({
       timetable: [],
       academicHours: [],
-      lastUpdated: null,
       isOffline: false,
       actions: {
-        setTimetable: data => set({ timetable: data, lastUpdated: Date.now() }),
+        setTimetable: data => set({ timetable: data }),
         setAcademicHours: hours => set({ academicHours: hours }),
         markOffline: value => set({ isOffline: value }),
-        clearCache: () => set({ timetable: [], lastUpdated: null }),
+        clearCache: () => set({ timetable: [] }),
       },
     }),
     {
@@ -23,7 +22,6 @@ export const useTimetableStore = create<TimetableState>()(
       partialize: state => ({
         timetable: state.timetable,
         academicHours: state.academicHours,
-        lastUpdate: state.lastUpdated,
       }),
     },
   ),

@@ -3,7 +3,6 @@ import { DaySchedule } from '../types/global';
 export interface TimetableState {
   timetable: DaySchedule[];
   academicHours: string[];
-  lastUpdated: number | null;
   isOffline: boolean;
   actions: {
     setTimetable: (data: DaySchedule[]) => void;
