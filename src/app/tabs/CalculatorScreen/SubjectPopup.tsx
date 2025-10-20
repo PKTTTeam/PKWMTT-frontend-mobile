@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import DropdownMenu from '../../../components/ui/DropdownMenu';
-import styles from './CalculatorStyles';
+import { createCalculatorStyles } from './CalculatorStyles';
+import { Theme } from '../../../styles/globalTheme/theme';
+import { useTheme } from '@shopify/restyle';
 
 type Props = {
   subjectName: string;
@@ -48,6 +50,9 @@ const SubjectPopup: React.FC<Props> = ({
   title,
   subtitle,
 }) => {
+  const theme = useTheme<Theme>();
+  const styles = createCalculatorStyles(theme);
+
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
@@ -62,10 +67,11 @@ const SubjectPopup: React.FC<Props> = ({
         >
           Subject
         </Text>
-        <View style={styles.Label}>
+        <View>
           <View
             style={
-              subjectError ? styles.subjectSelectError : styles.subjectSelect
+              // subjectError ? styles.subjectSelectError : styles.subjectSelect
+              subjectError ? styles.inputErrorFeed : styles.userInput
             }
           >
             <DropdownMenu

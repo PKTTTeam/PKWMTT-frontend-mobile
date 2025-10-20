@@ -63,7 +63,7 @@ export const createCalculatorStyles = (theme: Theme) => {
       fontSize: 16,
       color: colors.textPrimary,
     },
-    grayLabel: {
+    Label: {
       color: colors.textSecondary,
       fontSize: 16,
       paddingLeft: 15,

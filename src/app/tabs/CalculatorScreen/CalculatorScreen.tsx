@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import styles from './CalculatorStyles';
 import uuid from 'react-native-uuid';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +7,9 @@ import { getSubjectList } from '../../../services/calculator/CalculatorService';
 import { useSettingsStore } from '../../../store/settingsStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SubjectPopup from './SubjectPopup';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../../styles/globalTheme/theme';
+import createCalculatorStyles from './CalculatorStyles';
 
 type CalcItem = {
   key: string;
@@ -40,6 +42,9 @@ function CalculatorScreen() {
 
   const iconCheck = '\u2713';
   const iconSquare = '\u25A0';
+
+  const theme = useTheme<Theme>();
+  const styles = createCalculatorStyles(theme);
 
   // --- FETCH & STORAGE ---
   const fetchSubjectList = useCallback(async () => {
@@ -78,7 +83,6 @@ function CalculatorScreen() {
     saveSubjectList(subjectList);
   }, [subjectList]);
 
-  // --- HELPERS ---
   const totalEcts = () =>
     subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
   const averageGrade = () =>
@@ -185,7 +189,7 @@ function CalculatorScreen() {
       <TouchableOpacity onPress={() => openEditMenu(item)}>
         <View style={styles.rootItemContainer}>
           <TouchableOpacity
-            style={styles.deleteButton}
+            // style={styles.deleteButton}
             onPress={() => selectItem(item.key)}
           >
             <Text style={styles.deleteButtonText}>
@@ -219,7 +223,11 @@ function CalculatorScreen() {
       {/** Header */}
       <View style={styles.headerRootItemContainer}>
         <TouchableOpacity
-          style={selectedItems.length > 0 ? styles.deleteButtonSelected : styles.deleteButtonBase}
+          style={
+            selectedItems.length > 0
+              ? styles.deleteButtonSelected
+              : styles.deleteButtonBase
+          }
           onPress={selectAllItems}
         >
           <Text style={styles.deleteButtonText}>
