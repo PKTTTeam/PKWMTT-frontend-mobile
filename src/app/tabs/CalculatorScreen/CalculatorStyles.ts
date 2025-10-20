@@ -36,7 +36,6 @@ export const createCalculatorStyles = (theme: Theme) => {
     cancelButtonBg: theme.colors.cancelAccent2,
   };
 
-
   return StyleSheet.create({
     container: {
       display: 'flex',
@@ -79,7 +78,7 @@ export const createCalculatorStyles = (theme: Theme) => {
     },
     removeCourseMenuBtnText: {
       fontSize: 20,
-      color: "#fff",
+      color: '#fff',
     },
     buttonText: {
       color: colors.textPrimary,
@@ -276,11 +275,11 @@ export const createCalculatorStyles = (theme: Theme) => {
       width: '80%',
       height: 'auto',
       borderRadius: theme.borderRads.m,
-      
     },
     deleteButtonBase: {
+      // backgroundColor: colors.backgroundItem,
       backgroundColor: colors.backgroundItem,
-      borderWidth: .75,
+      borderWidth: 0.75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,
       width: 15,
@@ -291,9 +290,9 @@ export const createCalculatorStyles = (theme: Theme) => {
       alignItems: 'center',
       justifyContent: 'center',
     },
-    deleteButtonSelected:{
+    deleteButtonSelected: {
       backgroundColor: colors.backgroundSelectItem,
-      borderWidth: .75,
+      borderWidth: 0.75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,
       width: 15,
@@ -305,7 +304,8 @@ export const createCalculatorStyles = (theme: Theme) => {
       justifyContent: 'center',
     },
     deleteButtonText: {
-      color: "#000",
+      // color: '#000',
+      color: '#000',
       fontSize: 10,
       alignItems: 'center',
       justifyContent: 'center',
@@ -315,6 +315,28 @@ export const createCalculatorStyles = (theme: Theme) => {
     noItemsInfo: {
       flex: 1,
       justifyContent: 'center',
+      alignItems: 'center',
+    },
+    subjectSelectError: {
+      marginLeft: 15,
+      width: 132,
+      height: 42,
+      backgroundColor: colors.borderError,
+      borderRadius: 8,
+      justifyContent: 'center',
+      display: 'flex',
+      alignContent: 'center',
+      alignItems: 'center',
+    },
+    subjectSelect: {
+      marginLeft: 15,
+      width: 132,
+      height: 42,
+      backgroundColor: '#0000',
+      borderRadius: 8,
+      justifyContent: 'center',
+      display: 'flex',
+      alignContent: 'center',
       alignItems: 'center',
     },
   });

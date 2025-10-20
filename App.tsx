@@ -76,20 +76,20 @@ const App = () => {
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={currentAppTheme}>
           <NavigationContainer ref={navigationRef}>
-            <PostHogProvider
+            {/* <PostHogProvider
               apiKey={POSTHOG_KEY}
               options={{ host: 'https://us.i.posthog.com' }}
               autocapture={{
                 captureTouches: true,
                 captureScreens: false,
               }}
-            >
+            > */}
               {!isSetupComplete ? (
                 <FirstTimeSetupScreen onDone={handleSetupDone} />
               ) : (
                 <TabNavigator />
               )}
-            </PostHogProvider>
+            {/* </PostHogProvider> */}
           </NavigationContainer>
 
           <UpdateAlertModal

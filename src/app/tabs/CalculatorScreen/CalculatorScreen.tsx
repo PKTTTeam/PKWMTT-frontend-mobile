@@ -189,7 +189,7 @@ function CalculatorScreen() {
       <TouchableOpacity onPress={() => openEditMenu(item)}>
         <View style={styles.rootItemContainer}>
           <TouchableOpacity
-            // style={styles.deleteButton}
+            style={styles.deleteButtonBase}
             onPress={() => selectItem(item.key)}
           >
             <Text style={styles.deleteButtonText}>

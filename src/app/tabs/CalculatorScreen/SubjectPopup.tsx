@@ -4,6 +4,7 @@ import DropdownMenu from '../../../components/ui/DropdownMenu';
 import { createCalculatorStyles } from './CalculatorStyles';
 import { Theme } from '../../../styles/globalTheme/theme';
 import { useTheme } from '@shopify/restyle';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   subjectName: string;
@@ -53,6 +54,8 @@ const SubjectPopup: React.FC<Props> = ({
   const theme = useTheme<Theme>();
   const styles = createCalculatorStyles(theme);
 
+  const { t } = useTranslation();
+
   const ectsInput = useRef<TextInput>(null);
   const gradeInput = useRef<TextInput>(null);
 
@@ -65,13 +68,12 @@ const SubjectPopup: React.FC<Props> = ({
         <Text
           style={subjectError ? styles.overlayLabelErr : styles.overlayLabel}
         >
-          Subject
+          {t('subjectName')}
         </Text>
         <View>
           <View
             style={
-              // subjectError ? styles.subjectSelectError : styles.subjectSelect
-              subjectError ? styles.inputErrorFeed : styles.userInput
+              subjectError ? styles.subjectSelectError : styles.subjectSelect
             }
           >
             <DropdownMenu
@@ -81,7 +83,7 @@ const SubjectPopup: React.FC<Props> = ({
               isOpen={subjectDropdownOpen}
               onOpen={() => setSubjectDropdownOpen(true)}
               onClose={() => setSubjectDropdownOpen(false)}
-              placeholder="Select subject"
+              placeholder={t('addSubjectErrorText')}
             />
           </View>
         </View>
@@ -103,7 +105,8 @@ const SubjectPopup: React.FC<Props> = ({
               ? styles.userInputFocused
               : styles.userInput
           }
-          placeholder="ECTS points"
+          placeholder={t('ECTSVal')}
+          placeholderTextColor={theme.colors.textSecondary}
           value={ectsPoints}
           onChangeText={setEctsPoints}
           keyboardType="numeric"
@@ -113,7 +116,7 @@ const SubjectPopup: React.FC<Props> = ({
         {ectsError && <Text style={styles.inputErrorFeed}>{ectsError}</Text>}
 
         <Text style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}>
-          Grade
+          {t('gradeName')}
         </Text>
         <TextInput
           ref={gradeInput}
@@ -127,6 +130,7 @@ const SubjectPopup: React.FC<Props> = ({
               : styles.userInput
           }
           placeholder="e.g. 4"
+          placeholderTextColor={theme.colors.textSecondary}
           value={grade}
           onChangeText={setGrade}
           keyboardType="numeric"
