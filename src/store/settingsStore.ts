@@ -9,8 +9,8 @@ import type { SettingsState } from './settingsStoreTypes';
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set, get) => ({
-      theme: lightTheme,
-      themeMode: 'light',
+      theme: darkTheme,
+      themeMode: 'dark',
       groups: {
         dean: undefined,
         lab: undefined,
@@ -193,6 +193,7 @@ export const useSettingsStore = create<SettingsState>()(
         options: state.options,
         setupComplete: state.setupComplete,
         hideLectures: state.hideLectures,
+        theme: state.theme,
         themeMode: state.themeMode,
       }),
     },

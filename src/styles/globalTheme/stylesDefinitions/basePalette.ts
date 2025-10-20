@@ -6,11 +6,11 @@ const basePalette = {
     red: '#e7000b', //'#a44648',
     brightRed: '#ff6467',
 
-    green: "#4CAF50",
+    green: '#4CAF50',
   },
   darkColors: {
     black: '#191919',
-    gray: '#2b2b2b',
+    gray: '#2e2e2e',
     darkGray: '#1c1c1c',
     darkGray2: '#232323',
     lightGray: '#313131',
@@ -31,7 +31,7 @@ const basePalette = {
     textDisabledLight: '#9d9d9d',
     textDisabledDark: '#777877',
   },
-  timetableThemeColors:{
+  timetableThemeColors: {
     separatorLight: '#e8eaed',
     separatorDark: '#3A3A3A',
     scheduleBackgroundColor: '#f5f5f5',
@@ -39,17 +39,16 @@ const basePalette = {
     dayTitleLight: '#e5e5ff',
     dayTitleDark: '#000',
 
-    arrowLight: "#aeaeaf",
-    arrowDark: "#6c7381",
+    arrowLight: '#aeaeaf',
+    arrowDark: '#6c7381',
   },
   headerThemeColors: {
-    lightBackground: "#f5f5f5",
-    
+    lightBackground: '#f5f5f5',
   },
-  SettingsScreenColors:{
-    elementsBackgroundDark:'#1f1f1eff',
-    elementsBackgroundLight:'#fff',
-  }
+  SettingsScreenColors: {
+    elementsBackgroundDark: '#1f1f1eff',
+    elementsBackgroundLight: '#fff',
+  },
 };
 
 export default basePalette;

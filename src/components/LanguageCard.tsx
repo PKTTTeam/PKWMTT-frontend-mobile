@@ -19,9 +19,10 @@ const createLanguageCardStyles = (theme: Theme) => {
       width: 350,
       padding: 20,
       borderRadius: 12,
+      margin: 6,
       borderWidth: 1,
       borderColor: colors.border,
-      backgroundColor: colors.Background,
+      backgroundColor: colors.Foreground,
     },
     header: {
       flexDirection: 'row',

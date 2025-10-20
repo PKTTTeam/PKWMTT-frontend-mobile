@@ -17,19 +17,19 @@ const createSwitchStyles = (theme: Theme) => {
 
   return StyleSheet.create({
     contentContainer: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      width: 350,
+      width: 350, // same as GroupCard
       padding: 20,
       borderRadius: 12,
       borderWidth: 1,
       borderColor: colors.border,
-      backgroundColor: colors.Background,
+      backgroundColor: colors.Foreground,
+      margin: 6,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
     },
     containerStyle: {
-      marginTop: 16,
+      marginTop: 5,
       width: 106 / 2,
       height: 30,
       borderRadius: 25,
@@ -45,7 +45,7 @@ const createSwitchStyles = (theme: Theme) => {
       color: colors.textPrimary,
       fontSize: 16,
       fontWeight: '500',
-      marginLeft: 12,
+      marginRight: 15,
     },
   });
 };

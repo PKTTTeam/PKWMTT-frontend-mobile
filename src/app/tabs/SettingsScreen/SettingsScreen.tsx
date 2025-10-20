@@ -5,6 +5,7 @@ import { createSettingsStyle } from './SettingsStyles.ts';
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
 import Switch from '../../../components/ui/Switch.tsx';
+
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
 import GroupCard from '../../../components/GroupCard.tsx';
@@ -173,47 +174,43 @@ function SettingsScreen() {
                   setActiveDropdown={setActiveDropdown}
                   hasError={hasError('dean')}
                 />
+                {options.lab.length !== 0 && (
+                  <GroupCard
+                    isOffline={isOffline}
+                    groupTitle={t('labGroup')}
+                    groupName="L"
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                    hasError={hasError('lab')}
+                  />
+                )}
+                {options.comp.length !== 0 && (
+                  <GroupCard
+                    isOffline={isOffline}
+                    groupTitle={t('compGroup')}
+                    groupName="K"
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                    hasError={hasError('comp')}
+                  />
+                )}
+                {options.proj.length !== 0 && (
+                  <GroupCard
+                    isOffline={isOffline}
+                    groupTitle={t('projGroup')}
+                    groupName="P"
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                    hasError={hasError('proj')}
+                  />
+                )}
               </View>
-              {options.lab.length !== 0 && (
-                <GroupCard
-                  isOffline={isOffline}
-                  groupTitle={t('labGroup')}
-                  groupName="L"
-                  activeDropdown={activeDropdown}
-                  setActiveDropdown={setActiveDropdown}
-                  hasError={hasError('lab')}
-                />
-              )}
-              {options.comp.length !== 0 && (
-                <GroupCard
-                  isOffline={isOffline}
-                  groupTitle={t('compGroup')}
-                  groupName="K"
-                  activeDropdown={activeDropdown}
-                  setActiveDropdown={setActiveDropdown}
-                  hasError={hasError('comp')}
-                />
-              )}
-              {options.proj.length !== 0 && (
-                <GroupCard
-                  isOffline={isOffline}
-                  groupTitle={t('projGroup')}
-                  groupName="P"
-                  activeDropdown={activeDropdown}
-                  setActiveDropdown={setActiveDropdown}
-                  hasError={hasError('proj')}
-                />
-              )}
             </View>
 
             {/* Toggle and language dropdown */}
             <View style={SettingsStyles.elementsSpacing}>
               <ShowEmptySlotsToggle />
               <ShowLectures />
-            </View>
-            {/* Theme toggle */}
-            <View style={SettingsStyles.elementsSpacing}>
-              <ToggleTheme />
             </View>
             <View style={SettingsStyles.elementsSpacing}>
               <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
@@ -223,6 +220,7 @@ function SettingsScreen() {
                 activeDropdown={activeDropdown}
                 setActiveDropdown={setActiveDropdown}
               />
+              <ToggleTheme />
             </View>
 
             {/* Rep auth */}
