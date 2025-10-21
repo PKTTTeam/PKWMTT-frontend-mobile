@@ -6,6 +6,10 @@
 
 .vscode/
 
+#local key for play store
+android/app/keystore.jks
+android/app/keystore.jks.base64
+
 # Xcode
 #
 build/

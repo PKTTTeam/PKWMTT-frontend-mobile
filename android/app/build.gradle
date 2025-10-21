@@ -80,9 +80,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.pkwmapp"
+    namespace "com.trybik"
     defaultConfig {
-        applicationId "com.pkwmapp"
+        applicationId "com.trybik"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         def parts = npmVersion.tokenize('.')
@@ -107,7 +107,7 @@ android {
     }
       applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def appName = "PKWMApp"
+            def appName = "Trybik"
             def versionName = variant.versionName
             def buildType = variant.buildType.name
             def versionCode = variant.versionCode
@@ -139,7 +139,7 @@ afterEvaluate {
     tasks.each { task ->
         if (task.name.startsWith('bundle') && task.name.endsWith('Release')) {
             task.doLast {
-                def appName = "PKWMApp"
+                def appName = "Trybik"
                 def versionName = android.defaultConfig.versionName
                 
                 def bundleDir = file("${project.buildDir}/outputs/bundle/release/")

@@ -110,15 +110,15 @@ jobs:
       - name: Verify APK exists
         run: |
           APK_DIR="android/app/build/outputs/apk/release"
-          APK_FILE=$(find "$APK_DIR" -name "PKWMApp-*-release.apk" | head -1)
+          APK_FILE=$(find "$APK_DIR" -name "Trybik-*-release.apk" | head -1)
           echo "APK_FILE=$APK_FILE" >> $GITHUB_ENV   
 
       - name: Upload APK to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
-          files: android/app/build/outputs/apk/release/PKWMApp-*-release.apk
-          name: PKWMApp-${{ github.ref_name }}.apk
+          files: android/app/build/outputs/apk/release/Trybik-*-release.apk
+          name: Trybik-${{ github.ref_name }}.apk
 
       - name: Upload APK to Backend Server
         run: |
@@ -138,7 +138,7 @@ jobs:
         id: verify_aab
         run: |
           BUNDLE_DIR="android/app/build/outputs/bundle/release"
-          AAB_FILE=$(find "$BUNDLE_DIR" -name "PKWMApp-*-release.aab" | head -1)
+          AAB_FILE=$(find "$BUNDLE_DIR" -name "Trybik-*-release.aab" | head -1)
           echo "AAB file: $AAB_FILE"
           if [ -z "$AAB_FILE" ]; then
             echo "No AAB found!"
