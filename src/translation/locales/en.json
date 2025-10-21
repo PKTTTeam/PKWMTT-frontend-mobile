@@ -98,7 +98,7 @@
   "updateAvailable": "Update available!",
   "updateMessage": "Your application is outdated ! Installed version: {{currentVersion}}, latest version {{latestVersion}}",
   "updateButton": "Update",
-  "welcomeText": "Welcome to PKWM App!",
+  "welcomeText": "Welcome to Trybik!",
   "selectGroupText": "Select general group and subgroups to continue.",
   "selectCorrectGroups": "Please select all groups!",
   "lecture": "Lecture",
