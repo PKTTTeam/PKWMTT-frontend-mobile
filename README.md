@@ -1,4 +1,4 @@
-# 🚀 Trybik (frmly PKWM App)
+# 🚀 Trybik (formerly PKWM App)
 
 A mobile application for managing and viewing PKWM timetables, developed in React Native with TypeScript. It allows users to access schedules, view calendar events, and interact with key features such as activity legends and alerts.
 
