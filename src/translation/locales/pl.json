@@ -98,7 +98,7 @@
   "updateAvailable": "Dostepna aktualizacja!",
   "updateMessage": "Twoja aplikacja jest przestarzala! Zainstalowana wersja: {{currentVersion}}, najnowsza wersja {{latestVersion}}",
   "updateButton": "Zaktualizuj",
-  "welcomeText": "Witaj w PKWM App!",
+  "welcomeText": "Witaj w Trybiku!",
   "selectGroupText": "Wybierz grupe dziekanska i podgrupy, aby kontynuowac.",
   "selectCorrectGroups": "Proszę wybrać wszystkie wymagane grupy",
   "lecture": "Wykład",

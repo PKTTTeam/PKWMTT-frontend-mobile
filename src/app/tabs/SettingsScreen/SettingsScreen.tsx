@@ -5,12 +5,15 @@ import { createSettingsStyle } from './SettingsStyles.ts';
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
 import Switch from '../../../components/ui/Switch.tsx';
+
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
 import GroupCard from '../../../components/GroupCard.tsx';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '../../../store/authStore.ts';
 import { useTranslation } from 'react-i18next';
+
+import { useTimetableStore } from '../../../store/timetableStore.ts';
 
 import LanguageCard from '../../../components/LanguageCard.tsx';
 
@@ -73,6 +76,7 @@ function SettingsScreen() {
   const [wasValid, setWasValid] = useState(false);
   const { t } = useTranslation();
 
+  const { isOffline } = useTimetableStore();
   // theme initialization
   const theme = useTheme<Theme>();
   const SettingsStyles = createSettingsStyle(theme);
@@ -163,50 +167,50 @@ function SettingsScreen() {
             >
               <View style={{ zIndex: 5000 }}>
                 <GroupCard
+                  isOffline={isOffline}
                   groupTitle={t('deanGroup')}
                   groupName="GG"
                   activeDropdown={activeDropdown}
                   setActiveDropdown={setActiveDropdown}
                   hasError={hasError('dean')}
                 />
+                {options.lab.length !== 0 && (
+                  <GroupCard
+                    isOffline={isOffline}
+                    groupTitle={t('labGroup')}
+                    groupName="L"
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                    hasError={hasError('lab')}
+                  />
+                )}
+                {options.comp.length !== 0 && (
+                  <GroupCard
+                    isOffline={isOffline}
+                    groupTitle={t('compGroup')}
+                    groupName="K"
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                    hasError={hasError('comp')}
+                  />
+                )}
+                {options.proj.length !== 0 && (
+                  <GroupCard
+                    isOffline={isOffline}
+                    groupTitle={t('projGroup')}
+                    groupName="P"
+                    activeDropdown={activeDropdown}
+                    setActiveDropdown={setActiveDropdown}
+                    hasError={hasError('proj')}
+                  />
+                )}
               </View>
-              {options.lab.length !== 0 && (
-                <GroupCard
-                  groupTitle={t('labGroup')}
-                  groupName="L"
-                  activeDropdown={activeDropdown}
-                  setActiveDropdown={setActiveDropdown}
-                  hasError={hasError('lab')}
-                />
-              )}
-              {options.comp.length !== 0 && (
-                <GroupCard
-                  groupTitle={t('compGroup')}
-                  groupName="K"
-                  activeDropdown={activeDropdown}
-                  setActiveDropdown={setActiveDropdown}
-                  hasError={hasError('comp')}
-                />
-              )}
-              {options.proj.length !== 0 && (
-                <GroupCard
-                  groupTitle={t('projGroup')}
-                  groupName="P"
-                  activeDropdown={activeDropdown}
-                  setActiveDropdown={setActiveDropdown}
-                  hasError={hasError('proj')}
-                />
-              )}
             </View>
 
             {/* Toggle and language dropdown */}
             <View style={SettingsStyles.elementsSpacing}>
               <ShowEmptySlotsToggle />
               <ShowLectures />
-            </View>
-            {/* Theme toggle */}
-            <View style={SettingsStyles.elementsSpacing}>
-              <ToggleTheme />
             </View>
             <View style={SettingsStyles.elementsSpacing}>
               <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
@@ -216,6 +220,7 @@ function SettingsScreen() {
                 activeDropdown={activeDropdown}
                 setActiveDropdown={setActiveDropdown}
               />
+              <ToggleTheme />
             </View>
 
             {/* Rep auth */}

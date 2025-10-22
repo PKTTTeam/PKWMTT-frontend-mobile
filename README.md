@@ -1,4 +1,4 @@
-# 🚀 PKWM App
+# 🚀 Trybik (formerly PKWM App)
 
 A mobile application for managing and viewing PKWM timetables, developed in React Native with TypeScript. It allows users to access schedules, view calendar events, and interact with key features such as activity legends and alerts.
 
@@ -44,8 +44,8 @@ Before setting up the project, ensure you have the following installed:
 ### 1. Clone the repository
 
 ```shell
-git clone https://github.com/PKTTTeam/PKWMTT-frontend-mobile.git
-cd PKWMTT
+git clone https://github.com/TrybikDevelopers/Trybik-frontend-mobile.git
+cd Trybik-frontend-mobile
 ```
 
 ### 2. Install Dependencies
@@ -57,7 +57,7 @@ npm install
 
 ### 3. Run the App
 
-For iOS:
+For iOS: 
 
 ```shell
 npx react-native run ios
@@ -83,6 +83,12 @@ Run tests with:
 
 ```shell
 npm run test
+```
+
+Run linter with:
+
+```shell
+npm lint
 ```
 
 ---
@@ -113,8 +119,8 @@ This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE)
 
 For questions, suggestions, or collaboration:
 
-- **GitHub Issues:** [Submit here](https://github.com/PKTTTeam/PKWMTT-frontend-mobile/issues)
-- **Team:** [@PKTTTeam](https://github.com/PKTTTeam)
+- **GitHub Issues:** [Submit here](https://github.com/TrybikDevelopers/Trybik-frontend-mobile/issues)
+- **Team:** [@PKTTTeam](https://github.com/TrybikDevelopers)
 - **Developers**
   1. [Kacper Mirocha](https://github.com/Ereffe)
   2. [Patryk Stoncel](https://github.com/SharpP03)
@@ -123,8 +129,8 @@ For questions, suggestions, or collaboration:
 
 ## 🌐 Related Projects
 
-- [PKWM Timetable Backend](https://github.com/PKTTTeam/PKWMTT-backend)
-- [PKWM Timetable Frontend Web](https://github.com/PKTTTeam/PKWMTT-frontend-web)
+- [Trybik Backend](https://github.com/TrybikDevelopers/Trybik-backend)
+- [Trybik Frontend Web](https://github.com/TrybikDevelopers/PKWMTT-frontend-web)
 - [React Native Documentation](https://reactnative.dev/docs/getting-started)
 - [React Navigation](https://reactnavigation.org/)
 

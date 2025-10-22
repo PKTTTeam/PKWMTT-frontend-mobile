@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
@@ -15,6 +15,7 @@ interface Props {
   groupName: GroupName;
   activeDropdown: string | null;
   setActiveDropdown: (key: string | null) => void;
+  isOffline: boolean;
   hasError?: boolean;
 }
 
@@ -29,9 +30,6 @@ const createGroupSelectStyles = (theme: Theme, hasError: boolean) => {
   const { colors } = theme;
 
   return StyleSheet.create({
-    menuContainer: {
-      zIndex: 1000,
-    },
     text: {
       color: colors.textPrimary,
       fontSize: 14,
@@ -40,12 +38,13 @@ const createGroupSelectStyles = (theme: Theme, hasError: boolean) => {
     dropDownContainer: {
       backgroundColor: colors.Foreground,
       borderColor: colors.border,
+      zIndex: 5001,
     },
     dropDown: {
       backgroundColor: colors.Foreground,
       borderColor: hasError ? colors.error : colors.border,
       borderWidth: hasError ? 2 : 1,
-      zIndex: 1000,
+      zIndex: 5000,
     },
     container: {
       width: 130,
@@ -68,6 +67,7 @@ const GroupSelectDropdown: React.FC<Props> = ({
   activeDropdown,
   setActiveDropdown,
   hasError = false,
+  isOffline,
 }) => {
   const theme = useTheme<Theme>();
   const styles = createGroupSelectStyles(theme, hasError);
@@ -101,10 +101,11 @@ const GroupSelectDropdown: React.FC<Props> = ({
   const open = activeDropdown === key;
 
   return (
-    <View style={styles.menuContainer}>
+    <View style={styles.container}>
       {groupTitle && <Text style={styles.text}>{groupTitle}</Text>}
 
       <DropDownPicker
+        disabled={isOffline}
         open={open}
         value={value}
         items={items}
@@ -133,4 +134,4 @@ const GroupSelectDropdown: React.FC<Props> = ({
   );
 };
 
-export default React.memo(GroupSelectDropdown);
+export default GroupSelectDropdown;
