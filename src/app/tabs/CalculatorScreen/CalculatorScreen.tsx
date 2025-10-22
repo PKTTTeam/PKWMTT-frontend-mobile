@@ -58,7 +58,11 @@ function CalculatorScreen() {
   }, [deanGroup]);
 
   useEffect(() => {
-    fetchSubjectList().then(res => res && setAllSubjects(res));
+    fetchSubjectList()
+      .then(res => res && setAllSubjects(res))
+      .catch(err => {
+        console.error('Error fetching subject list: ' + err);
+      });
   }, [fetchSubjectList]);
 
   const saveSubjectList = async (list: CalcItem[]) => {
@@ -189,9 +193,11 @@ function CalculatorScreen() {
       <TouchableOpacity onPress={() => openEditMenu(item)}>
         <View style={styles.rootItemContainer}>
           <TouchableOpacity
-            style={            selectedItems.length > 0
-              ? styles.deleteButtonSelected
-              : styles.deleteButtonContainer}
+            style={
+              isSelected
+                ? styles.deleteButtonSelected
+                : styles.deleteButtonContainer
+            }
             onPress={() => selectItem(item.key)}
           >
             <Text style={styles.deleteButtonText}>
