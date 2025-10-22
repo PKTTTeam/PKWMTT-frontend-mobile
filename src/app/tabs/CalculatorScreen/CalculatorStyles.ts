@@ -6,7 +6,7 @@ export const createCalculatorStyles = (theme: Theme) => {
     // Background colors
     backgroundPrimary: theme.colors.Foreground,
     backgroundSecondary: theme.colors.userInput,
-    backgroundSelectItem: theme.colors.selectedItemBackground,
+    backgroundSelectItem: theme.colors.themeOpposite,
     backgroundItem: theme.colors.border,
     backgroundPopup: theme.colors.Foreground,
     backgroundHeader: theme.colors.border2,
@@ -36,7 +36,6 @@ export const createCalculatorStyles = (theme: Theme) => {
     cancelButtonBg: theme.colors.cancelAccent2,
   };
 
-
   return StyleSheet.create({
     container: {
       display: 'flex',
@@ -63,7 +62,7 @@ export const createCalculatorStyles = (theme: Theme) => {
       fontSize: 16,
       color: colors.textPrimary,
     },
-    grayLabel: {
+    Label: {
       color: colors.textSecondary,
       fontSize: 16,
       paddingLeft: 15,
@@ -79,7 +78,7 @@ export const createCalculatorStyles = (theme: Theme) => {
     },
     removeCourseMenuBtnText: {
       fontSize: 20,
-      color: "#fff",
+      color: '#fff',
     },
     buttonText: {
       color: colors.textPrimary,
@@ -276,28 +275,28 @@ export const createCalculatorStyles = (theme: Theme) => {
       width: '80%',
       height: 'auto',
       borderRadius: theme.borderRads.m,
-      
     },
-    deleteButtonBase: {
-      backgroundColor: colors.backgroundItem,
-      borderWidth: .75,
+    deleteButtonContainer: {
+      // backgroundColor: colors.backgroundSelectItem,
+      backgroundColor: colors.backgroundPrimary,
+      borderWidth: 0.75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,
-      width: 15,
-      height: 15,
+      width: 19,
+      height: 19,
       textAlignVertical: 'center',
       alignContent: 'center',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
     },
-    deleteButtonSelected:{
+    deleteButtonSelected: {
       backgroundColor: colors.backgroundSelectItem,
-      borderWidth: .75,
+      borderWidth: 0.75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,
-      width: 15,
-      height: 15,
+      width: 19,
+      height: 19,
       textAlignVertical: 'center',
       alignContent: 'center',
       display: 'flex',
@@ -305,7 +304,7 @@ export const createCalculatorStyles = (theme: Theme) => {
       justifyContent: 'center',
     },
     deleteButtonText: {
-      color: "#000",
+      color: colors.backgroundPrimary,
       fontSize: 10,
       alignItems: 'center',
       justifyContent: 'center',
@@ -315,6 +314,28 @@ export const createCalculatorStyles = (theme: Theme) => {
     noItemsInfo: {
       flex: 1,
       justifyContent: 'center',
+      alignItems: 'center',
+    },
+    subjectSelectError: {
+      marginLeft: 15,
+      width: 132,
+      height: 42,
+      backgroundColor: colors.borderError,
+      borderRadius: 8,
+      justifyContent: 'center',
+      display: 'flex',
+      alignContent: 'center',
+      alignItems: 'center',
+    },
+    subjectSelect: {
+      marginLeft: 15,
+      width: 132,
+      height: 42,
+      backgroundColor: '#0000',
+      borderRadius: 8,
+      justifyContent: 'center',
+      display: 'flex',
+      alignContent: 'center',
       alignItems: 'center',
     },
   });

@@ -120,6 +120,12 @@
   "placeholderCalc": "np. Mechanika",
   "placeholderCalc2": "np. 2",
   "ECTSVal": "Wartość ECTS",
-  "removeCourseMenuBtnText": "Usuń wybrany przedmiot",
+  "removeCourseMenuBtnText": "Usuń wybrane",
+  "editSubject": "Edytuj przedmiot",
+  "editSubjectText": "Wprowadź nazwę przedmiotu, wartość ECTS i ocenę",
+
+  "addSubjectErrorText": "Wybierz przedmiot",
+  "addECTSErrorText": "Wprowadź poprawną wartość ECTS",
+  "addGradeErrorText": "Wprowadź poprawną ocenę",
   "showLectures": "Ukryj wykłady"
 }
