@@ -37,7 +37,8 @@ export const createDropdownMenuStyles = (theme: Theme) => {
       alignItems: 'center',
     },
     modal: {
-      backgroundColor: '#222',
+      // backgroundColor: '#222',
+      backgroundColor: colors.dropdownBackgroundColor,
       borderRadius: 8,
       paddingVertical: 8,
       width: 200,
@@ -50,7 +51,8 @@ export const createDropdownMenuStyles = (theme: Theme) => {
       textAlign: 'center',
     },
     groupSelectText: {
-      color: 'white',
+      // color: 'white',
+      color: colors.dropdownTextColor,
       fontSize: 12,
     },
     placeholderText: {

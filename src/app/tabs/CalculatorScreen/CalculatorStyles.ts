@@ -277,7 +277,8 @@ export const createCalculatorStyles = (theme: Theme) => {
       borderRadius: theme.borderRads.m,
     },
     deleteButtonContainer: {
-      backgroundColor: colors.backgroundSelectItem,
+      // backgroundColor: colors.backgroundSelectItem,
+      backgroundColor: colors.backgroundPrimary,
       borderWidth: 0.75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,
