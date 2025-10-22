@@ -6,7 +6,7 @@ export const createCalculatorStyles = (theme: Theme) => {
     // Background colors
     backgroundPrimary: theme.colors.Foreground,
     backgroundSecondary: theme.colors.userInput,
-    backgroundSelectItem: theme.colors.selectedItemBackground,
+    backgroundSelectItem: theme.colors.themeOpposite,
     backgroundItem: theme.colors.border,
     backgroundPopup: theme.colors.Foreground,
     backgroundHeader: theme.colors.border2,
@@ -276,9 +276,8 @@ export const createCalculatorStyles = (theme: Theme) => {
       height: 'auto',
       borderRadius: theme.borderRads.m,
     },
-    deleteButtonBase: {
-      // backgroundColor: colors.backgroundItem,
-      backgroundColor: colors.backgroundItem,
+    deleteButtonContainer: {
+      backgroundColor: colors.backgroundSelectItem,
       borderWidth: 0.75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,
@@ -304,8 +303,7 @@ export const createCalculatorStyles = (theme: Theme) => {
       justifyContent: 'center',
     },
     deleteButtonText: {
-      // color: '#000',
-      color: '#000',
+      color: colors.backgroundPrimary,
       fontSize: 10,
       alignItems: 'center',
       justifyContent: 'center',
