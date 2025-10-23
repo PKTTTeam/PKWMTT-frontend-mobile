@@ -3,16 +3,17 @@ import { BAR_WIDTH, BAR_HEIGHT } from '../../constants/constants';
 
 interface ActiveBarProps {
   isActive: boolean;
+  dimmed?: boolean;
 }
 
-const ActiveBar: React.FC<ActiveBarProps> = ({ isActive }) => {
+const ActiveBar: React.FC<ActiveBarProps> = ({ isActive, dimmed }) => {
   return (
     // eslint-disable-next-line react/self-closing-comp
     <View
       style={[
         ActiveBarStyles.bar,
         // eslint-disable-next-line react-native/no-inline-styles
-        { backgroundColor: isActive ? '#8d95fe' : 'white' },
+        { backgroundColor: isActive ? '#8d95fe' : dimmed ? '#cfd3dc' : 'white' },
       ]}
     ></View>
   );
