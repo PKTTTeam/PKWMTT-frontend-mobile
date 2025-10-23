@@ -10,6 +10,8 @@ export interface SettingsState {
   activeDropdown: GroupKey | null;
   showEmptySlots: boolean;
   hideLectures: boolean;
+  hiddenSubjects: Record<string, string[]>; // key: dean group -> subject names to hide
+  hiddenLessonKeys: string[]; // unique keys for specific lessons hidden by user
   error: string | null;
   setupComplete: boolean;
 
@@ -24,5 +26,11 @@ export interface SettingsState {
     clearError: () => void;
     setSetupComplete: (value: boolean) => void;
     setHideLectures: (value: boolean) => void;
+    toggleSubjectHidden: (deanGroup: string, subject: string) => void;
+    setSubjectHidden: (deanGroup: string, subject: string, hidden: boolean) => void;
+    clearHiddenSubjectsForGroup: (deanGroup: string) => void;
+    hideLessonByKey: (key: string) => void;
+    unhideLessonByKey: (key: string) => void;
+    clearHiddenLessons: () => void;
   };
 }

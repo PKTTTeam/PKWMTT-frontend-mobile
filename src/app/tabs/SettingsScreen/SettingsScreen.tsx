@@ -6,6 +6,7 @@ import Switch from '../../../components/ui/Switch.tsx';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
 import ReportBugModal from '../../../components/modals/ReportBugModal.tsx';
+import SubjectVisibilityModal from '../../../components/modals/SubjectVisibilityModal.tsx';
 import GroupCard from '../../../components/GroupCard.tsx';
 import Toast from 'react-native-toast-message';
 import { useAuthStore } from '../../../store/authStore.ts';
@@ -50,6 +51,7 @@ function SettingsScreen() {
   const groups = useSettingsStore(state => state.groups);
   const [modalVisible, setModalVisible] = useState(false);
   const [bugModalVisible, setBugModalVisible] = useState(false);
+  const [subjectsModalVisible, setSubjectsModalVisible] = useState(false);
   const repGroup = useAuthStore(state => state.repGroup);
   const role = useAuthStore(state => state.role);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -181,9 +183,19 @@ function SettingsScreen() {
               <ShowEmptySlotsToggle />
               <ShowLectures />
             </View>
+            {/* Manage subjects visibility */}
+              <TouchableOpacity
+                style={SettingsStyles.secondaryButton}
+                onPress={() => setSubjectsModalVisible(true)}
+              >
+                <Text style={SettingsStyles.secondaryButtonText}>
+                  {t('manageSubjectsVisibility') || 'Manage subjects visibility'}
+                </Text>
+              </TouchableOpacity>
             <View style={SettingsStyles.elementsSpacing}>
               <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
             </View>
+            
             <View style={SettingsStyles.elementsSpacing}>
               <LanguageCard
                 activeDropdown={activeDropdown}
@@ -215,6 +227,8 @@ function SettingsScreen() {
                 </Text>
               </TouchableOpacity>
 
+              
+
               {repGroup && role && (
                 <View style={SettingsStyles.elementsSpacing}>
                   <Text style={SettingsStyles.labelText}>
@@ -232,6 +246,10 @@ function SettingsScreen() {
             <ReportBugModal
               visible={bugModalVisible}
               onClose={() => setBugModalVisible(false)}
+            />
+            <SubjectVisibilityModal
+              visible={subjectsModalVisible}
+              onClose={() => setSubjectsModalVisible(false)}
             />
           </View>
         }

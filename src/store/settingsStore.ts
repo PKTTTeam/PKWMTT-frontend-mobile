@@ -25,6 +25,8 @@ export const useSettingsStore = create<SettingsState>()(
       activeDropdown: null,
       showEmptySlots: true,
       hideLectures: false,
+  hiddenSubjects: {},
+  hiddenLessonKeys: [],
 
       error: null,
       setupComplete: false,
@@ -165,6 +167,49 @@ export const useSettingsStore = create<SettingsState>()(
         setHideLectures(value: boolean) {
           set({ hideLectures: value });
         },
+        toggleSubjectHidden(deanGroup, subject) {
+          set(state => {
+            const list = state.hiddenSubjects[deanGroup] || [];
+            const exists = list.includes(subject);
+            const next = exists ? list.filter(s => s !== subject) : [...list, subject];
+            return {
+              ...state,
+              hiddenSubjects: { ...state.hiddenSubjects, [deanGroup]: next },
+            };
+          });
+        },
+        setSubjectHidden(deanGroup, subject, hidden) {
+          set(state => {
+            const list = state.hiddenSubjects[deanGroup] || [];
+            const next = hidden
+              ? Array.from(new Set([...list, subject]))
+              : list.filter(s => s !== subject);
+            return {
+              ...state,
+              hiddenSubjects: { ...state.hiddenSubjects, [deanGroup]: next },
+            };
+          });
+        },
+        clearHiddenSubjectsForGroup(deanGroup) {
+          set(state => {
+            const copy = { ...state.hiddenSubjects };
+            delete copy[deanGroup];
+            return { ...state, hiddenSubjects: copy };
+          });
+        },
+        hideLessonByKey(key) {
+          set(state => ({
+            hiddenLessonKeys: Array.from(new Set([...state.hiddenLessonKeys, key])),
+          }));
+        },
+        unhideLessonByKey(key) {
+          set(state => ({
+            hiddenLessonKeys: state.hiddenLessonKeys.filter(k => k !== key),
+          }));
+        },
+        clearHiddenLessons() {
+          set({ hiddenLessonKeys: [] });
+        },
       },
     }),
     {
@@ -175,6 +220,8 @@ export const useSettingsStore = create<SettingsState>()(
         options: state.options,
         setupComplete: state.setupComplete,
         hideLectures: state.hideLectures,
+        hiddenSubjects: state.hiddenSubjects,
+        hiddenLessonKeys: state.hiddenLessonKeys,
       }),
     },
   ),
