@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -26,6 +26,8 @@ import {
 import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
+// HiddenLessonsModal removed; hide/unhide handled inline in hide mode
+// SubjectVisibilityModal is managed from Settings screen only
 import { useTranslation } from 'react-i18next';
 
 const LessonSeparator = () => {
@@ -69,6 +71,9 @@ const TimetableScreen = () => {
   const loading = useSettingsStore(state => state.loading);
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
   const hideLectures = useSettingsStore(state => state.hideLectures);
+  const hiddenSubjects = useSettingsStore(state => state.hiddenSubjects);
+  const hiddenLessonKeys = useSettingsStore(state => state.hiddenLessonKeys);
+  const { hideLessonByKey, unhideLessonByKey } = useSettingsActions();
 
   const { fetchInitialDeanGroups } = useSettingsActions();
 
@@ -153,6 +158,12 @@ const TimetableScreen = () => {
     initialiseData();
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [groups.dean, groups.comp, groups.lab, groups.proj]);
+
+  const deanKey = groups.dean || '';
+  const hiddenSubjectsSet = useMemo(() => new Set(hiddenSubjects[deanKey] || []), [hiddenSubjects, deanKey]);
+  const hiddenLessonsSet = useMemo(() => new Set(hiddenLessonKeys), [hiddenLessonKeys]);
+  // No standalone modal for hidden lessons anymore
+  const [hideMode, setHideMode] = useState(false);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -250,7 +261,7 @@ const TimetableScreen = () => {
       isOddWeek,
     );
 
-    const isEmptySlot = !item.name;
+  const isEmptySlot = !item.name;
 
     if (isEmptySlot) {
       return (
@@ -269,8 +280,44 @@ const TimetableScreen = () => {
       );
     }
 
+    // Build a unique key for a lesson instance (rowId + classroom + day + week parity)
+    const dayName = timetable[currentDayIndex]?.name || '';
+    const lessonKey = `${dayName}|${isOddWeek ? 'odd' : 'even'}|${item.rowId}|${item.classroom}|${item.name}`;
+  // Subject hidden state: check composite key subject|type, with fallback to legacy subject-only key
+  const subjectHidden = hiddenSubjectsSet.has(`${item.name}|${item.type}`) || hiddenSubjectsSet.has(item.name);
+    const lessonHidden = hiddenLessonsSet.has(lessonKey);
+
+    // In normal mode, hide filtered lessons as before
+    if (!hideMode && (subjectHidden || lessonHidden)) {
+      if (!showEmptySlots) return null;
+      return (
+        <ScheduleItem
+          subject={''}
+          startTime={startTime}
+          endTime={endTime}
+          room={undefined}
+          bgColor={''}
+          type={''}
+          letterColor="white"
+          isActive={false}
+        />
+      );
+    }
+
+    // In hide mode, show hidden items but dimmed, and toggle hide/unhide on tap
+    const isDimmed = hideMode && (subjectHidden || lessonHidden);
     return (
-      <>
+      <TouchableOpacity
+        activeOpacity={0.9}
+        onPress={() => {
+          if (!hideMode) return;
+          if (lessonHidden) {
+            unhideLessonByKey(lessonKey);
+          } else {
+            hideLessonByKey(lessonKey);
+          }
+        }}
+      >
         <ScheduleItem
           subject={item.name}
           startTime={startTime}
@@ -280,19 +327,43 @@ const TimetableScreen = () => {
           type={getCorrectLetter(item.type)}
           letterColor="white"
           isActive={isActive}
+          dimmed={isDimmed}
         />
-      </>
+      </TouchableOpacity>
     );
   };
 
   const getCurrentDayData = () => {
     const currentDay = timetable[currentDayIndex];
     if (!currentDay) return [];
-    let lessons = isOddWeek ? currentDay.odd : currentDay.even;
+  let lessons = isOddWeek ? currentDay.odd : currentDay.even;
 
     if (hideLectures) {
       lessons = lessons.filter(item => item.type !== 'LECTURE');
     }
+    // If any item for a given hour is hidden, suppress the entire hour (do not show other possible items)
+    const hiddenRowIds = new Set<number>();
+    if (hiddenSubjectsSet.size > 0) {
+      lessons.forEach(l => {
+        const composite = `${l.name}|${l.type}`;
+        if (hiddenSubjectsSet.has(composite) || hiddenSubjectsSet.has(l.name)) {
+          hiddenRowIds.add(l.rowId);
+        }
+      });
+    }
+    if (!hideMode) {
+      lessons.forEach(l => {
+        const key = `${currentDay.name}|${isOddWeek ? 'odd' : 'even'}|${l.rowId}|${l.classroom}|${l.name}`;
+        if (hiddenLessonsSet.has(key)) {
+          hiddenRowIds.add(l.rowId);
+        }
+      });
+    }
+    // Remove all lessons for hidden hours
+    if (hiddenRowIds.size > 0) {
+      lessons = lessons.filter(l => !hiddenRowIds.has(l.rowId));
+    }
+
     if (!showEmptySlots) return lessons;
 
     return getFullSchedule(aHours, lessons);
@@ -343,6 +414,7 @@ const TimetableScreen = () => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.controlsRow}>
         {/* Week indicator */}
         <TouchableOpacity
           style={styles.weekIndicator}
@@ -353,6 +425,23 @@ const TimetableScreen = () => {
           <Text style={styles.weekText}>{getWeekTypeText()}</Text>
         </TouchableOpacity>
 
+        {/* Hide mode and subject visibility controls */}
+              <TouchableOpacity style={styles.weekIndicator} onPress={() => setHideMode(v => !v)}>
+                <Icon name="edit" size={15} color={'white'} />
+                <Text style={styles.weekText}>
+                  {hideMode ? t('hideModeOn') || 'Hide mode: ON' : t('hideModeOff') || 'Hide mode: OFF'}
+                </Text>
+              </TouchableOpacity>
+
+        </View>
+
+              {hideMode && (
+                <View>
+                  <Text style={[styles.weekText, { marginBottom: 10, textAlign: 'center',opacity: 0.8}]}>
+                    {t('editModeInfo') || 'Tap lessons to hide/unhide them'}
+                  </Text>
+                </View>
+              )}
         {/* Lessons list */}
         {timetable[currentDayIndex] && (
           <FlatList
@@ -360,7 +449,7 @@ const TimetableScreen = () => {
             data={getCurrentDayData()}
             renderItem={renderLesson}
             keyExtractor={item =>
-              `${item.rowId}-${item.classroom}-${isOddWeek ? 'odd' : 'even'}`
+              `${item.rowId}-$lassroom}-${isOddWeek ? 'odd' : 'even'}`
             }
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContainer}

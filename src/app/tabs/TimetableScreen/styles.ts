@@ -71,6 +71,12 @@ export const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
   },
+  controlsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+    columnGap: 8,
+  },
 
   // Required filters block
   requiredFiltersContainer: {
