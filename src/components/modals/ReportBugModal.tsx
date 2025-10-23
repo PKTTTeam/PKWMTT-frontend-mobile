@@ -13,7 +13,7 @@ import {
 import Toast from 'react-native-toast-message';
 import { useTranslation } from 'react-i18next';
 
-import { reportBug } from '../../services/settings/bugService.ts';
+import { reportBug } from '../../services/settings/SettingsService.ts';
 
 interface ReportBugModalProps {
   visible: boolean;

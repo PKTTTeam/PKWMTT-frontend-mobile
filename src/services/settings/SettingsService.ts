@@ -7,3 +7,11 @@ export async function getOtpResponse(otp: string) {
     query: { c: otp },
   });
 }
+
+// Report a bug to backend (placeholder endpoint)
+export async function reportBug(description: string): Promise<void> {
+  await apiFetch('/feedback/report-bug', {
+    method: 'POST',
+    body: JSON.stringify({ description }),
+  });
+}
