@@ -107,6 +107,15 @@
   "project": "Projekt",
   "seminar": "Seminarium",
   "other": "Inne",
+  "types": {
+    "LECTURE": "Wykład",
+    "LABORATORY": "Laboratorium",
+    "COMPUTER_LABORATORY": "Laboratorium Komputerowe",
+    "PROJECT": "Projekt",
+    "EXERCISES": "Ćwiczenia",
+    "SEMINAR": "Seminarium",
+    "OTHER": "Inne"
+  },
   "subjectName": "Przedmiot",
   "gradeName": "Ocena",
   "noItemsAddedInfoText": "Brak dodanych przedmiotów",
@@ -120,7 +129,14 @@
   "placeholderCalc2": "np. 2",
   "ECTSVal": "Wartość ECTS",
   "removeCourseMenuBtnText": "Usuń wybrany przedmiot",
-  "showLectures": "Ukryj wykłady"
+  "showLectures": "Ukryj wykłady",
+  "manageSubjectsVisibility": "Zarządzaj widocznością przedmiotów",
+  "subjectsVisibilityDescription": "Wybierz, które przedmioty ukryć w tej grupie.",
+  "clearAllButton": "Wyczyść wszystko",
+  "hiddenLessonsTitle": "Ukryte zajęcia",
+  "hiddenLessonsSubtitle": "Kliknij, aby odkryć lub wyczyścić wszystko.",
+  "hideModeOn": "Tryb edycji: WŁ.",
+  "hideModeOff": "Tryb edycji: WYŁ."
   ,
   "reportBug": "Zgłoś błąd",
   "reportBugDescription": "Opisz napotkany problem.",
@@ -131,5 +147,7 @@
   "success": "Sukces",
   "error": "Błąd",
   "submit": "Wyślij",
-  "cancel": "Anuluj"
+  "cancel": "Anuluj",
+  "accept": "Akceptuj",
+  "editModeInfo": "Kliknij zajęcia, aby je ukryć/odkryć"
 }

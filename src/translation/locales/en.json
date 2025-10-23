@@ -107,6 +107,15 @@
   "project": "Project",
   "seminar": "Seminar",
   "other": "Other",
+  "types": {
+    "LECTURE": "Lecture",
+    "LABORATORY": "Laboratory",
+    "COMPUTER_LABORATORY": "Computer Laboratory",
+    "PROJECT": "Project",
+    "EXERCISES": "Exercises",
+    "SEMINAR": "Seminar",
+    "OTHER": "Other"
+  },
   "subjectName": "Subject",
   "gradeName": "Grade",
   "noItemsAddedInfoText": "No added subjects",
@@ -120,8 +129,14 @@
   "placeholderCalc2": "eg. 2",
   "ECTSVal": "ECTS Value",
   "removeCourseMenuBtnText": "Remove selected",
-  "showLectures": "Hide lectures"
-  ,
+  "showLectures": "Hide lectures",
+  "manageSubjectsVisibility": "Manage subjects visibility",
+  "subjectsVisibilityDescription": "Toggle which subjects should be hidden for this group.",
+  "clearAllButton": "Clear all",
+  "hiddenLessonsTitle": "Hidden lessons",
+  "hiddenLessonsSubtitle": "Tap to unhide or clear all.",
+  "hideModeOn": "Edit mode: ON",
+  "hideModeOff": "Edit mode: OFF",
   "reportBug": "Report a bug",
   "reportBugDescription": "Describe the problem you encountered.",
   "enterBugDescription": "Please describe the issue.",
@@ -131,5 +146,7 @@
   "success": "Success",
   "error": "Error",
   "submit": "Submit",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "accept": "Accept",
+  "editModeInfo": "Tap lessons to hide/unhide them"
 }
