@@ -5,6 +5,8 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
+  useWindowDimensions,
+  ScrollView,
 } from 'react-native';
 import ScheduleItem from '../../../components/ScheduleItem';
 import { TimetableItem } from '../../../types/global';
@@ -19,7 +21,7 @@ import checkActiveLesson from '../../../services/timetable/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { useTheme } from '@shopify/restyle';
+import { color, useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
 import { createTimetableStyles } from './timetableStyles.ts';
 
@@ -33,7 +35,7 @@ import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
 import { useTranslation } from 'react-i18next';
-import LessonSeparator from './LessonSeparator.tsx'
+import LessonSeparator from './LessonSeparator.tsx';
 
 const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-back-ios" color={color} size={size} />
@@ -76,6 +78,9 @@ const TimetableScreen = () => {
   const hideLectures = useSettingsStore(state => state.hideLectures);
 
   const { fetchInitialDeanGroups } = useSettingsActions();
+
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
 
   const navigationRef = useRef({
     currentDayIndex,
@@ -318,64 +323,91 @@ const TimetableScreen = () => {
 
   return (
     <View style={styles.bgContainer}>
-      <View style={styles.container}>
-        {/* Navigation header */}
-        <View style={styles.navigationHeader}>
+      {!isLandscape && (
+        <View style={styles.container}>
+          {/* Navigation header */}
+          <View style={styles.navigationHeader}>
+            <TouchableOpacity
+              style={styles.navButton}
+              onPress={navigateToPrevDay}
+            >
+              <RenderLeftArrow color={theme.colors.navButtonIcon} size={18} />
+            </TouchableOpacity>
+
+            <Text style={styles.dayTitle}>
+              {t(
+                `dayNames.${
+                  dayNameMap[timetable[currentDayIndex]?.name] || 'Monday'
+                }`,
+              )}
+            </Text>
+
+            <TouchableOpacity
+              style={styles.navButton}
+              onPress={navigateToNextDay}
+            >
+              <RenderRightArrow color={theme.colors.navButtonIcon} size={18} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Week indicator */}
           <TouchableOpacity
-            style={styles.navButton}
-            onPress={navigateToPrevDay}
+            style={styles.weekIndicator}
+            onPress={() => setIsOddWeek(prev => !prev)}
+            hitSlop={15}
           >
-            <RenderLeftArrow color={theme.colors.navButtonIcon} size={18} />
+            <Icon
+              name={'sync-alt'}
+              size={15}
+              color={theme.colors.themeOpposite}
+            />
+            <Text style={styles.weekText}>{getWeekTypeText()}</Text>
           </TouchableOpacity>
 
-          <Text style={styles.dayTitle}>
-            {t(
-              `dayNames.${
-                dayNameMap[timetable[currentDayIndex]?.name] || 'Monday'
-              }`,
-            )}
-          </Text>
-
-          <TouchableOpacity
-            style={styles.navButton}
-            onPress={navigateToNextDay}
-          >
-            <RenderRightArrow color={theme.colors.navButtonIcon} size={18} />
-          </TouchableOpacity>
+          {/* Lessons list */}
+          {timetable[currentDayIndex] && (
+            <FlatList
+              key={showEmptySlots ? 'with-empty' : 'without-empty'}
+              data={getCurrentDayData()}
+              renderItem={renderLesson}
+              keyExtractor={item =>
+                `${item.rowId}-${item.classroom}-${isOddWeek ? 'odd' : 'even'}`
+              }
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.listContainer}
+              ItemSeparatorComponent={LessonSeparator}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+            />
+          )}
         </View>
+      )}
+      {isLandscape && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {timetable.map(day => {
+            const lessons = isOddWeek ? day.odd : day.even;
+            const fullLessons = getFullSchedule(academicHours, lessons);
+              
 
-        {/* Week indicator */}
-        <TouchableOpacity
-          style={styles.weekIndicator}
-          onPress={() => setIsOddWeek(prev => !prev)}
-          hitSlop={15}
-        >
-          <Icon
-            name={'sync-alt'}
-            size={15}
-            color={theme.colors.themeOpposite}
-          />
-          <Text style={styles.weekText}>{getWeekTypeText()}</Text>
-        </TouchableOpacity>
+            return (
+              <View key={day.name}>
+                {/* Nagłówek dnia */}
+                <Text style={styles.dayTitle}>
+                  {t(`dayNames.${dayNameMap[day.name]}`)}
+                </Text>
 
-        {/* Lessons list */}
-        {timetable[currentDayIndex] && (
-          <FlatList
-            key={showEmptySlots ? 'with-empty' : 'without-empty'}
-            data={getCurrentDayData()}
-            renderItem={renderLesson}
-            keyExtractor={item =>
-              `${item.rowId}-${item.classroom}-${isOddWeek ? 'odd' : 'even'}`
-            }
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.listContainer}
-            ItemSeparatorComponent={LessonSeparator}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          />
-        )}
-      </View>
+                {/* Lekcje */}
+                {fullLessons.map(lesson => (
+                  <View key={`${lesson.rowId}-${lesson.classroom}`}>
+                    {renderLesson({ item: lesson })}
+                  </View>
+                ))}
+              </View>
+            );
+          })}
+        </ScrollView>
+      )}
 
       <ConnectionAlertModal
         visible={!!error}
