@@ -9,6 +9,8 @@ import {
   ScrollView,
 } from 'react-native';
 import ScheduleItem from '../../../components/ScheduleItem';
+import ScheduleItemLandscape from '../../../components/ScheduleItemLandscape';
+import HourDisplay from '../../../components/ui/HourDisplay';
 import { TimetableItem } from '../../../types/global';
 import {
   getAcademicHours,
@@ -21,7 +23,7 @@ import checkActiveLesson from '../../../services/timetable/checkActiveLesson';
 import getCurrentWeekType from '../../../utils/getCurrentWeekType';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { color, useTheme } from '@shopify/restyle';
+import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
 import { createTimetableStyles } from './timetableStyles.ts';
 
@@ -258,6 +260,19 @@ const TimetableScreen = () => {
 
     const isEmptySlot = !item.name;
 
+    if (isLandscape) {
+      return (
+        <ScheduleItemLandscape
+          subject={item.name}
+          room={item.classroom}
+          bgColor={getCorrectColor(getCorrectLetter(item.type))}
+          type={getCorrectLetter(item.type)}
+          letterColor="white"
+          isActive={isActive}
+        />
+      );
+    }
+
     if (isEmptySlot) {
       return (
         <>
@@ -384,28 +399,56 @@ const TimetableScreen = () => {
         </View>
       )}
       {isLandscape && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {timetable.map(day => {
-            const lessons = isOddWeek ? day.odd : day.even;
-            const fullLessons = getFullSchedule(academicHours, lessons);
-              
-
-            return (
-              <View key={day.name}>
-                {/* Nagłówek dnia */}
-                <Text style={styles.dayTitle}>
-                  {t(`dayNames.${dayNameMap[day.name]}`)}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={{ flexDirection: 'row' }}>
+              {/* kolumna godzin */}
+              <View style={{ marginRight: 10 }}>
+                <Text style={[styles.dayTitle, { textAlign: 'center' }]}>
+                  {t('Hours')}
                 </Text>
 
-                {/* Lekcje */}
-                {fullLessons.map(lesson => (
-                  <View key={`${lesson.rowId}-${lesson.classroom}`}>
-                    {renderLesson({ item: lesson })}
-                  </View>
-                ))}
+                {academicHours.map((hour, index) => {
+                  const [startTime, endTime] = hour
+                    .split('-')
+                    .map(s => s.trim());
+                  return (
+                    <View key={index} style={{ paddingVertical: 5 }}>
+                      <HourDisplay
+                        startTime={startTime}
+                        endTime={endTime}
+                        isActive={false}
+                      />
+                    </View>
+                  );
+                })}
               </View>
-            );
-          })}
+
+              {/* Kolumny dni */}
+              {timetable.map(day => {
+                const lessons = isOddWeek ? day.odd : day.even;
+                const fullLessons = getFullSchedule(academicHours, lessons);
+
+                return (
+                  <View key={day.name} style={{ marginRight: 10 }}>
+                    <Text style={[styles.dayTitle, { textAlign: 'center' }]}>
+                      {t(`dayNames.${dayNameMap[day.name]}`)}
+                    </Text>
+
+                    {/* Lekcje */}
+                    {fullLessons.map(lesson => (
+                      <View
+                        key={`${lesson.rowId}-${lesson.classroom}`}
+                        style={{ paddingVertical: 5 }}
+                      >
+                        {renderLesson({ item: lesson })}
+                      </View>
+                    ))}
+                  </View>
+                );
+              })}
+            </View>
+          </ScrollView>
         </ScrollView>
       )}
 

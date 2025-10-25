@@ -26,6 +26,19 @@ export interface ScheduleItemProps {
   letterColor: string;
   isActive: boolean;
 }
+export interface ScheduleItemLandscapeProps {
+  subject: string;
+  room?: string;
+  type: string;
+  bgColor: string;
+  letterColor: string;
+  isActive: boolean;
+}
+export interface HourDisplayProps {
+  isActive: boolean;
+  startTime: string;
+  endTime: string;
+}
 
 //TODO: to be outsourced to another file
 export interface TimetableItem {
