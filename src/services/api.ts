@@ -28,7 +28,7 @@ async function apiFetch<T = unknown>(
   const queryString = searchParams.toString()
     ? `?${searchParams.toString()}`
     : '';
-  console.log(`${API_URL}${path}${queryString}`);
+  // console.log(`${API_URL}${path}${queryString}`);
 
   const isBodyRequest =
     rest.method &&
@@ -66,7 +66,7 @@ async function apiFetch<T = unknown>(
     );
   }
 
-  console.log('responsedata =', parsed);
+  // console.log('responsedata =', parsed);
   return parsed as T;
 }
 
