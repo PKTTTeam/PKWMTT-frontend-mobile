@@ -38,8 +38,8 @@ export const darkTheme = createTheme({
     border: palette.darkColors.gray,
     border2: palette.darkColors.gray,
 
-    selectedAccent: palette.accentColors.tonedBlue,
-    confirmAccent: palette.accentColors.lightPurple,
+    selectedAccent: palette.accentColors.wmcolor,
+    confirmAccent: palette.accentColors.wmcolor,
     cancelAccent: palette.accentColors.red,
     confirmAccent2: palette.darkColors.lightGray2,
     cancelAccent2: palette.darkColors.darkGray2,
@@ -56,7 +56,7 @@ export const darkTheme = createTheme({
 
     headerBg: palette.darkColors.black,
     tabBarInactiveTintColor: palette.darkColors.white,
-    tabBarActiveTintColor: palette.accentColors.lightPurple,
+    tabBarActiveTintColor: palette.accentColors.wmcolor,
 
     settingsBackground: palette.SettingsScreenColors.elementsBackgroundDark,
     switchOnBg: palette.darkColors.gray,
@@ -80,8 +80,8 @@ export const lightTheme = createTheme({
     border: palette.lightColors.lightTeal,
     border2: palette.lightColors.mutedTeal,
 
-    selectedAccent: palette.accentColors.tonedBlue,
-    confirmAccent: palette.accentColors.tonedBlue,
+    selectedAccent: palette.accentColors.wmcolor,
+    confirmAccent: palette.accentColors.wmcolor,
     cancelAccent: palette.accentColors.red,
     confirmAccent2: palette.lightColors.lightTeal2,
     cancelAccent2: palette.lightColors.white,
@@ -98,7 +98,7 @@ export const lightTheme = createTheme({
 
     headerBg: palette.headerThemeColors.lightBackground,
     tabBarInactiveTintColor: palette.darkColors.paleGray,
-    tabBarActiveTintColor: palette.accentColors.tonedBlue,
+    tabBarActiveTintColor: palette.accentColors.wmcolor,
 
     settingsBackground: palette.SettingsScreenColors.elementsBackgroundLight,
     switchOnBg: palette.accentColors.mutedPurple,
