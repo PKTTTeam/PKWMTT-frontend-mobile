@@ -43,7 +43,11 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
           activeOpacity={1}
           onPress={e => e.stopPropagation()}
         >
-          <TouchableOpacity style={styles.closeBtn} onPress={onClose} hitSlop={20}>
+          <TouchableOpacity
+            style={styles.closeBtn}
+            onPress={onClose}
+            hitSlop={20}
+          >
             <Icon name="close" size={12} style={styles.icon} />
           </TouchableOpacity>
 
@@ -52,11 +56,7 @@ const ActivityLegendModal: React.FC<ActivityLegendModalProps> = ({
           <View style={styles.items}>
             {activityTypes.map(({ letter, label }) => (
               <View key={letter} style={styles.itemRow}>
-                <LetterIcon
-                  bgColor={getCorrectColor(letter)}
-                  letter={letter}
-                  letterColor="white"
-                />
+                <LetterIcon bgColor={getCorrectColor(letter)} letter={letter} />
                 <Text style={styles.itemText}>{label}</Text>
               </View>
             ))}
