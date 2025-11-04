@@ -38,6 +38,7 @@ import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
 import { useTranslation } from 'react-i18next';
 import LessonSeparator from './LessonSeparator.tsx';
+import LessonSeparatorLandscape from './LessonSeparatorLandscape.tsx';
 
 const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-back-ios" color={color} size={size} />
@@ -260,6 +261,19 @@ const TimetableScreen = () => {
 
     const isEmptySlot = !item.name;
 
+    if (isLandscape && isEmptySlot) {
+      return (
+        <ScheduleItemLandscape
+          subject={''}
+          room={undefined}
+          bgColor={''}
+          type={''}
+          letterColor="white"
+          isActive={isActive}
+        />
+      );
+    }
+
     if (isLandscape) {
       return (
         <ScheduleItemLandscape
@@ -398,14 +412,35 @@ const TimetableScreen = () => {
           )}
         </View>
       )}
+      {/* TODO: aplikacja MOŻE crashowac po przejściu do innego taba */}
+      {/* TODO: Wystylowanie tabeli */}
       {isLandscape && (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={{ flexDirection: 'row' }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="always"
+        >
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyboardShouldPersistTaps="always"
+          >
+            <View style={{ flexDirection: 'row', marginLeft: 10 }}>
               {/* kolumna godzin */}
-              <View style={{ marginRight: 10 }}>
+              <View style={{ marginRight: 20 }}>
+                {/* TODO: niedziałający button (mały boszar, histlop nie pomaga) */}
+                {/* <TouchableOpacity
+                  style={styles.weekIndicator}
+                  onPress={() => setIsOddWeek(prev => !prev)}
+                  hitSlop={50}
+                >
+                  <Icon
+                    name={'sync-alt'}
+                    size={40}
+                    color={theme.colors.themeOpposite}
+                  />
+                </TouchableOpacity> */}
                 <Text style={[styles.dayTitle, { textAlign: 'center' }]}>
-                  {t('Hours')}
+                  {isOddWeek ? t('oddWeek') : t('evenWeek')}
                 </Text>
 
                 {academicHours.map((hour, index) => {
@@ -413,12 +448,13 @@ const TimetableScreen = () => {
                     .split('-')
                     .map(s => s.trim());
                   return (
-                    <View key={index} style={{ paddingVertical: 5 }}>
+                    <View key={index} style={{ paddingVertical: 3, gap: 5 }}>
                       <HourDisplay
                         startTime={startTime}
                         endTime={endTime}
                         isActive={false}
                       />
+                      {index < academicHours.length - 1 && <LessonSeparator />}
                     </View>
                   );
                 })}
@@ -436,12 +472,13 @@ const TimetableScreen = () => {
                     </Text>
 
                     {/* Lekcje */}
-                    {fullLessons.map(lesson => (
+                    {fullLessons.map((lesson, index) => (
                       <View
                         key={`${lesson.rowId}-${lesson.classroom}`}
-                        style={{ paddingVertical: 5 }}
+                        style={{ paddingVertical: 3, gap: 5 }}
                       >
                         {renderLesson({ item: lesson })}
+                        {index < fullLessons.length - 1 && <LessonSeparator />}
                       </View>
                     ))}
                   </View>

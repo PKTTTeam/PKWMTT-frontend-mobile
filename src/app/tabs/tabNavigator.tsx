@@ -11,7 +11,7 @@ import { HEADER_HEIGHT, TAB_BAR_HEIGHT } from '../../constants/constants';
 
 import HeaderLogoLight from '../../assets/svg/HeaderLogoWhite.svg';
 import HeaderLogoDark from '../../assets/svg/HeaderLogoBlack.svg';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { ActivityLegend } from '../../components/ActivityLegend';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@shopify/restyle';
@@ -32,6 +32,7 @@ const getScreenOptions = (
   insets: any,
   styles: ReturnType<typeof tabNavigatorStyles>,
   themeMode: SettingsState['themeMode'],
+  isLandscape: boolean,
 ) => ({
   headerShown: true,
   headerTitle: () =>
@@ -55,7 +56,7 @@ const getScreenOptions = (
 
   headerStyle: {
     backgroundColor: styles.mainBg,
-    height: HEADER_HEIGHT,
+     height: isLandscape ? HEADER_HEIGHT * 0.5 : HEADER_HEIGHT,
     paddingTop: insets.top,
   },
 
@@ -64,7 +65,7 @@ const getScreenOptions = (
   },
 
   tabBarStyle: {
-    height: TAB_BAR_HEIGHT + insets.bottom,
+    height: isLandscape ? (TAB_BAR_HEIGHT + insets.bottom)*0.7 : TAB_BAR_HEIGHT + insets.bottom,
     paddingBottom: insets.bottom > 0 ? 10 : 15,
     paddingTop: 10,
     backgroundColor: styles.mainBg,
@@ -114,6 +115,9 @@ const TabNavigator: React.FC = () => {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
 
+  const { width, height } = useWindowDimensions();
+  const isLandscape = width > height;
+
   //style initialization
   const theme = useTheme<Theme>();
   const styles = tabNavigatorStyles(theme);
@@ -121,7 +125,7 @@ const TabNavigator: React.FC = () => {
   // const currentLogo = themeMode === 'dark' ? HeaderLogoLight : HeaderLogoDark;
 
   return (
-    <Tab.Navigator screenOptions={getScreenOptions(insets, styles, themeMode)}>
+    <Tab.Navigator screenOptions={getScreenOptions(insets, styles, themeMode, isLandscape)}>
       <Tab.Screen
         name="timetable"
         component={TimetableScreen}

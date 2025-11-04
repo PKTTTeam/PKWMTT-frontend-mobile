@@ -11,7 +11,6 @@ export const createScheduleItemStyles = (theme: Theme) => {
 
   return StyleSheet.create({
     ScreenContainer: {
-
       flexDirection: 'row',
       backgroundColor: colors.foreground,
       padding: 16,
@@ -49,6 +48,8 @@ export const createScheduleItemStyles = (theme: Theme) => {
       marginTop: 10,
     },
   });
+
+  
 };
 
 export default createScheduleItemStyles;

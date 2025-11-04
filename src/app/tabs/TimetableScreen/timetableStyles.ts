@@ -76,6 +76,12 @@ export const createTimetableStyles = (theme: Theme) => {
     marginVertical: 0,
     opacity: 0.8,
   },
+  separatorLandscape: {
+    height: 1,
+    backgroundColor: colors.separatorColor, // subtle dark gray line
+    marginVertical: 0,
+    opacity: 0.8,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',

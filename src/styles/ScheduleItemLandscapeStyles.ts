@@ -14,11 +14,11 @@ export const createScheduleItemStyles = (theme: Theme) => {
 
       flexDirection: 'row',
       backgroundColor: colors.foreground,
-      padding: 16,
+      padding: 8,
       borderRadius: 8,
       alignItems: 'center',
       justifyContent: 'flex-start',
-      marginHorizontal: 4,
+      marginHorizontal: 2,
     },
     timeAndSubject: {
       flex: 1,
