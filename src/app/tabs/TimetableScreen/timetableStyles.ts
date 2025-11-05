@@ -67,6 +67,13 @@ export const createTimetableStyles = (theme: Theme) => {
     textAlign: 'center',
     flex: 1,
   },
+  dayTitleLandscape: {
+    color: colors.dayTitle,
+    fontSize: 16,
+    fontFamily: 'InterSemiBold',
+    textAlign: 'center',
+    flex: 1,
+  },
   listContainer: {
     paddingBottom: 10,
   },

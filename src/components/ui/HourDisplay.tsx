@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useTheme } from '@shopify/restyle';
+import { backgroundColor, useTheme } from '@shopify/restyle';
 import { Theme } from '../../../src/styles/globalTheme/theme';
 import { createScheduleItemStyles } from '../../styles/ScheduleItemLandscapeStyles';
 import TimeRange from '../ui/TimeRange';
-import ActiveBar from '../ui/ActiveBar';
 import type { HourDisplayProps } from '../../types/global';
 import { BAR_WIDTH, BAR_HEIGHT } from '../../constants/constants';
 
@@ -17,13 +16,7 @@ const HourDisplay: React.FC<HourDisplayProps> = ({
   const styles = createScheduleItemStyles(theme);
 
   return (
-    <View
-      style={[
-        styles.ScreenContainer,
-        isActive ? { backgroundColor: theme.colors.confirmAccent + '7e' } : {},
-      ]}
-    >
-      {/* <ActiveBar isActive={isActive} /> */}
+    <View style={[styles.ScreenContainer, { backgroundColor: 'transparent' }]}>
       <View style={ActiveBarStyles.bar} />
       <View style={styles.timeAndSubject}>
         <TimeRange timeStart={startTime} timeEnd={endTime} />

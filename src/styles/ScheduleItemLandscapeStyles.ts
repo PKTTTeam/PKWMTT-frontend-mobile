@@ -8,45 +8,40 @@ export const createScheduleItemStyles = (theme: Theme) => {
     textPrimary: theme.colors.textPrimary,
   };
 
-
   return StyleSheet.create({
     ScreenContainer: {
-
+      height: 70,
       flexDirection: 'row',
       backgroundColor: colors.foreground,
-      padding: 8,
+      padding: 6,
       borderRadius: 8,
       alignItems: 'center',
       justifyContent: 'flex-start',
       marginHorizontal: 2,
     },
-    timeAndSubject: {
+    contentContainer: {
+      flex: 1,
+      flexDirection: 'row', 
+      justifyContent: 'space-between',
+      height: '100%',
+      paddingHorizontal: 6,
+    },
+    leftColumn: {
       flex: 1,
       flexDirection: 'column',
-      paddingLeft: 8,
+      justifyContent: 'space-between',
+    },
+    rightColumn: {
+      alignItems: 'flex-end',
+      justifyContent: 'flex-start', 
+      paddingTop: 10, 
     },
     icon: {
-      width: ICON_SIZE,
-      height: ICON_SIZE,
+      width: ICON_SIZE / 2,
+      height: ICON_SIZE / 2,
       borderRadius: ICON_RADIUS,
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    rightInfo: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-    },
-    time: {
-      color: colors.textPrimary,
-      fontSize: 16,
-      marginBottom: 4,
-    },
-    subject: {
-      color: colors.textPrimary,
-      fontSize: 16,
-      fontWeight: '400',
-      marginTop: 10,
     },
   });
 };

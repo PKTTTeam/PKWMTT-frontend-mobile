@@ -38,7 +38,6 @@ import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
 import { useTranslation } from 'react-i18next';
 import LessonSeparator from './LessonSeparator.tsx';
-import LessonSeparatorLandscape from './LessonSeparatorLandscape.tsx';
 
 const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-back-ios" color={color} size={size} />
@@ -417,18 +416,13 @@ const TimetableScreen = () => {
       {isLandscape && (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="always"
+          // keyboardShouldPersistTaps="always"
         >
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyboardShouldPersistTaps="always"
-          >
-            <View style={{ flexDirection: 'row', marginLeft: 10 }}>
-              {/* kolumna godzin */}
-              <View style={{ marginRight: 20 }}>
-                {/* TODO: niedziałający button (mały boszar, histlop nie pomaga) */}
-                {/* <TouchableOpacity
+          <View style={{ flexDirection: 'row', marginLeft: 12 }}>
+            {/* kolumna godzin */}
+            <View style={{ marginRight: 10, marginTop: 10 }}>
+              {/* TODO: niedziałający button (mały boszar, histlop nie pomaga) */}
+              {/* <TouchableOpacity
                   style={styles.weekIndicator}
                   onPress={() => setIsOddWeek(prev => !prev)}
                   hitSlop={50}
@@ -439,53 +433,55 @@ const TimetableScreen = () => {
                     color={theme.colors.themeOpposite}
                   />
                 </TouchableOpacity> */}
-                <Text style={[styles.dayTitle, { textAlign: 'center' }]}>
-                  {isOddWeek ? t('oddWeek') : t('evenWeek')}
-                </Text>
+              <Text style={[styles.dayTitleLandscape, { textAlign: 'center' }]}>
+                {isOddWeek ? t('oddWeek') : t('evenWeek')}
+              </Text>
 
-                {academicHours.map((hour, index) => {
-                  const [startTime, endTime] = hour
-                    .split('-')
-                    .map(s => s.trim());
-                  return (
-                    <View key={index} style={{ paddingVertical: 3, gap: 5 }}>
-                      <HourDisplay
-                        startTime={startTime}
-                        endTime={endTime}
-                        isActive={false}
-                      />
-                      {index < academicHours.length - 1 && <LessonSeparator />}
-                    </View>
-                  );
-                })}
-              </View>
-
-              {/* Kolumny dni */}
-              {timetable.map(day => {
-                const lessons = isOddWeek ? day.odd : day.even;
-                const fullLessons = getFullSchedule(academicHours, lessons);
-
+              {academicHours.map((hour, index) => {
+                const [startTime, endTime] = hour.split('-').map(s => s.trim());
                 return (
-                  <View key={day.name} style={{ marginRight: 10 }}>
-                    <Text style={[styles.dayTitle, { textAlign: 'center' }]}>
-                      {t(`dayNames.${dayNameMap[day.name]}`)}
-                    </Text>
-
-                    {/* Lekcje */}
-                    {fullLessons.map((lesson, index) => (
-                      <View
-                        key={`${lesson.rowId}-${lesson.classroom}`}
-                        style={{ paddingVertical: 3, gap: 5 }}
-                      >
-                        {renderLesson({ item: lesson })}
-                        {index < fullLessons.length - 1 && <LessonSeparator />}
-                      </View>
-                    ))}
+                  <View key={index} style={{ paddingVertical: 3, gap: 5 }}>
+                    <HourDisplay
+                      startTime={startTime}
+                      endTime={endTime}
+                      isActive={false}
+                    />
+                    {index < academicHours.length - 1 && <LessonSeparator />}
                   </View>
                 );
               })}
             </View>
-          </ScrollView>
+
+            {/* Kolumny dni */}
+            {timetable.map(day => {
+              const lessons = isOddWeek ? day.odd : day.even;
+              const fullLessons = getFullSchedule(academicHours, lessons);
+
+              return (
+                <View
+                  key={day.name}
+                  style={{ marginRight: 10, width: '16%', marginTop: 10 }}
+                >
+                  <Text
+                    style={[styles.dayTitleLandscape, { textAlign: 'center' }]}
+                  >
+                    {t(`dayNames.${dayNameMap[day.name]}`)}
+                  </Text>
+
+                  {/* Lekcje */}
+                  {fullLessons.map((lesson, index) => (
+                    <View
+                      key={`${lesson.rowId}-${lesson.classroom}`}
+                      style={{ paddingVertical: 3, gap: 5 }}
+                    >
+                      {renderLesson({ item: lesson })}
+                      {index < fullLessons.length - 1 && <LessonSeparator />}
+                    </View>
+                  ))}
+                </View>
+              );
+            })}
+          </View>
         </ScrollView>
       )}
 

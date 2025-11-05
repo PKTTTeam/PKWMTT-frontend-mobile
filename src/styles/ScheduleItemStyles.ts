@@ -2,12 +2,13 @@ import { StyleSheet } from 'react-native';
 import { Theme } from '../../src/styles/globalTheme/theme';
 import { ICON_SIZE, ICON_RADIUS } from '../constants/constants';
 
-export const createScheduleItemStyles = (theme: Theme) => {
+export const createScheduleItemStyles = (theme: Theme, isLandscape: boolean = false) => {
   const colors = {
     foreground: theme.colors.Foreground,
     textPrimary: theme.colors.textPrimary,
   };
 
+  const fontSize = isLandscape ? 10 : 16; 
 
   return StyleSheet.create({
     ScreenContainer: {
@@ -38,18 +39,16 @@ export const createScheduleItemStyles = (theme: Theme) => {
     },
     time: {
       color: colors.textPrimary,
-      fontSize: 16,
+      fontSize,
       marginBottom: 4,
     },
     subject: {
       color: colors.textPrimary,
-      fontSize: 16,
+      fontSize,
       fontWeight: '400',
       marginTop: 10,
     },
   });
-
-  
 };
 
 export default createScheduleItemStyles;
