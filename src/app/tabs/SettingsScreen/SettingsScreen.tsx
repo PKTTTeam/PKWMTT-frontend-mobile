@@ -4,7 +4,7 @@ import { useTheme } from '@shopify/restyle';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 
-import { createSettingsStyle } from './SettingsSceen.styles.ts';
+import { createSettingsStyle } from './SettingsScreen.styles.ts';
 import { Theme } from '../../../styles/globalTheme/theme';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
