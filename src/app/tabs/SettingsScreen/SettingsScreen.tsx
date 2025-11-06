@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { useTheme } from '@shopify/restyle';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 
-import { createSettingsStyle } from './SettingsStyles.ts';
+import { createSettingsStyle } from './SettingsSceen.styles.ts';
 import { Theme } from '../../../styles/globalTheme/theme';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
@@ -87,53 +87,58 @@ function SettingsScreen() {
 
   return (
     <View style={SettingsStyles.bgContainer}>
-      <ScrollView>
-        <View style={SettingsStyles.container}>
-          {/* Student Groups Section */}
-          <Text style={SettingsStyles.labelText}>
-            {t('studentGroups') || 'Grupy Studenckie'}
-          </Text>
+      <FlatList
+        data={[]}
+        renderItem={() => null}
+        keyExtractor={() => 'dummy'}
+        // contentContainerStyle={}
+        ListHeaderComponent={
+          <View style={SettingsStyles.container}>
+            {/* Student Groups Section */}
+            <Text style={SettingsStyles.labelText}>
+              {t('studentGroups') || 'Grupy Studenckie'}
+            </Text>
 
-          <ValidationErrors hasErrors={validationErrors.size > 0} />
+            <ValidationErrors hasErrors={validationErrors.size > 0} />
 
-          <View style={[SettingsStyles.studentGroups, SettingsStyles.elementsSpacing]}>
-            {groupCards}
+            <View style={[SettingsStyles.studentGroups, SettingsStyles.elementsSpacing]}>
+              {groupCards}
+            </View>
+
+            {/* Toggles Section */}
+            <View style={SettingsStyles.elementsSpacing}>
+              <ShowEmptySlotsToggle />
+              <ShowLectures />
+            </View>
+
+            {/* Appearance Section */}
+            <View style={SettingsStyles.elementsSpacing}>
+              <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
+            </View>
+
+            <View style={SettingsStyles.elementsSpacing}>
+              <LanguageCard
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+              />
+              <ToggleTheme />
+            </View>
+
+            {/* Representative Section */}
+            <View style={SettingsStyles.elementsSpacing}>
+              <RepresentativeStatus
+                role={role}
+                repGroup={repGroup}
+                onShowModal={() => setModalVisible(true)}
+              />
+            </View>
           </View>
-
-          {/* Toggles Section */}
-          <View style={SettingsStyles.elementsSpacing}>
-            <ShowEmptySlotsToggle />
-            <ShowLectures />
-          </View>
-
-          {/* Appearance Section */}
-          <View style={SettingsStyles.elementsSpacing}>
-            <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
-          </View>
-          
-          <View style={SettingsStyles.elementsSpacing}>
-            <LanguageCard
-              activeDropdown={activeDropdown}
-              setActiveDropdown={setActiveDropdown}
-            />
-            <ToggleTheme />
-          </View>
-
-          {/* Representative Section */}
-          <View style={SettingsStyles.elementsSpacing}>
-            <RepresentativeStatus
-              role={role}
-              repGroup={repGroup}
-              onShowModal={() => setModalVisible(true)}
-            />
-          </View>
-
-          <RepresentativeAuthModal
-            visible={modalVisible}
-            onClose={() => setModalVisible(false)}
-          />
-        </View>
-      </ScrollView>
+        }
+      />
+      <RepresentativeAuthModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      />
       <Toast autoHide position="bottom" />
     </View>
   );

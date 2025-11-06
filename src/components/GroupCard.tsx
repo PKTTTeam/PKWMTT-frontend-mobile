@@ -8,7 +8,7 @@ import {
 } from 'lucide-react-native';
 import { useTheme } from '@shopify/restyle';
 import type { Theme } from '../styles/globalTheme/theme';
-import GroupSelectDropdown from './ui/GroupSelectDropdown';
+import GroupSelectModal from './ui/GroupSelectModal';
 import type { ReactElement } from 'react';
 import { GroupSelectTypes } from '../types/uiTypes/GroupSelectTypes';
 
@@ -23,7 +23,9 @@ const createGroupCardStyles = (theme: Theme) => {
       margin: 6,
       borderWidth: 1,
       borderColor: '#2e2e2e',
+      zIndex: 1000,
     },
+
     header: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -85,7 +87,7 @@ const GroupCard: React.FC<GroupSelectTypes> = ({
           </Text>
         </View>
         <View style={styles.dropdownContainer}>
-          <GroupSelectDropdown
+          <GroupSelectModal
             isOffline={isOffline}
             groupTitle={''}
             groupName={groupName}
