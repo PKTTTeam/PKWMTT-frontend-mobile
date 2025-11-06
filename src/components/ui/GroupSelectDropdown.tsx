@@ -67,7 +67,6 @@ const createGroupSelectStyles = (theme: Theme, hasError: boolean) => {
       elevation: 20,
     },
     iconContainer: {
-     backgroundColor:'green',
      zIndex: 9000,
      elevation: 20
     },
