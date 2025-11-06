@@ -91,7 +91,6 @@ function SettingsScreen() {
         data={[]}
         renderItem={() => null}
         keyExtractor={() => 'dummy'}
-        // contentContainerStyle={}
         ListHeaderComponent={
           <View style={SettingsStyles.container}>
             {/* Student Groups Section */}
