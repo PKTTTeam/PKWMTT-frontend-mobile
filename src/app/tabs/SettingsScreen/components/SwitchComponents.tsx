@@ -39,7 +39,7 @@ export const ShowEmptySlotsToggle = createSwitchComponent(
 );
 
 export const ShowLectures = createSwitchComponent(
-  state => state.hideLectures,
-  state => state.actions.setHideLectures,
+  state => state.showLectures,
+  state => state.actions.setShowLectures,
   'showLectures',
 );

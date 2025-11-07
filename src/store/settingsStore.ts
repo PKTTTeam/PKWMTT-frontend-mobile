@@ -27,7 +27,7 @@ export const useSettingsStore = create<SettingsState>()(
       lastFetchedDean: null,
       activeDropdown: null,
       showEmptySlots: true,
-      hideLectures: false,
+      showLectures: true,
 
       error: null,
       setupComplete: false,
@@ -165,8 +165,8 @@ export const useSettingsStore = create<SettingsState>()(
         setSetupComplete(value: boolean) {
           set({ setupComplete: value });
         },
-        setHideLectures(value: boolean) {
-          set({ hideLectures: value });
+        setShowLectures(value: boolean) {
+          set({ showLectures: value });
         },
         // --- Theme actions ---
         setMode(mode: 'light' | 'dark') {
@@ -192,7 +192,7 @@ export const useSettingsStore = create<SettingsState>()(
         groups: state.groups,
         options: state.options,
         setupComplete: state.setupComplete,
-        hideLectures: state.hideLectures,
+        showLectures: state.showLectures,
         theme: state.theme,
         themeMode: state.themeMode,
       }),

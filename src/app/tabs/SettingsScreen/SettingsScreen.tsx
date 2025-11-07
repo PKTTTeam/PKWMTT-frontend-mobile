@@ -102,11 +102,9 @@ function SettingsScreen() {
           <View style={styles.container}>
             {/* Student Groups Section */}
             <ValidationErrors hasErrors={validationErrors.size > 0} />
-
             <Text style={styles.labelText}>
               {t('studentGroups') || 'Grupy Studenckie'}
             </Text>
-
             {GroupCardRender}
 
             {/* Toggles Section */}
@@ -129,6 +127,7 @@ function SettingsScreen() {
               />
               <ToggleTheme />
             </View>
+
             {/* Authentication Section */}
             <View style={styles.authenticationContainer}>
               <Text style={styles.labelText}>{t('appAuthentication')}</Text>
