@@ -72,14 +72,14 @@ const createStyles = (theme: Theme) => {
 
   return StyleSheet.create({
     modalOverlay: {
-      flex: 1,
+      position: 'absolute',
+      width: '100%',
       height: '100%',
       backgroundColor: 'rgba(0,0,0,0.5)',
       justifyContent: 'center',
       alignItems: 'center',
     },
     modalContent: {
-      position: 'absolute',
       width: '80%',
       backgroundColor: colors.settingsBackground,
       borderRadius: 8,
