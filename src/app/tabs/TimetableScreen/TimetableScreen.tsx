@@ -73,7 +73,7 @@ const TimetableScreen = () => {
   const groups = useSettingsStore(state => state.groups);
   const loading = useSettingsStore(state => state.loading);
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
-  const hideLectures = useSettingsStore(state => state.showLectures);
+  const hideLectures = useSettingsStore(state => state.hideLectures);
 
   const { fetchInitialDeanGroups } = useSettingsActions();
 
