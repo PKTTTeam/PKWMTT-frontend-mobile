@@ -69,7 +69,7 @@ export const createSettingsStyle = (theme: Theme) => {
       width: '100%',
       height: 300,
     },
-    toogglesContainer: {
+    togglesContainer: {
       marginTop: 30,
 
       width: '100%',

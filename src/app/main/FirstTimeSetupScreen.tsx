@@ -8,7 +8,7 @@ import {
   useSettingsStore,
 } from '../../store/settingsStore';
 import { Theme } from '../../styles/globalTheme/theme';
-import { createSetupStyles } from './FirstTimeSetupScreem.styles';
+import { createSetupStyles } from './FirstTimeSetupScreen.styles';
 
 export default function FirstTimeSetupScreen({
   onDone,

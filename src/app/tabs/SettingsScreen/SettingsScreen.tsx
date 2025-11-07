@@ -108,7 +108,7 @@ function SettingsScreen() {
             {GroupCardRender}
 
             {/* Toggles Section */}
-            <View style={styles.toogglesContainer}>
+            <View style={styles.togglesContainer}>
               <Text style={styles.labelText}>{t('displaySettings')}</Text>
               <ShowEmptySlotsToggle />
               <ShowLectures />
