@@ -21,12 +21,9 @@ const createGroupCardStyles = (theme: Theme) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-
       width: '100%',
       height: '100%',
-
-      paddingHorizontal: 12,
-
+      paddingHorizontal: 15,
       borderRadius: 12,
       borderWidth: 1,
       borderColor: '#2e2e2e',
@@ -34,10 +31,12 @@ const createGroupCardStyles = (theme: Theme) => {
       zIndex: 1000,
     },
     label: {
+      flex: 1,
       color: colors.textPrimary,
       fontSize: 15,
       fontWeight: '500',
-      width: '55%',
+      height: '100%',
+      textAlign: 'center',
     },
     leftSection: {
       display: 'flex',

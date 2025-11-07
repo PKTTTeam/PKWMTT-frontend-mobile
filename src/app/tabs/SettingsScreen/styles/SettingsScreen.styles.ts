@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '../../../styles/globalTheme/theme';
-import { textSize } from '../../../utils/textHierarchy';
+import { Theme } from '../../../../styles/globalTheme/theme';
+import { textSize } from '../../../../utils/textHierarchy';
 
 export const createSettingsStyle = (theme: Theme) => {
   const colors = {
@@ -21,13 +21,11 @@ export const createSettingsStyle = (theme: Theme) => {
       alignItems: 'center',
       backgroundColor: colors.settingsBg,
     },
-
     titleText: {
       alignSelf: 'center',
       color: colors.text,
       fontSize: textSize.H2,
       fontWeight: 'bold',
-
     },
     labelText: {
       marginBottom: 20,
@@ -35,13 +33,6 @@ export const createSettingsStyle = (theme: Theme) => {
       color: colors.text,
       fontSize: textSize.H2,
       fontWeight: 'bold',
-    },
-    studentGroups: {
-      width: '100%',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexWrap: 'wrap',
     },
     notifications: {
       flexDirection: 'row',
@@ -62,16 +53,14 @@ export const createSettingsStyle = (theme: Theme) => {
       flexGrow: 1,
     },
     cardsContainer: {
-
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       alignItems: 'center',
-
       width: '100%',
-      height: 300,
+      flex: 1,
+      gap: 16, 
     },
     togglesContainer: {
       marginTop: 30,
-
       width: '100%',
       justifyContent: 'center',
       height: 'auto',

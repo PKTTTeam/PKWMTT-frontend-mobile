@@ -9,10 +9,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardWrappersContainer: {
+    flex: 1,
     width: '100%',
-    height: '100%',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    gap: 10, 
   },
 });
 

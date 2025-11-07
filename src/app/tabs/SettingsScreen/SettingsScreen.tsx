@@ -4,7 +4,7 @@ import { useTheme } from '@shopify/restyle';
 import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
 
-import { createSettingsStyle } from './SettingsScreen.styles.ts';
+import { createSettingsStyle } from './styles/SettingsScreen.styles.ts';
 import { Theme } from '../../../styles/globalTheme/theme';
 import { useSettingsStore } from '../../../store/settingsStore.ts';
 import RepresentativeAuthModal from '../../../components/modals/RepresentativeAuthModal.tsx';
@@ -100,6 +100,7 @@ function SettingsScreen() {
         keyExtractor={() => 'dummy'}
         ListHeaderComponent={
           <View style={styles.container}>
+            
             {/* Student Groups Section */}
             <ValidationErrors hasErrors={validationErrors.size > 0} />
             <Text style={styles.labelText}>
