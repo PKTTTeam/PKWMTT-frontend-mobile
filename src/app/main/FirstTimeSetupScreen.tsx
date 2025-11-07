@@ -69,7 +69,6 @@ export default function FirstTimeSetupScreen({
         <Text style={styles.title}>{t('welcomeText')}</Text>
         <Text style={styles.subtitle}>{t('selectGroupText')}</Text>
 
-        
           {showErrors && validationErrors.size > 0
             ? <Text style={styles.errorText}>{t('selectGroupText')}</Text>
             : null}
