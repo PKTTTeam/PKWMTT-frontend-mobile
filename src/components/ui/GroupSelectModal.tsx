@@ -47,20 +47,31 @@ const groupKeyMap: Record<GroupName, GroupKey> = {
 const createStyles = (theme: Theme, hasError: boolean) => {
   const { colors } = theme;
   return StyleSheet.create({
+    modalContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      width: '100%',
+      height: '100%',
+      gap: 6,
+    },
+    labelContainer: {
+      justifyContent: 'flex-end',
+      height: 'auto',
+    },
     label: {
       color: colors.textPrimary,
       fontSize: 14,
-      marginBottom: 4,
     },
     control: {
-      width: 130,
-      paddingVertical: 10,
-      paddingHorizontal: 12,
+      display: 'flex',
+      width: '100%',
+      height: '50%',
       borderRadius: 8,
       backgroundColor: colors.Foreground,
       borderWidth: hasError ? 2 : 1,
       borderColor: hasError ? colors.error : colors.border,
       justifyContent: 'center',
+      alignItems: 'center',
     },
     controlText: {
       color: colors.textPrimary,
@@ -165,14 +176,20 @@ const GroupSelectModal: React.FC<Props> = ({
   const placeholderText = t('groupSelectPlaceholder');
 
   return (
-    <View>
-      {groupTitle ? <Text style={styles.label}>{groupTitle}</Text> : null}
+    <View style={styles.modalContainer}>
+      {groupTitle ? (
+        <View style={styles.labelContainer}>
+          <Text style={styles.label}>{groupTitle}</Text>
+        </View>
+      ) : null}
+
       <Pressable
         onPress={openModal}
         disabled={isOffline}
         style={({ pressed }) => [
           styles.control,
           pressed && { opacity: 0.9 },
+          !groupTitle && { height: '100%' },
         ]}
       >
         <Text style={styles.controlText} numberOfLines={1}>
@@ -199,13 +216,15 @@ const GroupSelectModal: React.FC<Props> = ({
             <FlatList
               keyboardShouldPersistTaps="handled"
               data={filtered}
-              keyExtractor={(item) => item}
+              keyExtractor={item => item}
               renderItem={({ item }) => (
                 <Pressable style={styles.item} onPress={() => onSelect(item)}>
                   <Text style={styles.itemText}>{item}</Text>
                 </Pressable>
               )}
-              ListEmptyComponent={<EmptyList text={t('noResults') || 'No results'} />}
+              ListEmptyComponent={
+                <EmptyList text={t('noResults') || 'No results'} />
+              }
             />
           </Pressable>
         </Pressable>

@@ -7,48 +7,55 @@ import {
   LucideFolder,
 } from 'lucide-react-native';
 import { useTheme } from '@shopify/restyle';
-import type { Theme } from '../styles/globalTheme/theme';
-import GroupSelectModal from './ui/GroupSelectModal';
+import type { Theme } from '../../../../styles/globalTheme/theme';
+import GroupSelect from '../../../../components/ui/GroupSelectModal';
 import type { ReactElement } from 'react';
-import { GroupSelectTypes } from '../types/uiTypes/GroupSelectTypes';
+import { GroupSelectTypes } from '../../../../types/uiTypes/GroupSelectTypes';
 
 const createGroupCardStyles = (theme: Theme) => {
   const { colors } = theme;
 
   return StyleSheet.create({
     card: {
-      width: 350,
-      padding: 20,
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+
+      width: '100%',
+      height: '100%',
+
+      paddingHorizontal: 12,
+
       borderRadius: 12,
-      margin: 6,
       borderWidth: 1,
       borderColor: '#2e2e2e',
-      zIndex: 1000,
-    },
 
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    leftSection: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      flex: 1,
+      zIndex: 1000,
     },
     label: {
       color: colors.textPrimary,
-      fontSize: 16,
-      marginLeft: 12,
+      fontSize: 15,
       fontWeight: '500',
-      flex: 1,
+      width: '55%',
+    },
+    leftSection: {
+      display: 'flex',
+      width: '60%',
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      flexDirection: 'row',
     },
     icon: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 40,
       padding: 10,
       borderRadius: 10,
     },
     dropdownContainer: {
-      marginLeft: 'auto',
+      height: 40,
+      width: '35%',
     },
     GG: { backgroundColor: '#059669' }, // green
     L: { backgroundColor: '#dc2626' }, // red
@@ -77,25 +84,23 @@ const GroupCard: React.FC<GroupSelectTypes> = ({
 
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <View style={styles.leftSection}>
-          <View style={[styles[groupName], styles.icon]}>
-            {iconMap[groupName]}
-          </View>
-          <Text style={styles.label} numberOfLines={1}>
-            {groupTitle}
-          </Text>
+      <View style={styles.leftSection}>
+        <View style={[styles[groupName], styles.icon]}>
+          {iconMap[groupName]}
         </View>
-        <View style={styles.dropdownContainer}>
-          <GroupSelectModal
-            isOffline={isOffline}
-            groupTitle={''}
-            groupName={groupName}
-            activeDropdown={activeDropdown}
-            setActiveDropdown={setActiveDropdown}
-            hasError={hasError}
-          />
-        </View>
+        <Text style={styles.label} numberOfLines={1}>
+          {groupTitle}
+        </Text>
+      </View>
+      <View style={styles.dropdownContainer}>
+        <GroupSelect
+          isOffline={isOffline}
+          groupTitle={''}
+          groupName={groupName}
+          activeDropdown={activeDropdown}
+          setActiveDropdown={setActiveDropdown}
+          hasError={hasError}
+        />
       </View>
     </View>
   );

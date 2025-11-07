@@ -11,9 +11,13 @@ import RepresentativeAuthModal from '../../../components/modals/RepresentativeAu
 import { useAuthStore } from '../../../store/authStore.ts';
 import { useTimetableStore } from '../../../store/timetableStore.ts';
 import LanguageCard from '../../../components/LanguageCard.tsx';
-import { ShowEmptySlotsToggle, ShowLectures, ToggleTheme } from './components/SwitchComponents';
+import {
+  ShowEmptySlotsToggle,
+  ShowLectures,
+  ToggleTheme,
+} from './components/SwitchComponents';
 import { ValidationErrors } from './components/ValidationErrors';
-import { RepresentativeStatus } from './components/RepresentativeStatus';
+import { AuthenticationStatus } from './components/AuthenticationStatus.tsx';
 import { GroupCards } from './components/GroupCards';
 
 function SettingsScreen() {
@@ -28,7 +32,7 @@ function SettingsScreen() {
 
   // Theme and styles
   const theme = useTheme<Theme>();
-  const SettingsStyles = useMemo(() => createSettingsStyle(theme), [theme]);
+  const styles = useMemo(() => createSettingsStyle(theme), [theme]);
 
   // Validation logic
   const validationErrors = useMemo(() => {
@@ -37,7 +41,7 @@ function SettingsScreen() {
     if (!groups.dean) errors.add('dean');
 
     // Check LPK groups
-    const hasLPKGroups = 
+    const hasLPKGroups =
       options.lab.length > 0 ||
       options.proj.length > 0 ||
       options.comp.length > 0;
@@ -73,59 +77,62 @@ function SettingsScreen() {
   }, [isValid, wasValid, t]);
 
   // Rendered group cards
-  const groupCards = useMemo(() => {
-    return (
-      <GroupCards
-        options={options}
-        isOffline={isOffline}
-        activeDropdown={activeDropdown}
-        setActiveDropdown={setActiveDropdown}
-        hasError={hasError}
-      />
-    );
-  }, [options, isOffline, activeDropdown, hasError]);
+  const GroupCardRender = useMemo(
+    () => (
+      <View style={styles.cardsContainer}>
+        <GroupCards
+          options={options}
+          isOffline={isOffline}
+          activeDropdown={activeDropdown}
+          setActiveDropdown={setActiveDropdown}
+          hasError={hasError}
+        />
+      </View>
+    ),
+    [options, isOffline, activeDropdown, hasError, styles.cardsContainer],
+  );
 
   return (
-    <View style={SettingsStyles.bgContainer}>
+    <View style={styles.bgContainer}>
       <FlatList
         data={[]}
         renderItem={() => null}
         keyExtractor={() => 'dummy'}
         ListHeaderComponent={
-          <View style={SettingsStyles.container}>
+          <View style={styles.container}>
             {/* Student Groups Section */}
-            <Text style={SettingsStyles.labelText}>
+            <ValidationErrors hasErrors={validationErrors.size > 0} />
+
+            <Text style={styles.labelText}>
               {t('studentGroups') || 'Grupy Studenckie'}
             </Text>
 
-            <ValidationErrors hasErrors={validationErrors.size > 0} />
-
-            <View style={[SettingsStyles.studentGroups, SettingsStyles.elementsSpacing]}>
-              {groupCards}
-            </View>
+            {GroupCardRender}
 
             {/* Toggles Section */}
-            <View style={SettingsStyles.elementsSpacing}>
+            <View style={styles.toogglesContainer}>
+              <Text style={styles.labelText}>{t('displaySettings')}</Text>
               <ShowEmptySlotsToggle />
               <ShowLectures />
             </View>
 
             {/* Appearance Section */}
-            <View style={SettingsStyles.elementsSpacing}>
-              <Text style={SettingsStyles.labelText}>{t('appApperance')}</Text>
-            </View>
+            <View style={styles.appearanceContainer}>
+              {/* eslint-disable-next-line react-native/no-inline-styles */}
+              <Text style={[styles.labelText, { marginTop: 30 }]}>
+                {t('appApperance')}
+              </Text>
 
-            <View style={SettingsStyles.elementsSpacing}>
               <LanguageCard
                 activeDropdown={activeDropdown}
                 setActiveDropdown={setActiveDropdown}
               />
               <ToggleTheme />
             </View>
-
-            {/* Representative Section */}
-            <View style={SettingsStyles.elementsSpacing}>
-              <RepresentativeStatus
+            {/* Authentication Section */}
+            <View style={styles.authenticationContainer}>
+              <Text style={styles.labelText}>{t('appAuthentication')}</Text>
+              <AuthenticationStatus
                 role={role}
                 repGroup={repGroup}
                 onShowModal={() => setModalVisible(true)}

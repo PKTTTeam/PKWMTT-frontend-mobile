@@ -1,8 +1,9 @@
+import { useTheme } from '@shopify/restyle';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { styles } from './styles/RepresentativeStatus.styles.ts';
-
+import { Text, TouchableOpacity } from 'react-native';
+import { Theme } from '../../../../styles/globalTheme/theme';
+import { createSwitchStyles } from './styles/AuthenticationStatus.styles.ts';
 /**
  * Renders the representative section on the Settings screen.
  *
@@ -10,7 +11,7 @@ import { styles } from './styles/RepresentativeStatus.styles.ts';
  * - If the user is not a representative, we show an action button that opens a modal
  *   to confirm representative status.
  */
-interface RepresentativeStatusProps {
+interface Props {
   /** Truthy value when the current user is a representative. */
   role: unknown;
   /** Name of the group the user represents (when applicable). */
@@ -19,13 +20,14 @@ interface RepresentativeStatusProps {
   onShowModal: () => void;
 }
 
-export const RepresentativeStatus = ({ 
+export const AuthenticationStatus = ({ 
   role, 
   repGroup, 
   onShowModal 
-}: RepresentativeStatusProps) => {
+}: Props) => {
   const { t } = useTranslation();
-
+    const theme = useTheme<Theme>();
+const styles = createSwitchStyles(theme);
   // Already a representative of some group -> render info text
   if (role && repGroup) {
     return (
@@ -44,7 +46,7 @@ export const RepresentativeStatus = ({
         disabled={!!repGroup}
       >
         <Text style={styles.buttonText}>
-          {t('confirmRepStatus') || 'Potwierdź status starosty'}
+          {t('confirmRepStatus')}
         </Text>
       </TouchableOpacity>
     );

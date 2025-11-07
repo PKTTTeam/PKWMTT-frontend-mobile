@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import GroupCard from '../../../../components/GroupCard.tsx';
+import GroupCard from './GroupCard.tsx';
 import type { GroupKey } from '../../../../store/settingsStoreTypes.d.ts';
+import { styles } from './styles/GroupCards.styles.ts';
 
 // Mapping of store keys to UI labels/icons used by GroupCard.
 // This centralizes the list of group types rendered on the Settings screen.
@@ -26,44 +27,45 @@ interface GroupCardsProps {
   hasError: (groupKey: string) => boolean;
 }
 
-export const GroupCards = ({ 
-  options, 
-  isOffline, 
-  activeDropdown, 
-  setActiveDropdown, 
-  hasError 
+export const GroupCards = ({
+  options,
+  isOffline,
+  activeDropdown,
+  setActiveDropdown,
+  hasError,
 }: GroupCardsProps) => {
   const { t } = useTranslation();
 
   // Rendered group cards
   // useMemo avoids re-creating the card list unless inputs change.
   const groupCards = useMemo(() => {
-    return GROUP_CONFIGS.map(({ key, name, titleKey }) => {
-      // Always show dean group. Only show L/K/P if options for that group exist.
-      if (key !== 'dean' && options[key].length === 0) return null;
+    return (
+      <View style={styles.cardWrappersContainer}>
+        {GROUP_CONFIGS.map(({ key, name, titleKey }) => {
+          // Always show dean group. Only show L/K/P if options for that group exist.
+          if (key !== 'dean' && options[key].length === 0) return null;
 
-      return (
-        <GroupCard
-          key={key}
-          // Disable UI interactions when offline
-          isOffline={isOffline}
-          // Localized title for the card (e.g., "General Group", "Computer Lab")
-          groupTitle={t(titleKey)}
-          // Visual identity of the card and which group picker to use inside
-          groupName={name}
-          // Dropdown coordination: only one dropdown across all cards should be open
-          activeDropdown={activeDropdown}
-          setActiveDropdown={setActiveDropdown}
-          // Highlight the card/picker if validation says this group is missing
-          hasError={hasError(key)}
-        />
-      );
-    }).filter(Boolean);
+          return (
+            <View key={key} style={styles.cardWrapper}>
+              <GroupCard
+                // Disable UI interactions when offline
+                isOffline={isOffline}
+                // Localized title for the card (e.g., "General Group", "Computer Lab")
+                groupTitle={t(titleKey)}
+                // Visual identity of the card and which group picker to use inside
+                groupName={name}
+                // Dropdown coordination: only one dropdown across all cards should be open
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+                // Highlight the card/picker if validation says this group is missing
+                hasError={hasError(key)}
+              />
+            </View>
+          );
+        }).filter(Boolean)}
+      </View>
+    );
   }, [options, isOffline, t, activeDropdown, setActiveDropdown, hasError]);
 
-  return (
-    <View>
-      {groupCards}
-    </View>
-  );
+  return <View>{groupCards}</View>;
 };
