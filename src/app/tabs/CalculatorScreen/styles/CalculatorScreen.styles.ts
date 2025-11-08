@@ -7,6 +7,7 @@ export const createCalculatorStyles = (theme: Theme) => {
   return StyleSheet.create({
     // Used by CalculatorScreen root
     container: {
+      paddingTop: 10,
       display: 'flex',
       height: '100%',
       backgroundColor: colors.backgroundPrimary,

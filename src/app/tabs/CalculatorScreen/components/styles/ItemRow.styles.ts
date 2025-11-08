@@ -7,12 +7,14 @@ export const createItemRowStyles = (theme: Theme) => {
     backgroundPrimary: theme.colors.Foreground,
     borderLight: theme.colors.themeOpposite,
     textPrimary: theme.colors.textPrimary,
+    themeOpposite: theme.colors.themeOpposite,
   };
   return StyleSheet.create({
     rootItemContainer: {
       backgroundColor: colors.backgroundItem,
       paddingLeft: 10,
       borderRadius: theme.borderRads.m,
+      minHeight: 40,
       height: 'auto',
       display: 'flex',
       flexDirection: 'row',
@@ -21,8 +23,8 @@ export const createItemRowStyles = (theme: Theme) => {
       alignSelf: 'center',
       alignItems: 'center',
     },
-    deleteButtonContainer: {
-      backgroundColor: colors.backgroundPrimary,
+    ItemSelectBox: {
+      backgroundColor: 'transparent',
       borderWidth: 0.75,
       borderColor: colors.borderLight,
       borderRadius: theme.borderRads.xs,
@@ -34,6 +36,10 @@ export const createItemRowStyles = (theme: Theme) => {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    ItemSelectBoxSelected: {
+      backgroundColor: colors.themeOpposite,
+      borderWidth: 0.75,}
+      ,
     deleteButtonText: {
       color: colors.backgroundPrimary,
       fontSize: 10,

@@ -5,7 +5,7 @@ export const createHeaderRowStyles = (theme: Theme) => {
   const colors = {
     backgroundHeader: theme.colors.border2,
     backgroundPrimary: theme.colors.Foreground,
-    borderLight: theme.colors.themeOpposite,
+    themeOpposite: theme.colors.themeOpposite,
     textPrimary: theme.colors.textPrimary,
   };
   return StyleSheet.create({
@@ -21,10 +21,10 @@ export const createHeaderRowStyles = (theme: Theme) => {
       alignSelf: 'center',
       alignItems: 'center',
     },
-    deleteButtonContainer: {
-      backgroundColor: colors.backgroundPrimary,
+    itemSelectAllBox: {
+      backgroundColor: 'transparent',
       borderWidth: 0.75,
-      borderColor: colors.borderLight,
+      borderColor: colors.themeOpposite,
       borderRadius: theme.borderRads.xs,
       width: 19,
       height: 19,
@@ -33,6 +33,9 @@ export const createHeaderRowStyles = (theme: Theme) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    itemSelectAllBoxSelected: {
+      backgroundColor: colors.themeOpposite,
     },
     deleteButtonText: {
       color: colors.backgroundPrimary,

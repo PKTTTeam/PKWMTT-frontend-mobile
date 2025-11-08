@@ -9,6 +9,7 @@ interface HeaderRowProps {
   gradeLabel: string;
   onToggleSelectAll: () => void;
   selectedIcon: string;
+  hasSelection: boolean;
 }
 
 const HeaderRow: React.FC<HeaderRowProps> = ({
@@ -16,20 +17,36 @@ const HeaderRow: React.FC<HeaderRowProps> = ({
   gradeLabel,
   onToggleSelectAll,
   selectedIcon,
+  hasSelection,
 }) => {
   const theme = useTheme();
   const styles = createHeaderRowStyles(theme as Theme);
   return (
     <View style={styles.headerRootItemContainer}>
-      <TouchableOpacity style={styles.deleteButtonContainer} onPress={onToggleSelectAll}>
+      <TouchableOpacity
+        style={[styles.itemSelectAllBox, hasSelection && styles.itemSelectAllBoxSelected]}
+        onPress={onToggleSelectAll}
+      >
         <Text style={styles.deleteButtonText}>{selectedIcon}</Text>
       </TouchableOpacity>
       <View style={styles.headerContainer}>
-        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.leftText]}>
+        <Text
+          style={[styles.bottomMenu, styles.singleItemHeader, styles.leftText]}
+        >
           {subjectLabel}
         </Text>
-        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.centerText]}>ECTS</Text>
-        <Text style={[styles.bottomMenu, styles.singleItemHeader, styles.rightText]}>
+        <Text
+          style={[
+            styles.bottomMenu,
+            styles.singleItemHeader,
+            styles.centerText,
+          ]}
+        >
+          ECTS
+        </Text>
+        <Text
+          style={[styles.bottomMenu, styles.singleItemHeader, styles.rightText]}
+        >
           {gradeLabel}
         </Text>
       </View>

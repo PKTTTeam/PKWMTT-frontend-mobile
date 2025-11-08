@@ -25,13 +25,31 @@ const ItemRow: React.FC<ItemRowProps> = ({
   return (
     <TouchableOpacity onPress={() => onPressItem(item)}>
       <View style={styles.rootItemContainer}>
-        <TouchableOpacity style={styles.deleteButtonContainer} onPress={() => onToggleSelect(item.key)}>
-          <Text style={styles.deleteButtonText}>{isSelected ? checkedIcon : ''}</Text>
+        <TouchableOpacity
+          style={[
+            styles.ItemSelectBox,
+            isSelected && styles.ItemSelectBoxSelected,
+          ]}
+          onPress={() => onToggleSelect(item.key)}
+        >
+          <Text style={styles.deleteButtonText}>
+            {isSelected ? checkedIcon : ''}
+          </Text>
         </TouchableOpacity>
         <View style={styles.itemContainer}>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>{item.subjectName}</Text>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.centerText]}>{item.ects}</Text>
-          <Text style={[styles.bottomMenu, styles.singleItem, styles.rightText]}>{item.grade}</Text>
+          <Text style={[styles.bottomMenu, styles.singleItem, styles.leftText]}>
+            {item.subjectName}
+          </Text>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
+          >
+            {item.ects}
+          </Text>
+          <Text
+            style={[styles.bottomMenu, styles.singleItem, styles.rightText]}
+          >
+            {item.grade}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

@@ -213,12 +213,23 @@ function CalculatorScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Summary */}
+      <SummaryPanel
+        gradeAverageLabel={t('gradeAverage').replace(' ', '\n')}
+        ectsSumLabel={t('ectsSum').replace(' ', '\n')}
+        weightedAverageLabel={t('weightedAverage').replace(' ', '\n')}
+        averageGrade={averageGrade}
+        totalEcts={totalEcts}
+        weightedAverage={weightedAverage}
+      />
+
       {/* Header row */}
       <HeaderRow
         subjectLabel={t('subjectName')}
         gradeLabel={t('gradeName')}
         onToggleSelectAll={selectAllItems}
         selectedIcon={selectedIcon}
+        hasSelection={selectedItems.length > 0}
       />
 
       {subjectList.length === 0 && (
@@ -236,16 +247,6 @@ function CalculatorScreen() {
         onToggleSelect={selectItem}
         onPressItem={openEditMenu}
         checkedIcon={ICON_CHECK}
-      />
-
-      {/* Summary */}
-      <SummaryPanel
-        gradeAverageLabel={t('gradeAverage').replace(' ', '\n')}
-        ectsSumLabel={t('ectsSum').replace(' ', '\n')}
-        weightedAverageLabel={t('weightedAverage').replace(' ', '\n')}
-        averageGrade={averageGrade}
-        totalEcts={totalEcts}
-        weightedAverage={weightedAverage}
       />
 
       {/* Batch delete / Add button */}
