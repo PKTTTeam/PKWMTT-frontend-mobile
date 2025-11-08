@@ -15,9 +15,8 @@ import { getAppVersion } from './src/utils/getAppVersion';
 import UpdateAlertModal from './src/components/modals/UpdateAlertModal';
 import { ThemeProvider } from '@shopify/restyle';
 import { vexo } from 'vexo-analytics';
-import { VEXO_KEY, POSTHOG_KEY } from '@env';
+import { VEXO_KEY } from '@env';
 
-import { PostHogProvider } from 'posthog-react-native';
 
 type RootStackParamList = {
   Settings: undefined;
@@ -76,20 +75,12 @@ const App = () => {
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={currentAppTheme}>
           <NavigationContainer ref={navigationRef}>
-            <PostHogProvider
-              apiKey={POSTHOG_KEY}
-              options={{ host: 'https://us.i.posthog.com' }}
-              autocapture={{
-                captureTouches: true,
-                captureScreens: false,
-              }}
-            >
+
               {!isSetupComplete ? (
                 <FirstTimeSetupScreen onDone={handleSetupDone} />
               ) : (
                 <TabNavigator />
               )}
-            </PostHogProvider>
           </NavigationContainer>
 
           <UpdateAlertModal
