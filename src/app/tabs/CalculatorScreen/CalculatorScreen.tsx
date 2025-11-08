@@ -1,30 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
 // import styles from './CalculatorStyles';
 import uuid from 'react-native-uuid';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useTranslation } from 'react-i18next';
 import { getSubjectList } from '../../../services/calculator/CalculatorService';
 import { useSettingsStore } from '../../../store/settingsStore';
-import DropdownMenu from '../../../components/ui/DropdownMenu';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
-import createCalculatorStyles from './CalculatorStyles';
-
-type CalcItem = {
-  key: string;
-  subjectName: string;
-  ects: string;
-  grade: string;
-};
+import createCalculatorStyles from './styles/CalculatorScreen.styles.ts';
+import HeaderRow from './components/HeaderRow';
+import SummaryPanel from './components/SummaryPanel';
+import BatchActions from './components/BatchActions';
+import PopupForm from './components/PopupForm';
+import { CalcItem } from './types';
+import SubjectsList from './components/SubjectsList';
 
 function CalculatorScreen() {
   const theme = useTheme();
@@ -35,9 +26,6 @@ function CalculatorScreen() {
   const [subjectName, setSubjectName] = useState('');
   const [ectsPoints, setEctsPoints] = useState('');
   const [grade, setGrade] = useState('');
-
-  const ectsInput = useRef<TextInput>(null);
-  const gradeInput = useRef<TextInput>(null);
 
   const [subjectError, setSubjectError] = useState<string | null>(null);
   const [ectsError, setEctsError] = useState<string | null>(null);
@@ -231,83 +219,17 @@ function CalculatorScreen() {
       ? iconSquare
       : '';
 
-  const renderItem = ({ item }: { item: CalcItem }) => {
-    const isSelected = selectedItems.includes(item.key);
-    return (
-      <TouchableOpacity onPress={() => openEditMenu(item)}>
-        <View style={styles.rootItemContainer}>
-          <TouchableOpacity
-            style={styles.deleteButtonContainer}
-            onPress={() => selectItem(item.key)}
-          >
-            <Text style={styles.deleteButtonText}>
-              {isSelected ? iconCheck : ''}
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.itemContainer}>
-            <Text
-              style={[styles.bottomMenu, styles.singleItem, styles.leftText]}
-            >
-              {item.subjectName}
-            </Text>
-            <Text
-              style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-            >
-              {item.ects}
-            </Text>
-            <Text
-              style={[styles.bottomMenu, styles.singleItem, styles.rightText]}
-            >
-              {item.grade}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+  // renderItem now lives inside SubjectsList
 
   return (
     <View style={styles.container}>
       {/* Header row */}
-      <View style={styles.headerRootItemContainer}>
-        <TouchableOpacity
-          style={styles.deleteButtonContainer}
-          onPress={selectAllItems}
-        >
-          <Text style={styles.deleteButtonText}>
-            {changeSelectedItemsIcon()}
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.headerContainer}>
-          <Text
-            style={[
-              styles.bottomMenu,
-              styles.singleItemHeader,
-              styles.leftText,
-            ]}
-          >
-            {t('subjectName')}
-          </Text>
-          <Text
-            style={[
-              styles.bottomMenu,
-              styles.singleItemHeader,
-              styles.centerText,
-            ]}
-          >
-            ECTS
-          </Text>
-          <Text
-            style={[
-              styles.bottomMenu,
-              styles.singleItemHeader,
-              styles.rightText,
-            ]}
-          >
-            {t('gradeName')}
-          </Text>
-        </View>
-      </View>
+      <HeaderRow
+        subjectLabel={t('subjectName')}
+        gradeLabel={t('gradeName')}
+        onToggleSelectAll={selectAllItems}
+        selectedIcon={changeSelectedItemsIcon()}
+      />
 
       {subjectList.length === 0 && (
         <View style={styles.noItemsInfo}>
@@ -318,186 +240,67 @@ function CalculatorScreen() {
         </View>
       )}
 
-      <FlatList
+      <SubjectsList
         data={subjectList}
-        renderItem={renderItem}
-        keyExtractor={i => i.key}
+        selectedItems={selectedItems}
+        onToggleSelect={selectItem}
+        onPressItem={openEditMenu}
+        checkedIcon={iconCheck}
       />
 
       {/* Summary */}
-      <View style={styles.summaryContainer}>
-        <View style={styles.summarySpacer}>
-          <Text
-            style={[styles.countersText, styles.singleItem, styles.centerText]}
-          >
-            {t('gradeAverage').replace(' ', '\n')}
-          </Text>
-          <Text
-            style={[styles.countersText, styles.singleItem, styles.centerText]}
-          >
-            {t('ectsSum').replace(' ', '\n')}
-          </Text>
-          <Text
-            style={[styles.countersText, styles.singleItem, styles.centerText]}
-          >
-            {t('weightedAverage').replace(' ', '\n')}
-          </Text>
-        </View>
-        <View style={styles.summarySpacer}>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-          >
-            {averageGrade()}
-          </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-          >
-            {totalEcts()}
-          </Text>
-          <Text
-            style={[styles.bottomMenu, styles.singleItem, styles.centerText]}
-          >
-            {weightedAverage()}
-          </Text>
-        </View>
-      </View>
+      <SummaryPanel
+        gradeAverageLabel={t('gradeAverage').replace(' ', '\n')}
+        ectsSumLabel={t('ectsSum').replace(' ', '\n')}
+        weightedAverageLabel={t('weightedAverage').replace(' ', '\n')}
+        averageGrade={averageGrade()}
+        totalEcts={totalEcts()}
+        weightedAverage={weightedAverage()}
+      />
 
       {/* Batch delete / Add button */}
-      {selectedItems.length > 0 ? (
-        <View style={styles.removeCourseMenuBtn}>
-          <TouchableOpacity onPress={deleteSelectedItems}>
-            <View style={styles.removeButtonContents}>
-              <MaterialIcons name="delete" size={24} color="#fff" />
-              <Text style={styles.removeCourseMenuBtnText}>
-                {t('removeCourseMenuBtnText')}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={styles.addCourseMenuBtn}>
-          <TouchableOpacity onPress={openAddMenu}>
-            <Text style={styles.addCourseMenuBtnText}>+</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <BatchActions
+        hasSelection={selectedItems.length > 0}
+        onDelete={deleteSelectedItems}
+        onAdd={openAddMenu}
+        removeCourseLabel={t('removeCourseMenuBtnText')}
+      />
 
       {/* Add/Edit popup */}
-      {popUpMenuVisible && (
-        <View style={styles.overlayContainer}>
-          <View style={styles.popUpMenu}>
-            <Text style={styles.overlayLabel}>
-              {itemBeingEdited ? t('editSubject') : t('addSubject')}
-            </Text>
-            <Text style={styles.Label}>
-              {itemBeingEdited ? t('editSubjectText') : t('addSubjectText')}
-            </Text>
-
-            {/* Subject */}
-            <Text
-              style={
-                subjectError ? styles.overlayLabelErr : styles.overlayLabel
-              }
-            >
-              {t('subjectName')}
-            </Text>
-            <View style={styles.Label}>
-              <View
-                style={
-                  subjectError
-                    ? styles.subjectSelectError
-                    : styles.subjectSelect
-                }
-              >
-                <DropdownMenu
-                  items={allSubjects}
-                  selectedValue={subjectName}
-                  onSelect={setSubjectName}
-                  isOpen={subjectDropdownOpen}
-                  onOpen={() => setSubjectDropdownOpen(true)}
-                  onClose={() => setSubjectDropdownOpen(false)}
-                  placeholder={t('placeholderCalc')}
-                />
-              </View>
-            </View>
-            {subjectError && (
-              <Text style={styles.inputErrorFeed}>{subjectError}</Text>
-            )}
-
-            {/* ECTS */}
-            <Text
-              style={ectsError ? styles.overlayLabelErr : styles.overlayLabel}
-            >
-              {t('ECTSVal')}
-            </Text>
-            <TextInput
-              ref={ectsInput}
-              style={
-                ectsError && ectsFocused
-                  ? styles.userInputFocusedError
-                  : ectsError
-                  ? styles.invalidUserInput
-                  : ectsFocused
-                  ? styles.userInputFocused
-                  : styles.userInput
-              }
-              placeholder={t('placeholderCalc2')}
-              placeholderTextColor={'#a1a1a1'}
-              value={ectsPoints}
-              onChangeText={setEctsPoints}
-              keyboardType="numeric"
-              onFocus={() => setEctsFocused(true)}
-              onBlur={() => setEctsFocused(false)}
-            />
-            {ectsError && (
-              <Text style={styles.inputErrorFeed}>{ectsError}</Text>
-            )}
-
-            {/* GRADE */}
-            <Text
-              style={gradeError ? styles.overlayLabelErr : styles.overlayLabel}
-            >
-              {t('gradeName')}
-            </Text>
-            <TextInput
-              ref={gradeInput}
-              style={
-                gradeError && gradeFocused
-                  ? styles.userInputFocusedError
-                  : gradeError
-                  ? styles.invalidUserInput
-                  : gradeFocused
-                  ? styles.userInputFocused
-                  : styles.userInput
-              }
-              placeholder="np. 4"
-              placeholderTextColor={'#a1a1a1'}
-              value={grade}
-              onChangeText={setGrade}
-              keyboardType="numeric"
-              onFocus={() => setGradeFocused(true)}
-              onBlur={() => setGradeFocused(false)}
-            />
-            {gradeError && (
-              <Text style={styles.inputErrorFeed}>{gradeError}</Text>
-            )}
-
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={handleConfirm}
-            >
-              <Text style={styles.buttonText}>{t('confirmButton')}</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={handleCancel}
-            >
-              <Text style={styles.buttonText}>{t('cancelButton')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+      <PopupForm
+        isVisible={popUpMenuVisible}
+        titleLabel={itemBeingEdited ? t('editSubject') : t('addSubject')}
+        helperLabel={
+          itemBeingEdited ? t('editSubjectText') : t('addSubjectText')
+        }
+        subjectFieldLabel={t('subjectName')}
+        subjectPlaceholder={t('placeholderCalc')}
+        ectsLabel={t('ECTSVal')}
+        ectsPlaceholder={t('placeholderCalc2')}
+        gradeLabel={t('gradeName')}
+        gradePlaceholder={'np. 4'}
+        confirmLabel={t('confirmButton')}
+        cancelLabel={t('cancelButton')}
+        subjectError={subjectError}
+        ectsError={ectsError}
+        gradeError={gradeError}
+        subjectName={subjectName}
+        ectsPoints={ectsPoints}
+        grade={grade}
+        onChangeSubject={setSubjectName}
+        onChangeEcts={setEctsPoints}
+        onChangeGrade={setGrade}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        allSubjects={allSubjects}
+        subjectDropdownOpen={subjectDropdownOpen}
+        onOpenSubjectDropdown={() => setSubjectDropdownOpen(true)}
+        onCloseSubjectDropdown={() => setSubjectDropdownOpen(false)}
+        ectsFocused={ectsFocused}
+        gradeFocused={gradeFocused}
+        setEctsFocused={setEctsFocused}
+        setGradeFocused={setGradeFocused}
+      />
     </View>
   );
 }
