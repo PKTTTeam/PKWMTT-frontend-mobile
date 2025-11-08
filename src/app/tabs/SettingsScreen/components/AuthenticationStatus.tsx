@@ -13,9 +13,9 @@ import { createSwitchStyles } from './styles/AuthenticationStatus.styles.ts';
  */
 interface Props {
   /** Truthy value when the current user is a representative. */
-  role: unknown;
+  role: string | null;
   /** Name of the group the user represents (when applicable). */
-  repGroup: unknown;
+  repGroup: string | null;
   /** Handler to open the representative confirmation modal. */
   onShowModal: () => void;
 }

@@ -21,16 +21,17 @@ const LanguageCard: React.FC<Props> = ({
 
   const key = 'language';
   const [value, setValue] = useState(i18next.language);
-  const [items] = useState([
-    { label: 'Polski', value: 'pl' },
-    { label: 'English', value: 'en' },
-  ]);
 
   const { t } = useTranslation();
 
   useEffect(() => {
     setValue(i18next.language);
   }, []);
+
+  const items = [
+    { label: 'Polski', value: 'pl' },
+    { label: 'English', value: 'en' },
+  ];
 
   return (
     <View style={styles.card}>
