@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { View, Text } from 'react-native';
-// import styles from './CalculatorStyles';
 import uuid from 'react-native-uuid';
 import { useTranslation } from 'react-i18next';
 import { getSubjectList } from '../../../services/calculator/CalculatorService';
@@ -17,6 +16,12 @@ import PopupForm from './components/PopupForm';
 import { CalcItem } from './types';
 import SubjectsList from './components/SubjectsList';
 
+// Constants promoted outside the component to avoid re-creation
+const STORAGE_KEY = '@calculator_subject_list';
+const GRADE_REGEX = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
+const ICON_CHECK = '\u2713';
+const ICON_SQUARE = '\u25A0';
+
 function CalculatorScreen() {
   const theme = useTheme();
   const styles = createCalculatorStyles(theme as Theme);
@@ -27,43 +32,32 @@ function CalculatorScreen() {
   const [ectsPoints, setEctsPoints] = useState('');
   const [grade, setGrade] = useState('');
 
-  const [subjectError, setSubjectError] = useState<string | null>(null);
-  const [ectsError, setEctsError] = useState<string | null>(null);
-  const [gradeError, setGradeError] = useState<string | null>(null);
+  const [subjectError, setSubjectError] = useState(false);
+  const [ectsError, setEctsError] = useState(false);
+  const [gradeError, setGradeError] = useState(false);
 
   const [popUpMenuVisible, setPopUpMenuVisible] = useState(false);
-  const [ectsFocused, setEctsFocused] = useState(false);
-  const [gradeFocused, setGradeFocused] = useState(false);
+  // Focus states now handled inside PopupForm
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const iconCheck = '\u2713';
-  const iconSquare = '\u25A0';
-
-  const [subjectDropdownOpen, setSubjectDropdownOpen] = useState(false);
+  // Dropdown and focus states now handled inside PopupForm; removed local state.
   const deanGroup = useSettingsStore(state => state.groups.dean);
   const [allSubjects, setAllSubjects] = useState<string[]>([]);
 
   const [itemBeingEdited, setItemBeingEdited] = useState<CalcItem | null>(null);
 
-  const fetchSubjectList = React.useCallback(async () => {
-    if (!deanGroup) return;
-    try {
-      const response = await getSubjectList(deanGroup.toString());
-      return response;
-    } catch (error) {
-      console.error('Error fetching subject list:', error);
-    }
-  }, [deanGroup]);
-
+  // Fetch subjects when deanGroup changes
   useEffect(() => {
-    const fetchSubjects = async () => {
-      const response = await fetchSubjectList();
-      if (response) setAllSubjects(response);
-    };
-    fetchSubjects();
-  }, [deanGroup, fetchSubjectList]);
-
-  const STORAGE_KEY = '@calculator_subject_list';
+    if (!deanGroup) return;
+    (async () => {
+      try {
+        const response = await getSubjectList(deanGroup.toString());
+        if (response) setAllSubjects(response);
+      } catch (error) {
+        console.error('Error fetching subject list:', error);
+      }
+    })();
+  }, [deanGroup]);
 
   const saveSubjectList = async (list: CalcItem[]) => {
     try {
@@ -89,38 +83,39 @@ function CalculatorScreen() {
     saveSubjectList(subjectList);
   }, [subjectList]);
 
-  const averageGrade = () =>
-    subjectList.length === 0
-      ? '0.00'
-      : (
-          subjectList.reduce((sum, item) => sum + parseFloat(item.grade), 0) /
-          subjectList.length
-        ).toFixed(2);
+  // Derived values memoized to avoid repeated computations on render
+  const totalEcts = useMemo(
+    () => subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0),
+    [subjectList],
+  );
 
-  const totalEcts = () =>
-    subjectList.reduce((sum, item) => sum + parseInt(item.ects, 10), 0);
+  const averageGrade = useMemo(() => {
+    if (subjectList.length === 0) return '0.00';
+    const sum = subjectList.reduce(
+      (acc, item) => acc + parseFloat(item.grade),
+      0,
+    );
+    return (sum / subjectList.length).toFixed(2);
+  }, [subjectList]);
 
-  const weightedAverage = () =>
-    subjectList.length === 0
-      ? '0.00'
-      : (
-          subjectList.reduce(
-            (sum, item) =>
-              sum + parseFloat(item.grade) * parseInt(item.ects, 10),
-            0,
-          ) / totalEcts()
-        ).toFixed(2);
+  const weightedAverage = useMemo(() => {
+    if (subjectList.length === 0 || totalEcts === 0) return '0.00';
+    const weightedSum = subjectList.reduce(
+      (acc, item) => acc + parseFloat(item.grade) * parseInt(item.ects, 10),
+      0,
+    );
+    return (weightedSum / totalEcts).toFixed(2);
+  }, [subjectList, totalEcts]);
 
   const resetPopupFields = () => {
     setSubjectName('');
     setEctsPoints('');
     setGrade('');
-    setSubjectError(null);
-    setEctsError(null);
-    setGradeError(null);
+    setSubjectError(false);
+    setEctsError(false);
+    setGradeError(false);
     setItemBeingEdited(null);
-    setEctsFocused(false);
-    setGradeFocused(false);
+    // Focus state resets handled internally by PopupForm now.
   };
 
   const handleCancel = () => {
@@ -129,53 +124,50 @@ function CalculatorScreen() {
   };
 
   const validate = () => {
-    let hasError = false;
-    setSubjectError(null);
-    setEctsError(null);
-    setGradeError(null);
+    let valid = true;
+    setSubjectError(false);
+    setEctsError(false);
+    setGradeError(false);
 
     if (!subjectName.trim()) {
-      setSubjectError(t('addSubjectErrorText'));
-      hasError = true;
+      setSubjectError(true);
+      valid = false;
     }
 
     const ectsInt = parseInt(ectsPoints, 10);
     if (isNaN(ectsInt) || ectsInt <= 0) {
-      setEctsError(t('addECTSErrorText'));
-      hasError = true;
+      setEctsError(true);
+      valid = false;
     }
 
-    const gradeRegex = /^(2(\.0)?|2\.5|3(\.0)?|3\.5|4(\.0)?|4\.5|5(\.0)?)$/;
-    if (!gradeRegex.test(grade)) {
-      setGradeError(t('addGradeErrorText'));
-      hasError = true;
+    if (!GRADE_REGEX.test(grade)) {
+      setGradeError(true);
+      valid = false;
     }
 
-    return !hasError;
+    return valid;
   };
 
   const handleConfirm = () => {
     if (!validate()) return;
 
-    if (itemBeingEdited) {
-      setSubjectList(list =>
-        list.map(i =>
-          i.key === itemBeingEdited.key
-            ? { ...i, subjectName, ects: ectsPoints, grade }
-            : i,
-        ),
-      );
-    } else {
-      setSubjectList([
-        ...subjectList,
-        {
-          key: uuid.v4().toString(),
-          subjectName,
-          ects: ectsPoints,
-          grade,
-        },
-      ]);
-    }
+    setSubjectList(list =>
+      itemBeingEdited
+        ? list.map(i =>
+            i.key === itemBeingEdited.key
+              ? { ...i, subjectName, ects: ectsPoints, grade }
+              : i,
+          )
+        : [
+            ...list,
+            {
+              key: uuid.v4().toString(),
+              subjectName,
+              ects: ectsPoints,
+              grade,
+            },
+          ],
+    );
 
     handleCancel();
   };
@@ -193,31 +185,29 @@ function CalculatorScreen() {
     setPopUpMenuVisible(true);
   };
 
-  const selectItem = (key: string) =>
-    setSelectedItems(
-      selectedItems.includes(key)
-        ? selectedItems.filter(k => k !== key)
-        : [...selectedItems, key],
+  const selectItem = useCallback((key: string) => {
+    setSelectedItems(prev =>
+      prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key],
     );
+  }, []);
 
-  const selectAllItems = () =>
-    setSelectedItems(
-      selectedItems.length === subjectList.length
-        ? []
-        : subjectList.map(i => i.key),
+  const selectAllItems = useCallback(() => {
+    setSelectedItems(prev =>
+      prev.length === subjectList.length ? [] : subjectList.map(i => i.key),
     );
+  }, [subjectList]);
 
-  const deleteSelectedItems = () => {
-    setSubjectList(subjectList.filter(i => !selectedItems.includes(i.key)));
+  const deleteSelectedItems = useCallback(() => {
+    setSubjectList(list => list.filter(i => !selectedItems.includes(i.key)));
     setSelectedItems([]);
-  };
+  }, [selectedItems]);
 
-  const changeSelectedItemsIcon = () =>
-    selectedItems.length === subjectList.length && selectedItems.length > 0
-      ? iconCheck
-      : selectedItems.length > 0
-      ? iconSquare
-      : '';
+  const selectedIcon = useMemo(() => {
+    if (selectedItems.length === subjectList.length && selectedItems.length > 0)
+      return ICON_CHECK;
+    if (selectedItems.length > 0) return ICON_SQUARE;
+    return '';
+  }, [selectedItems, subjectList.length]);
 
   // renderItem now lives inside SubjectsList
 
@@ -228,7 +218,7 @@ function CalculatorScreen() {
         subjectLabel={t('subjectName')}
         gradeLabel={t('gradeName')}
         onToggleSelectAll={selectAllItems}
-        selectedIcon={changeSelectedItemsIcon()}
+        selectedIcon={selectedIcon}
       />
 
       {subjectList.length === 0 && (
@@ -245,7 +235,7 @@ function CalculatorScreen() {
         selectedItems={selectedItems}
         onToggleSelect={selectItem}
         onPressItem={openEditMenu}
-        checkedIcon={iconCheck}
+        checkedIcon={ICON_CHECK}
       />
 
       {/* Summary */}
@@ -253,9 +243,9 @@ function CalculatorScreen() {
         gradeAverageLabel={t('gradeAverage').replace(' ', '\n')}
         ectsSumLabel={t('ectsSum').replace(' ', '\n')}
         weightedAverageLabel={t('weightedAverage').replace(' ', '\n')}
-        averageGrade={averageGrade()}
-        totalEcts={totalEcts()}
-        weightedAverage={weightedAverage()}
+        averageGrade={averageGrade}
+        totalEcts={totalEcts}
+        weightedAverage={weightedAverage}
       />
 
       {/* Batch delete / Add button */}
@@ -266,21 +256,10 @@ function CalculatorScreen() {
         removeCourseLabel={t('removeCourseMenuBtnText')}
       />
 
-      {/* Add/Edit popup */}
+      {/* Popup form for adding/editing subjects */}
       <PopupForm
         isVisible={popUpMenuVisible}
-        titleLabel={itemBeingEdited ? t('editSubject') : t('addSubject')}
-        helperLabel={
-          itemBeingEdited ? t('editSubjectText') : t('addSubjectText')
-        }
-        subjectFieldLabel={t('subjectName')}
-        subjectPlaceholder={t('placeholderCalc')}
-        ectsLabel={t('ECTSVal')}
-        ectsPlaceholder={t('placeholderCalc2')}
-        gradeLabel={t('gradeName')}
-        gradePlaceholder={'np. 4'}
-        confirmLabel={t('confirmButton')}
-        cancelLabel={t('cancelButton')}
+        isEditMode={!!itemBeingEdited}
         subjectError={subjectError}
         ectsError={ectsError}
         gradeError={gradeError}
@@ -293,13 +272,6 @@ function CalculatorScreen() {
         onConfirm={handleConfirm}
         onCancel={handleCancel}
         allSubjects={allSubjects}
-        subjectDropdownOpen={subjectDropdownOpen}
-        onOpenSubjectDropdown={() => setSubjectDropdownOpen(true)}
-        onCloseSubjectDropdown={() => setSubjectDropdownOpen(false)}
-        ectsFocused={ectsFocused}
-        gradeFocused={gradeFocused}
-        setEctsFocused={setEctsFocused}
-        setGradeFocused={setGradeFocused}
       />
     </View>
   );
