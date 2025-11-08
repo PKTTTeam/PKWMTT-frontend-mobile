@@ -1,9 +1,11 @@
 {
   "toggleThemeText": "Tryb ciemny",
-  "confirmRepStatus": "Wpisz kod starosty",
-  "repOfGroup": "Starosta grupy {{group}}",
+  "confirmRepStatus": "Wpisz kod",
+  "repOfGroup": "Student grupy {{group}}",
   "selectRequiredGroups": "Proszę wybrać wszystkie wymagane grupy",
-  "studentGroups": "Grupy Studenckie",
+  "studentGroups": "Grupy studenckie",
+  "appAuthentication": "Uwierzytelnianie",
+  "displaySettings": "Ustawienia wyświetlania",
   "toastSaveMessage1": "Zapisano",
   "toastSaveMessage2": "Ustawienia grup zostały zapisane",
   "deanGroup": "Dziekańska",
@@ -121,5 +123,5 @@
   "placeholderCalc2": "np. 2",
   "ECTSVal": "Wartość ECTS",
   "removeCourseMenuBtnText": "Usuń wybrany przedmiot",
-  "showLectures": "Ukryj wykłady"
+  "showLectures": "Pokaż wykłady"
 }

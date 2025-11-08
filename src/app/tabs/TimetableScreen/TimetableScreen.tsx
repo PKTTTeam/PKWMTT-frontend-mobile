@@ -73,11 +73,11 @@ const TimetableScreen = () => {
   const groups = useSettingsStore(state => state.groups);
   const loading = useSettingsStore(state => state.loading);
   const showEmptySlots = useSettingsStore(state => state.showEmptySlots);
-  const hideLectures = useSettingsStore(state => state.hideLectures);
+  const showLectures = useSettingsStore(state => state.showLectures);
 
   const { fetchInitialDeanGroups } = useSettingsActions();
 
-  const { isOddWeek, currentDayIndex } = initWeekAndDay();
+  const { isOddWeek, currentDayIndex } = initWeekAndDay();  
 
   const navigationRef = useRef({
     DayIndex,
@@ -288,7 +288,7 @@ const TimetableScreen = () => {
     if (!currentDay) return [];
     let lessons = OddWeek ? currentDay.odd : currentDay.even;
 
-    if (hideLectures) {
+    if (!showLectures) {
       lessons = lessons.filter(item => item.type !== 'LECTURE');
     }
     if (!showEmptySlots) return lessons;
