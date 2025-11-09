@@ -37,6 +37,7 @@ export const darkTheme = createTheme({
     error: palette.accentColors.brightRed,
     border: palette.darkColors.gray,
     border2: palette.darkColors.gray,
+    calculatorBackgroundHeader: palette.darkColors.pureBlack,
 
     selectedAccent: palette.accentColors.tonedBlue,
     confirmAccent: palette.accentColors.lightPurple,
@@ -79,6 +80,7 @@ export const lightTheme = createTheme({
     error: palette.accentColors.brightRed,
     border: palette.lightColors.lightTeal,
     border2: palette.lightColors.mutedTeal,
+    calculatorBackgroundHeader: palette.lightColors.mutedTeal,
 
     selectedAccent: palette.accentColors.tonedBlue,
     confirmAccent: palette.accentColors.tonedBlue,

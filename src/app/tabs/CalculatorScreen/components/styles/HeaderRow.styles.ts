@@ -2,8 +2,9 @@ import { StyleSheet } from 'react-native';
 import { Theme } from '../../../../../styles/globalTheme/theme';
 
 export const createHeaderRowStyles = (theme: Theme) => {
+
   const colors = {
-    backgroundHeader: theme.colors.border2,
+    backgroundHeader: theme.colors.calculatorBackgroundHeader,
     backgroundPrimary: theme.colors.Foreground,
     themeOpposite: theme.colors.themeOpposite,
     textPrimary: theme.colors.textPrimary,
