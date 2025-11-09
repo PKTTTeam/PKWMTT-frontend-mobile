@@ -25,7 +25,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../styles/globalTheme/theme';
-import { createTimetableStyles } from './timetableStyles.ts';
+import { createTimetableStyles } from './timetable.styles.ts';
 
 import {
   useSettingsStore,
@@ -37,7 +37,7 @@ import { getFullSchedule } from '../../../utils/getFullSchedule.ts';
 
 import ConnectionAlertModal from '../../../components/modals/ConnectionAlertModal.tsx';
 import { useTranslation } from 'react-i18next';
-import LessonSeparator from './LessonSeparator.tsx';
+import LessonSeparator from './Components/LessonSeparator.tsx';
 
 const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-back-ios" color={color} size={size} />
@@ -411,31 +411,24 @@ const TimetableScreen = () => {
           )}
         </View>
       )}
-      {/* TODO: aplikacja MOŻE crashowac po przejściu do innego taba */}
-      {/* TODO: Wystylowanie tabeli */}
       {isLandscape && (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          // keyboardShouldPersistTaps="always"
-        >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ flexDirection: 'row', marginLeft: 12 }}>
             {/* kolumna godzin */}
             <View style={{ marginRight: 10, marginTop: 10 }}>
-              {/* TODO: niedziałający button (mały boszar, histlop nie pomaga) */}
-              {/* <TouchableOpacity
-                  style={styles.weekIndicator}
-                  onPress={() => setIsOddWeek(prev => !prev)}
-                  hitSlop={50}
-                >
-                  <Icon
-                    name={'sync-alt'}
-                    size={40}
-                    color={theme.colors.themeOpposite}
-                  />
-                </TouchableOpacity> */}
-              <Text style={[styles.dayTitleLandscape, { textAlign: 'center' }]}>
-                {isOddWeek ? t('oddWeek') : t('evenWeek')}
-              </Text>
+              {/* TODO: Button is blocked by text and icon */}
+              <TouchableOpacity
+                style={styles.weekIndicator}
+                onPress={() => setIsOddWeek(prev => !prev)}
+                hitSlop={15}
+              >
+                <Icon
+                  name={'sync-alt'}
+                  size={15}
+                  color={theme.colors.themeOpposite}
+                />
+                <Text style={styles.weekText}>{getWeekTypeText()}</Text>
+              </TouchableOpacity>
 
               {academicHours.map((hour, index) => {
                 const [startTime, endTime] = hour.split('-').map(s => s.trim());

@@ -39,13 +39,13 @@ const getScreenOptions = (
     themeMode === 'dark' ? (
       <HeaderLogoLight
         width={200}
-        height={150}
+        height={isLandscape ? 50 : 80}
         style={NavigationStyles.HeaderLogo}
       />
     ) : (
       <HeaderLogoDark
         width={200}
-        height={150}
+        height={isLandscape ? 50 : 80}
         style={NavigationStyles.HeaderLogo}
       />
     ),
@@ -56,7 +56,7 @@ const getScreenOptions = (
 
   headerStyle: {
     backgroundColor: styles.mainBg,
-     height: isLandscape ? HEADER_HEIGHT * 0.5 : HEADER_HEIGHT,
+    height: isLandscape ? HEADER_HEIGHT * 0.5 : HEADER_HEIGHT,
     paddingTop: insets.top,
   },
 
@@ -65,7 +65,9 @@ const getScreenOptions = (
   },
 
   tabBarStyle: {
-    height: isLandscape ? (TAB_BAR_HEIGHT + insets.bottom)*0.7 : TAB_BAR_HEIGHT + insets.bottom,
+    height: isLandscape
+      ? (TAB_BAR_HEIGHT + insets.bottom) * 0.7
+      : TAB_BAR_HEIGHT + insets.bottom,
     paddingBottom: insets.bottom > 0 ? 10 : 15,
     paddingTop: 10,
     backgroundColor: styles.mainBg,
@@ -125,7 +127,9 @@ const TabNavigator: React.FC = () => {
   // const currentLogo = themeMode === 'dark' ? HeaderLogoLight : HeaderLogoDark;
 
   return (
-    <Tab.Navigator screenOptions={getScreenOptions(insets, styles, themeMode, isLandscape)}>
+    <Tab.Navigator
+      screenOptions={getScreenOptions(insets, styles, themeMode, isLandscape)}
+    >
       <Tab.Screen
         name="timetable"
         component={TimetableScreen}
