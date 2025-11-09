@@ -1,3 +1,4 @@
+// ...existing code...
 import React, { useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import DropdownMenu from '../../../../components/ui/DropdownMenu';
@@ -52,7 +53,7 @@ const PopupForm: React.FC<PopupFormProps> = ({
   // High-level labels
   const overlayLabel = isEditMode ? t('editSubject') : t('addSubject');
   const overlayText = isEditMode ? t('editSubjectText') : t('addSubjectText');
-  
+
   // Field titles & placeholders
   const subjectTitle = t('subjectName');
   const ectsTitle = t('ECTSVal');
@@ -60,40 +61,16 @@ const PopupForm: React.FC<PopupFormProps> = ({
   const subjectPlaceholder = t('placeholderCalc');
   const ectsPlaceholder = t('placeholderCalc2');
   const gradePlaceholder = 'np. 4';
-  
+
   // Action button labels
   const confirmLabel = t('confirmButton');
   const cancelLabel = t('cancelButton');
- 
+
   // Error messages (null when no error)
   const subjectErrorMessage = subjectError ? t('addSubjectErrorText') : null;
   const ectsErrorMessage = ectsError ? t('addECTSErrorText') : null;
   const gradeErrorMessage = gradeError ? t('addGradeErrorText') : null;
 
-  // Dynamic styles
-  const subjectLabelStyle = subjectError
-    ? styles.overlayLabelErr
-    : styles.overlayLabel;
-  const ectsLabelStyle = ectsError
-    ? styles.overlayLabelErr
-    : styles.overlayLabel;
-  const gradeLabelStyle = gradeError
-    ? styles.overlayLabelErr
-    : styles.overlayLabel;
-  const subjectSelectWrapperStyle = subjectError
-    ? styles.subjectSelectError
-    : styles.subjectSelect;
-
-  // Compute input style based on error & focus
-  const getInputStyle = (error: boolean, focused: boolean) => {
-    if (error && focused) return styles.userInputFocusedError;
-    if (error) return styles.invalidUserInput;
-    if (focused) return styles.userInputFocused;
-    return styles.userInput;
-  };
- 
-  const ectsInputStyle = getInputStyle(ectsError, ectsFocused);
-  const gradeInputStyle = getInputStyle(gradeError, gradeFocused);
   // Error components for readability
   const SubjectErrorComponent = subjectErrorMessage ? (
     <Text style={styles.inputErrorFeed}>{subjectErrorMessage}</Text>
@@ -105,15 +82,37 @@ const PopupForm: React.FC<PopupFormProps> = ({
     <Text style={styles.inputErrorFeed}>{gradeErrorMessage}</Text>
   ) : null;
 
+  const ectsInputStyle = [
+    styles.userInput,
+    ectsError && styles.invalidUserInput,
+    ectsFocused && styles.userInputFocused,
+    ectsError && ectsFocused && styles.userInputFocusedError,
+  ];
+  const gradeInputStyle = [
+    styles.userInput,
+    gradeError && styles.invalidUserInput,
+    gradeFocused && styles.userInputFocused,
+    gradeError && gradeFocused && styles.userInputFocusedError,
+  ];
+
   return (
     <View style={styles.overlayContainer}>
       <View style={styles.popUpMenu}>
         <Text style={styles.overlayLabel}>{overlayLabel}</Text>
         <Text style={styles.Label}>{overlayText}</Text>
 
-        <Text style={subjectLabelStyle}>{subjectTitle}</Text>
+        <Text
+          style={[styles.overlayLabel, subjectError && styles.overlayLabelErr]}
+        >
+          {subjectTitle}
+        </Text>
         <View style={styles.Label}>
-          <View style={subjectSelectWrapperStyle}>
+          <View
+            style={[
+              styles.subjectSelect,
+              subjectError && styles.subjectSelectError,
+            ]}
+          >
             <DropdownMenu
               items={allSubjects}
               selectedValue={subjectName}
@@ -127,7 +126,11 @@ const PopupForm: React.FC<PopupFormProps> = ({
         </View>
         {SubjectErrorComponent}
 
-        <Text style={ectsLabelStyle}>{ectsTitle}</Text>
+        <Text
+          style={[styles.overlayLabel, ectsError && styles.overlayLabelErr]}
+        >
+          {ectsTitle}
+        </Text>
         <TextInput
           ref={ectsInputRef}
           style={ectsInputStyle}
@@ -141,7 +144,11 @@ const PopupForm: React.FC<PopupFormProps> = ({
         />
         {EctsErrorComponent}
 
-        <Text style={gradeLabelStyle}>{gradeTitle}</Text>
+        <Text
+          style={[styles.overlayLabel, gradeError && styles.overlayLabelErr]}
+        >
+          {gradeTitle}
+        </Text>
         <TextInput
           ref={gradeInputRef}
           style={gradeInputStyle}
@@ -168,3 +175,4 @@ const PopupForm: React.FC<PopupFormProps> = ({
 };
 
 export default PopupForm;
+// ...existing code...
