@@ -7,35 +7,39 @@ import { Theme } from '../../../../styles/globalTheme/theme';
 import { createPopupFormStyles } from './styles/PopupForm.styles.ts';
 import { useTranslation } from 'react-i18next';
 
-interface PopupFormProps {
-  isVisible: boolean;
-  isEditMode: boolean;
-  subjectError: boolean;
-  ectsError: boolean;
-  gradeError: boolean;
+interface FormValues {
   subjectName: string;
   ectsPoints: string;
   grade: string;
-  onChangeSubject: (val: string) => void;
-  onChangeEcts: (val: string) => void;
-  onChangeGrade: (val: string) => void;
+}
+
+interface FormErrors {
+  subject: boolean;
+  ects: boolean;
+  grade: boolean;
+}
+
+interface PopupFormProps {
+  isVisible: boolean;
+  isEditMode: boolean;
+  values: FormValues;
+  errors: FormErrors;
+  allSubjects: string[];
+  onChange: {
+    subject: (val: string) => void;
+    ects: (val: string) => void;
+    grade: (val: string) => void;
+  };
   onConfirm: () => void;
   onCancel: () => void;
-  allSubjects: string[];
 }
 
 const PopupForm: React.FC<PopupFormProps> = ({
   isVisible,
   isEditMode,
-  subjectError,
-  ectsError,
-  gradeError,
-  subjectName,
-  ectsPoints,
-  grade,
-  onChangeSubject,
-  onChangeEcts,
-  onChangeGrade,
+  values,
+  errors,
+  onChange,
   onConfirm,
   onCancel,
   allSubjects,
@@ -48,6 +52,14 @@ const PopupForm: React.FC<PopupFormProps> = ({
   const [subjectDropdownOpen, setSubjectDropdownOpen] = useState(false);
   const [ectsFocused, setEctsFocused] = useState(false);
   const [gradeFocused, setGradeFocused] = useState(false);
+
+  const {
+    subject: onChangeSubject,
+    ects: onChangeEcts,
+    grade: onChangeGrade,
+  } = onChange;
+  const { subjectName, ectsPoints, grade } = values;
+  const { subject: subjectError, ects: ectsError, grade: gradeError } = errors;
 
   if (!isVisible) return null;
   // High-level labels

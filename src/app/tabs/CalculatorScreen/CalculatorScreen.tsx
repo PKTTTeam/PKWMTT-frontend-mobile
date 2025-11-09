@@ -209,6 +209,35 @@ function CalculatorScreen() {
     return '';
   }, [selectedItems, subjectList.length]);
 
+  // --- PopupForm grouped props for readability ---
+  const popupVisibility = {
+    isVisible: popUpMenuVisible,
+    isEditMode: !!itemBeingEdited,
+  };
+
+  const popupValues = {
+    subjectName,
+    ectsPoints,
+    grade,
+  };
+
+  const popupErrors = {
+    subject: subjectError,
+    ects: ectsError,
+    grade: gradeError,
+  };
+
+  const popupChangeHandlers = {
+    subject: setSubjectName,
+    ects: setEctsPoints,
+    grade: setGrade,
+  };
+
+  const popupActions = {
+    onConfirm: handleConfirm,
+    onCancel: handleCancel,
+  };
+
   // renderItem now lives inside SubjectsList
 
   return (
@@ -259,20 +288,12 @@ function CalculatorScreen() {
 
       {/* Popup form for adding/editing subjects */}
       <PopupForm
-        isVisible={popUpMenuVisible}
-        isEditMode={!!itemBeingEdited}
-        subjectError={subjectError}
-        ectsError={ectsError}
-        gradeError={gradeError}
-        subjectName={subjectName}
-        ectsPoints={ectsPoints}
-        grade={grade}
-        onChangeSubject={setSubjectName}
-        onChangeEcts={setEctsPoints}
-        onChangeGrade={setGrade}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
+        {...popupVisibility}
+        values={popupValues}
+        errors={popupErrors}
+        onChange={popupChangeHandlers}
         allSubjects={allSubjects}
+        {...popupActions}
       />
     </View>
   );
