@@ -59,15 +59,12 @@ const TimetableScreen = () => {
     };
   }, [currentDayIndex, isOddWeek, timetable.length]);
 
-  // ✅ stabilizujemy funkcję, by nie powodowała rerunów efektów
   const areAllGroupsSelected = useCallback(() => !!groups.dean, [groups.dean]);
 
-  // Pobieranie listy grup przy starcie
   useEffect(() => {
     if (!groups.dean) fetchInitialDeanGroups();
   }, [groups.dean, fetchInitialDeanGroups]);
 
-  // ✅ Główne pobieranie planu zajęć
   useEffect(() => {
     if (!areAllGroupsSelected()) {
       setTimetable([]);
@@ -118,7 +115,6 @@ const TimetableScreen = () => {
     markOffline,
   ]);
 
-  // ✅ Funkcja odświeżania danych
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -209,7 +205,6 @@ const TimetableScreen = () => {
       {!isLandscape ? (
         <PortraitView
           theme={theme}
-          styles={styles}
           timetable={timetable}
           academicHours={academicHours}
           currentDayIndex={currentDayIndex}
@@ -224,8 +219,6 @@ const TimetableScreen = () => {
         />
       ) : (
         <LandscapeView
-          theme={theme}
-          styles={styles}
           timetable={timetable}
           academicHours={academicHours}
           isOddWeek={isOddWeek}

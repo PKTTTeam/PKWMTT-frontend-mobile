@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { createTimetableStyles } from '../timetable.styles';
+import { createTimetableStyles } from '../timetable.styles.ts';
 import { useTheme } from '@shopify/restyle';
 import { Theme } from '../../../../styles/globalTheme/theme';
 

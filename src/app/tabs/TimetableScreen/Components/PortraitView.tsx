@@ -15,6 +15,7 @@ import { getFullSchedule } from '../../../../utils/getFullSchedule';
 import { getCorrectColor } from '../../../../utils/getCorrectColor';
 import getCorrectLetter from '../../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../../services/timetable/checkActiveLesson';
+import { createPortraitViewStyles } from './styles/PortraitView.styles.ts';
 
 const RenderLeftArrow = ({ color, size }: { color: string; size: number }) => (
   <Icon name="arrow-back-ios" color={color} size={size} />
@@ -36,7 +37,6 @@ const dayNameMap: Record<string, string> = {
 
 interface PortraitViewProps {
   theme: any;
-  styles: any;
   timetable: any[];
   academicHours: string[];
   currentDayIndex: number;
@@ -52,7 +52,6 @@ interface PortraitViewProps {
 
 const PortraitView: React.FC<PortraitViewProps> = ({
   theme,
-  styles,
   timetable,
   academicHours,
   currentDayIndex,
@@ -66,10 +65,9 @@ const PortraitView: React.FC<PortraitViewProps> = ({
   setIsOddWeek,
 }) => {
   const { t } = useTranslation();
+  const styles = createPortraitViewStyles(theme);
 
-  const getWeekTypeText = () => {
-    return isOddWeek ? t('oddWeek') : t('evenWeek');
-  };
+  const getWeekTypeText = () => (isOddWeek ? t('oddWeek') : t('evenWeek'));
 
   const getCurrentDayData = () => {
     const currentDay = timetable[currentDayIndex];
@@ -95,28 +93,16 @@ const PortraitView: React.FC<PortraitViewProps> = ({
       isOddWeek,
     );
     const isEmptySlot = !item.name;
-    if (isEmptySlot) {
-      return (
-        <ScheduleItem
-          subject={''}
-          startTime={startTime}
-          endTime={endTime}
-          room={undefined}
-          bgColor={''}
-          type={''}
-          letterColor="white"
-          isActive={isActive}
-        />
-      );
-    }
     return (
       <ScheduleItem
-        subject={item.name}
+        subject={item.name || ''}
         startTime={startTime}
         endTime={endTime}
         room={item.classroom}
-        bgColor={getCorrectColor(getCorrectLetter(item.type))}
-        type={getCorrectLetter(item.type)}
+        bgColor={
+          isEmptySlot ? '' : getCorrectColor(getCorrectLetter(item.type))
+        }
+        type={isEmptySlot ? '' : getCorrectLetter(item.type)}
         letterColor="white"
         isActive={isActive}
       />
@@ -150,7 +136,7 @@ const PortraitView: React.FC<PortraitViewProps> = ({
         onPress={() => setIsOddWeek(prev => !prev)}
         hitSlop={15}
       >
-        <Icon name={'sync-alt'} size={15} color={theme.colors.themeOpposite} />
+        <Icon name="sync-alt" size={15} color={theme.colors.themeOpposite} />
         <Text style={styles.weekText}>{getWeekTypeText()}</Text>
       </TouchableOpacity>
 

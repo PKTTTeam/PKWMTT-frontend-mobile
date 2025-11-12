@@ -10,6 +10,9 @@ import getCorrectLetter from '../../../../utils/getCorrectLetter';
 import checkActiveLesson from '../../../../services/timetable/checkActiveLesson';
 import { TimetableItem } from '../../../../types/global';
 import { useTranslation } from 'react-i18next';
+import { createLandscapeViewStyles } from './styles/LandscapeView.styles.ts';
+import { useTheme } from '@shopify/restyle';
+import { Theme } from '../../../../styles/globalTheme/theme';
 
 const dayNameMap: Record<string, string> = {
   Poniedziałek: 'Monday',
@@ -22,8 +25,6 @@ const dayNameMap: Record<string, string> = {
 };
 
 interface LandscapeViewProps {
-  theme: any;
-  styles: any;
   timetable: any[];
   academicHours: string[];
   isOddWeek: boolean;
@@ -31,18 +32,16 @@ interface LandscapeViewProps {
 }
 
 const LandscapeView: React.FC<LandscapeViewProps> = ({
-  theme,
-  styles,
   timetable,
   academicHours,
   isOddWeek,
   setIsOddWeek,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme<Theme>();
+  const styles = createLandscapeViewStyles(theme);
 
-  const getWeekTypeText = () => {
-    return isOddWeek ? t('oddWeek') : t('evenWeek');
-  };
+  const getWeekTypeText = () => (isOddWeek ? t('oddWeek') : t('evenWeek'));
 
   const renderLesson = (item: TimetableItem, currentDay: string) => {
     const isActive = checkActiveLesson(
@@ -52,24 +51,15 @@ const LandscapeView: React.FC<LandscapeViewProps> = ({
       isOddWeek,
     );
     const isEmptySlot = !item.name;
-    if (isEmptySlot) {
-      return (
-        <ScheduleItemLandscape
-          subject={''}
-          room={undefined}
-          bgColor={''}
-          type={''}
-          letterColor="white"
-          isActive={isActive}
-        />
-      );
-    }
+
     return (
       <ScheduleItemLandscape
-        subject={item.name}
+        subject={item.name || ''}
         room={item.classroom}
-        bgColor={getCorrectColor(getCorrectLetter(item.type))}
-        type={getCorrectLetter(item.type)}
+        bgColor={
+          isEmptySlot ? '' : getCorrectColor(getCorrectLetter(item.type))
+        }
+        type={isEmptySlot ? '' : getCorrectLetter(item.type)}
         letterColor="white"
         isActive={isActive}
       />
@@ -78,23 +68,31 @@ const LandscapeView: React.FC<LandscapeViewProps> = ({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ flexDirection: 'row', marginLeft: 12 }}>
+      <View style={styles.mainRow}>
         {/* Hours column */}
-        <View style={{ marginRight: 10, marginTop: 10 }}>
+        <View style={styles.hoursColumn}>
           <TouchableOpacity
             style={styles.weekIndicator}
             onPress={() => setIsOddWeek(prev => !prev)}
             hitSlop={15}
           >
-            <Icon name={'sync-alt'} size={15} color={theme.colors.themeOpposite} />
+            <Icon
+              name="sync-alt"
+              size={15}
+              color={theme.colors.themeOpposite}
+            />
             <Text style={styles.weekText}>{getWeekTypeText()}</Text>
           </TouchableOpacity>
 
           {academicHours.map((hour, index) => {
             const [startTime, endTime] = hour.split('-').map(s => s.trim());
             return (
-              <View key={index} style={{ paddingVertical: 3, gap: 5 }}>
-                <HourDisplay startTime={startTime} endTime={endTime} isActive={false} />
+              <View key={index} style={styles.hourBlock}>
+                <HourDisplay
+                  startTime={startTime}
+                  endTime={endTime}
+                  isActive={false}
+                />
                 {index < academicHours.length - 1 && <LessonSeparator />}
               </View>
             );
@@ -106,12 +104,15 @@ const LandscapeView: React.FC<LandscapeViewProps> = ({
           const lessons = isOddWeek ? day.odd : day.even;
           const fullLessons = getFullSchedule(academicHours, lessons);
           return (
-            <View key={day.name} style={{ marginRight: 10, width: '16%', marginTop: 10 }}>
-              <Text style={[styles.dayTitleLandscape, { textAlign: 'center' }]}>
+            <View key={day.name} style={styles.dayColumn}>
+              <Text style={styles.dayTitleLandscape}>
                 {t(`dayNames.${dayNameMap[day.name]}`)}
               </Text>
               {fullLessons.map((lesson, index) => (
-                <View key={`${lesson.rowId}-${lesson.classroom}`} style={{ paddingVertical: 3, gap: 5 }}>
+                <View
+                  key={`${lesson.rowId}-${lesson.classroom}`}
+                  style={styles.lessonBlock}
+                >
                   {renderLesson(lesson, day.name)}
                   {index < fullLessons.length - 1 && <LessonSeparator />}
                 </View>
